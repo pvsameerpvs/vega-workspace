@@ -1,31 +1,50 @@
-const CATEGORIES = [
-  "Bunk Bed",
-  "Mattresses and Bedding",
-  "Office Furniture",
-  "Plastic Furniture",
-  "Hospitality Equipment",
-  "Queue Barriers",
-  "Flags & Flag Poles",
-  "Waste Bins",
-];
+import Link from "next/link";
+import { PRODUCT_CATEGORIES } from "@/lib/data";
+import { ArrowUpRight } from "lucide-react";
 
 export function CategoriesSection() {
   return (
-    <section className="py-16">
-      <div className="mx-auto max-w-7xl px-4">
-        <h2 className="mb-12 text-center text-3xl font-bold text-vega-blue">
-          Popular Product Categories
-        </h2>
-        <div className="grid grid-cols-2 gap-6 md:grid-cols-4">
-          {CATEGORIES.map((cat) => (
-            <div
-              key={cat}
-              className="flex aspect-square flex-col items-center justify-center rounded-xl bg-gray-50 p-4 text-center transition hover:shadow-lg"
+    <section className="py-24 bg-gray-50/50">
+      <div className="mx-auto max-w-7xl px-6">
+        <div className="mb-16 flex items-end justify-between">
+          <div>
+            <div className="label-line mb-4">Our Collection</div>
+            <h2 className="section-heading">Browse Our Range</h2>
+          </div>
+          <Link href="/products" className="hidden md:inline-flex pill-btn">
+            View All Products
+          </Link>
+        </div>
+
+        <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
+          {PRODUCT_CATEGORIES.map((cat) => (
+            <Link
+              key={cat.id}
+              href={`/products/${cat.slug}`}
+              className="group relative overflow-hidden rounded-2xl bg-white p-5 transition-all duration-300 hover:shadow-lg"
             >
-              <div className="mb-3 h-16 w-16 rounded-full bg-gray-200" />
-              <span className="font-semibold text-vega-blue">{cat}</span>
-            </div>
+              <div className="mb-4 aspect-[4/3] overflow-hidden rounded-xl bg-gray-100">
+                <img
+                  src={cat.image}
+                  alt={cat.name}
+                  className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+                />
+              </div>
+              <div className="flex items-center justify-between">
+                <h3 className="text-sm font-medium text-gray-900">{cat.name}</h3>
+                <ArrowUpRight className="h-4 w-4 text-gray-400 transition-all group-hover:text-gray-900" />
+              </div>
+              <p className="mt-1 text-xs text-gray-400">
+                {cat.subcategories.length} types
+              </p>
+            </Link>
           ))}
+        </div>
+
+        <div className="mt-8 text-center md:hidden">
+          <Link href="/products" className="pill-btn">
+            View All Products
+          </Link>
         </div>
       </div>
     </section>

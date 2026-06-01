@@ -1,4 +1,6 @@
 import { Metadata } from "next";
+import { PRODUCTS, PRODUCT_CATEGORIES } from "@/lib/data";
+import { ProductGrid } from "@/components/product/ProductGrid";
 
 export const metadata: Metadata = {
   title: "Products | Vega UAE",
@@ -7,19 +9,27 @@ export const metadata: Metadata = {
 
 export default function ProductsPage() {
   return (
-    <main className="py-16">
-      <div className="mx-auto max-w-7xl px-4">
-        <h1 className="mb-8 text-4xl font-bold text-vega-blue">Our Products</h1>
-        <div className="grid gap-6 md:grid-cols-3 lg:grid-cols-4">
-          {/* Product cards will be fetched from database */}
-          {[1, 2, 3, 4, 5, 6].map((i) => (
-            <div key={i} className="rounded-lg border bg-white p-4">
-              <div className="mb-4 aspect-square rounded bg-gray-200" />
-              <h3 className="font-semibold text-vega-blue">Product Name {i}</h3>
-              <p className="text-sm text-gray-600">SKU: VEGA-{i.toString().padStart(4, "0")}</p>
-            </div>
+    <main className="py-20">
+      <div className="mx-auto max-w-7xl px-6">
+        <div className="mb-16">
+          <div className="label-line mb-4">Catalogue</div>
+          <h1 className="section-heading">Our Products</h1>
+          <p className="mt-4 text-gray-500 max-w-lg">
+            Explore our complete catalogue of camp furniture, queue barriers, metal barriers, and office furniture.
+          </p>
+        </div>
+        <div className="mb-12 flex flex-wrap gap-2">
+          {PRODUCT_CATEGORIES.map((cat) => (
+            <a
+              key={cat.id}
+              href={`/products/${cat.slug}`}
+              className="rounded-full border border-gray-200 px-4 py-2 text-sm text-gray-600 hover:border-gray-400 hover:text-gray-900 transition-all"
+            >
+              {cat.name}
+            </a>
           ))}
         </div>
+        <ProductGrid products={PRODUCTS} />
       </div>
     </main>
   );

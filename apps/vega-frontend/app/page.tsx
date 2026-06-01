@@ -1,21 +1,29 @@
 import {
-  HeroSection,
-  UaeSection,
+  HeroSlider,
+  AboutStatsSection,
+  QualitySection,
+  DeliverySection,
   CategoriesSection,
-  StatsSection,
   LeadFormSection,
+  ReviewsSection,
+  IndustriesSection,
   FaqSection,
+  CtaSection,
 } from "./sections";
 
 export default function HomePage() {
   return (
     <main>
-      <HeroSection />
-      <UaeSection />
+      <HeroSlider />
+      <AboutStatsSection />
+      <QualitySection />
+      <DeliverySection />
       <CategoriesSection />
-      <StatsSection />
       <LeadFormSection />
+      <ReviewsSection />
+      <IndustriesSection />
       <FaqSection />
+      <CtaSection />
     </main>
   );
 }

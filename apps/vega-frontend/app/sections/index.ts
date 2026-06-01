@@ -1,6 +1,10 @@
-export { HeroSection } from "./HeroSection";
-export { UaeSection } from "./UaeSection";
+export { HeroSlider } from "./HeroSlider";
+export { AboutStatsSection } from "./AboutStatsSection";
+export { QualitySection } from "./QualitySection";
+export { DeliverySection } from "./DeliverySection";
 export { CategoriesSection } from "./CategoriesSection";
-export { StatsSection } from "./StatsSection";
 export { LeadFormSection } from "./LeadFormSection";
+export { ReviewsSection } from "./ReviewsSection";
+export { IndustriesSection } from "./IndustriesSection";
 export { FaqSection } from "./FaqSection";
+export { CtaSection } from "./CtaSection";

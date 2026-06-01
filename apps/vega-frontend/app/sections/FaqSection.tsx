@@ -1,30 +1,34 @@
-const FAQS = [
-  {
-    q: "Do you deliver to Dubai?",
-    a: "Yes, delivery is available as per location.",
-  },
-  {
-    q: "Do you install the supplied furniture?",
-    a: "Yes, installation cost will be confirmed to the customer.",
-  },
-  {
-    q: "What are the payment methods?",
-    a: "Cheque and payment link.",
-  },
-];
+"use client";
+
+import { useState } from "react";
+import { ChevronDown } from "lucide-react";
+import { FAQS } from "@/lib/data";
 
 export function FaqSection() {
+  const [openIndex, setOpenIndex] = useState<number | null>(0);
+
   return (
-    <section className="bg-gray-50 py-16">
-      <div className="mx-auto max-w-4xl px-4">
-        <h2 className="mb-8 text-center text-3xl font-bold text-vega-blue">
-          Frequently Asked Questions
-        </h2>
-        <div className="space-y-4">
+    <section className="py-24 bg-gray-50/50">
+      <div className="mx-auto max-w-3xl px-6">
+        <div className="mb-16 text-center">
+          <div className="label-line mb-4 justify-center">Support</div>
+          <h2 className="section-heading">Common Questions</h2>
+        </div>
+        <div className="space-y-3">
           {FAQS.map((faq, i) => (
-            <div key={i} className="rounded-lg border bg-white p-4">
-              <h3 className="font-semibold text-vega-blue">{faq.q}</h3>
-              <p className="mt-1 text-gray-600">{faq.a}</p>
+            <div key={i} className="rounded-2xl border border-gray-100 bg-white overflow-hidden">
+              <button
+                onClick={() => setOpenIndex(openIndex === i ? null : i)}
+                className="flex w-full items-center justify-between p-5 text-left"
+              >
+                <span className="text-sm font-medium text-gray-900">{faq.q}</span>
+                <ChevronDown className={`ml-4 h-4 w-4 shrink-0 text-gray-400 transition-transform duration-300 ${openIndex === i ? "rotate-180" : ""}`} />
+              </button>
+              {openIndex === i && (
+                <div className="border-t border-gray-50 px-5 py-4 text-sm text-gray-500 leading-relaxed">
+                  {faq.a}
+                </div>
+              )}
             </div>
           ))}
         </div>

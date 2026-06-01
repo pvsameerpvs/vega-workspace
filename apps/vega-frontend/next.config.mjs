@@ -10,10 +10,6 @@ const nextConfig = {
     ],
     unoptimized: true,
   },
-  i18n: {
-    locales: ["en", "ar"],
-    defaultLocale: "en",
-  },
   transpilePackages: ["@vega/ui", "@vega/db", "@vega/utils"],
 };
 
