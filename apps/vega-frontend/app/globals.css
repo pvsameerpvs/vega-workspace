@@ -35,7 +35,6 @@
     --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.05), 0 2px 4px -2px rgb(0 0 0 / 0.04);
     --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.06), 0 4px 6px -4px rgb(0 0 0 / 0.04);
     --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.08), 0 8px 10px -6px rgb(0 0 0 / 0.04);
-    --shadow-glass: 0 8px 32px 0 rgb(31 58 147 / 0.08);
     --shadow-card: 0 2px 8px rgb(0 0 0 / 0.04), 0 0 1px rgb(0 0 0 / 0.08);
     --shadow-card-hover: 0 12px 24px rgb(0 0 0 / 0.06), 0 0 1px rgb(0 0 0 / 0.08);
     --shadow-elevated: 0 24px 48px -12px rgb(0 0 0 / 0.12);
@@ -226,14 +225,6 @@ html {
   transform: translateY(-1px);
 }
 
-/* Glass card */
-.glass-card {
-  background: rgba(255, 255, 255, 0.7);
-  backdrop-filter: blur(16px);
-  border: 1px solid rgba(255, 255, 255, 0.5);
-  box-shadow: var(--shadow-glass);
-}
-
 /* Modern card */
 .modern-card {
   @apply rounded-2xl border bg-white;
@@ -265,14 +256,6 @@ html {
 }
 .animate-fade-in-up {
   animation: fadeInUp 0.7s cubic-bezier(0.4, 0, 0.2, 1) forwards;
-}
-
-/* Gradient text */
-.gradient-text {
-  background: linear-gradient(135deg, #1F3A93 0%, #3b5bbf 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
 }
 
 /* Subtle gradient backgrounds */

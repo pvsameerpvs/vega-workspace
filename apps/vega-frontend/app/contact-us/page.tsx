@@ -1,6 +1,5 @@
 import { Metadata } from "next";
 import { Phone, Mail, MapPin, Clock, Send } from "lucide-react";
-import Link from "next/link";
 
 export const metadata: Metadata = {
   title: "Contact Us | Vega UAE",

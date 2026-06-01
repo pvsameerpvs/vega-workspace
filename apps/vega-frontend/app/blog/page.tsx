@@ -24,7 +24,7 @@ export default function BlogPage() {
 
         {/* Blog Grid */}
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-          {BLOGS.map((blog, i) => (
+          {BLOGS.map((blog) => (
             <Link
               key={blog.slug}
               href={`/blog/${blog.slug}`}

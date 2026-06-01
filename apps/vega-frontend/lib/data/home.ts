@@ -3,8 +3,8 @@ import { HeroSlide, PopularRange, IndustryItem } from "./types";
 export const HERO_SLIDES: HeroSlide[] = [
   {
     id: "1",
-    title: "Reliable Furniture, Barriers & Camp Supply Solutions Across UAE",
-    subtitle: "Supplying durable camp furniture, queue barriers, office furniture, flag poles, and industrial supply products for businesses across the UAE.",
+    title: "Furnishing Every Space Across the Emirates",
+    subtitle: "Reliable furniture, barriers, and camp supply solutions for businesses throughout the UAE.",
     ctaText: "Request a Quote",
     ctaLink: "/contact-us",
     ctaSecondaryText: "View Products",
@@ -13,8 +13,8 @@ export const HERO_SLIDES: HeroSlide[] = [
   },
   {
     id: "2",
-    title: "Premium Queue Barriers & Crowd Control Solutions",
-    subtitle: "From retractable belt barriers to heavy-duty metal barricades — we supply it all for events, airports, and commercial spaces.",
+    title: "Barriers & Crowd Control That Stand the Test",
+    subtitle: "From retractable belt barriers to heavy-duty metal barricades for events and commercial spaces.",
     ctaText: "Explore Barriers",
     ctaLink: "/products/metal-barriers",
     ctaSecondaryText: "View Catalog",
@@ -23,8 +23,8 @@ export const HERO_SLIDES: HeroSlide[] = [
   },
   {
     id: "3",
-    title: "Complete Camp Furniture & Labor Accommodation Supplies",
-    subtitle: "Bunk beds, mattresses, lockers, dining sets, and more — delivered and installed across the UAE.",
+    title: "Camp Furniture Built for Real Life",
+    subtitle: "Bunk beds, mattresses, lockers, and dining sets — delivered and installed across the UAE.",
     ctaText: "Browse Camp Furniture",
     ctaLink: "/products/camp-furniture",
     ctaSecondaryText: "Contact Us",
@@ -33,8 +33,8 @@ export const HERO_SLIDES: HeroSlide[] = [
   },
   {
     id: "4",
-    title: "Modern Office Furniture for UAE Businesses",
-    subtitle: "Executive desks, ergonomic chairs, meeting tables, and modular workstations for modern offices.",
+    title: "Workspaces Designed for Modern Offices",
+    subtitle: "Executive desks, ergonomic chairs, meeting tables, and modular workstations.",
     ctaText: "View Office Furniture",
     ctaLink: "/products/office-furniture",
     ctaSecondaryText: "Request a Quote",
