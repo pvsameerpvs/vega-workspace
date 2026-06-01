@@ -28,7 +28,7 @@ export function IndustriesSection() {
               <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-gray-100 text-gray-500">
                 {ICONS[i]}
               </div>
-              <span className="text-base text-gray-700">{industry}</span>
+              <span className="text-base text-gray-700">{industry.name}</span>
             </div>
           ))}
         </div>

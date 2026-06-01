@@ -1,6 +1,8 @@
 import { Metadata } from "next";
-import { ArrowRight, MapPin, Phone, Mail, Warehouse } from "lucide-react";
+import { ArrowRight, MapPin, Phone, Mail, Warehouse, Linkedin } from "lucide-react";
+import { ProtectedImage } from "@/components/ProtectedImage";
 import Link from "next/link";
+import { TEAM } from "@/lib/data";
 
 export const metadata: Metadata = {
   title: "About Us | Vega UAE",
@@ -38,11 +40,10 @@ export default function AboutUsPage() {
             </Link>
           </div>
           <div className="img-rounded aspect-[4/3] bg-gray-200">
-            <img
-              src="https://placehold.co/800x600/e5e7eb/1f2937?text=Vega+Warehouse"
+            <ProtectedImage
+              src="/images/gallery/warehouse-interior.jpg"
               alt="Vega Warehouse"
               className="h-full w-full object-cover"
-
             />
           </div>
         </div>
@@ -60,6 +61,45 @@ export default function AboutUsPage() {
               <p className="text-base text-gray-500">{stat.label}</p>
             </div>
           ))}
+        </div>
+
+        {/* Team Section */}
+        <div className="mb-20">
+          <div className="mb-12 text-center">
+            <div className="label-line mb-4 justify-center">Our People</div>
+            <h2 className="section-heading">Meet the Team</h2>
+            <p className="mt-4 text-base text-gray-500 max-w-2xl mx-auto">
+              The dedicated professionals behind Vega's success.
+            </p>
+          </div>
+          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            {TEAM.map((member) => (
+              <div key={member.name} className="rounded-2xl border border-gray-100 bg-white p-6 text-center transition-all hover:shadow-md">
+                <div className="mx-auto mb-4 h-24 w-24 overflow-hidden rounded-full bg-gray-100">
+                  <ProtectedImage
+                    src={member.photo}
+                    alt={member.name}
+                    className="h-full w-full object-cover"
+                  />
+                </div>
+                <h3 className="text-lg font-semibold text-gray-900">{member.name}</h3>
+                <p className="text-base text-vega-blue">{member.designation}</p>
+                <p className="mt-3 text-base text-gray-500 leading-relaxed">{member.bio}</p>
+                <div className="mt-4 flex items-center justify-center gap-3">
+                  {member.email && (
+                    <a href={`mailto:${member.email}`} className="text-gray-400 hover:text-vega-blue transition-colors">
+                      <Mail className="h-4 w-4" />
+                    </a>
+                  )}
+                  {member.linkedIn && (
+                    <a href={member.linkedIn} target="_blank" className="text-gray-400 hover:text-vega-blue transition-colors">
+                      <Linkedin className="h-4 w-4" />
+                    </a>
+                  )}
+                </div>
+              </div>
+            ))}
+          </div>
         </div>
 
         {/* Contact Cards */}

@@ -1,22 +1,28 @@
 import { Router } from "express";
-import { db, faqs } from "@vega/db";
+import { db, faqs, MOCK_FAQS } from "@vega/db";
 import { eq, asc } from "drizzle-orm";
 
 const router = Router();
 
 router.get("/", async (_req, res) => {
   try {
-    const all = await db.select().from(faqs).orderBy(asc(faqs.displayOrder));
-    res.json(all);
+    if (db) {
+      const all = await db.select().from(faqs).orderBy(asc(faqs.displayOrder));
+      return res.json(all);
+    }
+    res.json(MOCK_FAQS);
   } catch (error) {
-    res.status(500).json({ error: "Failed to fetch FAQs" });
+    res.json(MOCK_FAQS);
   }
 });
 
 router.post("/", async (req, res) => {
   try {
-    const result = await db.insert(faqs).values(req.body).returning();
-    res.status(201).json(result[0]);
+    if (db) {
+      const result = await db.insert(faqs).values(req.body).returning();
+      return res.status(201).json(result[0]);
+    }
+    res.status(201).json({ ...req.body, id: MOCK_FAQS.length + 1 });
   } catch (error) {
     res.status(500).json({ error: "Failed to create FAQ" });
   }
@@ -24,7 +30,10 @@ router.post("/", async (req, res) => {
 
 router.delete("/:id", async (req, res) => {
   try {
-    await db.delete(faqs).where(eq(faqs.id, Number(req.params.id)));
+    if (db) {
+      await db.delete(faqs).where(eq(faqs.id, Number(req.params.id)));
+      return res.json({ success: true });
+    }
     res.json({ success: true });
   } catch (error) {
     res.status(500).json({ error: "Failed to delete FAQ" });

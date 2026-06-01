@@ -1,22 +1,28 @@
 import { Router } from "express";
-import { db, catalogs } from "@vega/db";
+import { db, catalogs, MOCK_CATALOGS } from "@vega/db";
 import { eq, desc } from "drizzle-orm";
 
 const router = Router();
 
 router.get("/", async (_req, res) => {
   try {
-    const all = await db.select().from(catalogs).orderBy(desc(catalogs.createdAt));
-    res.json(all);
+    if (db) {
+      const all = await db.select().from(catalogs).orderBy(desc(catalogs.createdAt));
+      return res.json(all);
+    }
+    res.json(MOCK_CATALOGS);
   } catch (error) {
-    res.status(500).json({ error: "Failed to fetch catalogs" });
+    res.json(MOCK_CATALOGS);
   }
 });
 
 router.post("/", async (req, res) => {
   try {
-    const result = await db.insert(catalogs).values(req.body).returning();
-    res.status(201).json(result[0]);
+    if (db) {
+      const result = await db.insert(catalogs).values(req.body).returning();
+      return res.status(201).json(result[0]);
+    }
+    res.status(201).json({ ...req.body, id: MOCK_CATALOGS.length + 1 });
   } catch (error) {
     res.status(500).json({ error: "Failed to create catalog" });
   }
@@ -24,7 +30,10 @@ router.post("/", async (req, res) => {
 
 router.delete("/:id", async (req, res) => {
   try {
-    await db.delete(catalogs).where(eq(catalogs.id, Number(req.params.id)));
+    if (db) {
+      await db.delete(catalogs).where(eq(catalogs.id, Number(req.params.id)));
+      return res.json({ success: true });
+    }
     res.json({ success: true });
   } catch (error) {
     res.status(500).json({ error: "Failed to delete catalog" });

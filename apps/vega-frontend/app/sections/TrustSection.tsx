@@ -62,7 +62,7 @@ export function TrustSection() {
         <div className="mt-12 grid gap-6 md:grid-cols-2">
           <div className="img-rounded aspect-[16/9] overflow-hidden bg-gray-200">
             <img
-              src="https://placehold.co/800x450/e5e7eb/1f2937?text=Fleet+Photo"
+              src="/images/gallery/delivery-fleet.jpg"
               alt="Vega Fleet"
               className="h-full w-full object-cover"
               draggable={false}
@@ -71,7 +71,7 @@ export function TrustSection() {
           </div>
           <div className="img-rounded aspect-[16/9] overflow-hidden bg-gray-200">
             <img
-              src="https://placehold.co/800x450/e5e7eb/1f2937?text=Team+Photo"
+              src="/images/gallery/vega-team.jpg"
               alt="Vega Team"
               className="h-full w-full object-cover"
               draggable={false}

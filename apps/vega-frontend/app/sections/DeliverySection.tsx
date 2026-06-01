@@ -10,7 +10,7 @@ export function DeliverySection() {
           <div>
             <div className="img-rounded aspect-[4/3] bg-gray-200">
               <ProtectedImage
-                src="https://placehold.co/800x600/e5e7eb/1f2937?text=Delivery+Across+UAE"
+                src="/images/gallery/delivery-fleet.jpg"
                 alt="Delivery"
                 className="h-full w-full object-cover"
               />

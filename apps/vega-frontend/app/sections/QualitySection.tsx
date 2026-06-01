@@ -28,7 +28,7 @@ export function QualitySection() {
           <div className="order-1 lg:order-2">
             <div className="img-rounded aspect-[4/3] bg-gray-200">
               <ProtectedImage
-                src="https://placehold.co/800x600/e5e7eb/1f2937?text=Quality+Products"
+                src="/images/gallery/warehouse-interior.jpg"
                 alt="Quality Products"
                 className="h-full w-full object-cover"
               />

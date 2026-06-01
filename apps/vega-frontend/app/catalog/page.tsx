@@ -1,29 +1,12 @@
 import { Metadata } from "next";
 import { Download, FileText } from "lucide-react";
+import { ProtectedImage } from "@/components/ProtectedImage";
+import { CATALOGS } from "@/lib/data";
 
 export const metadata: Metadata = {
   title: "Catalogs | Vega UAE",
   description: "Download our product catalogs in PDF format.",
 };
-
-const CATALOGS = [
-  {
-    name: "CROWN Camp Furniture",
-    description: "Complete range of camp furniture including bunk beds, single beds, mattresses, lockers, and dining sets.",
-  },
-  {
-    name: "Alpha Barrier",
-    description: "Queue barriers, metal barriers, crowd control solutions, and VIP poles for events and commercial spaces.",
-  },
-  {
-    name: "Camp Furniture Brochure",
-    description: "A comprehensive overview of our labor camp furniture and accommodation solutions across the UAE.",
-  },
-  {
-    name: "VEGA Office Furniture",
-    description: "Executive desks, ergonomic chairs, filing cabinets, and complete office workstation solutions.",
-  },
-];
 
 export default function CatalogPage() {
   return (
@@ -43,11 +26,10 @@ export default function CatalogPage() {
           {CATALOGS.map((cat) => (
             <div key={cat.name} className="flex flex-col rounded-2xl border border-gray-100 bg-white p-6 transition-all hover:shadow-lg">
               <div className="mb-4 aspect-[3/4] overflow-hidden rounded-xl bg-gray-100">
-                <img
-                  src={`https://placehold.co/400x540/e5e7eb/1f2937?text=${encodeURIComponent(cat.name)}`}
+                <ProtectedImage
+                  src={cat.coverImage || `https://placehold.co/400x540/e5e7eb/1f2937?text=${encodeURIComponent(cat.name)}`}
                   alt={cat.name}
                   className="h-full w-full object-cover"
-
                 />
               </div>
               <div className="flex items-center gap-2 mb-2 text-sm text-gray-400">

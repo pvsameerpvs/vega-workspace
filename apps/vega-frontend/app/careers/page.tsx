@@ -1,32 +1,12 @@
 import { Metadata } from "next";
-import { MapPin, Clock, Briefcase, ArrowRight } from "lucide-react";
+import { MapPin, Clock, Briefcase, ArrowRight, DollarSign, ListChecks } from "lucide-react";
 import Link from "next/link";
+import { CAREERS } from "@/lib/data";
 
 export const metadata: Metadata = {
   title: "Careers | Vega UAE",
   description: "Join the Vega team. Explore current job openings and career opportunities.",
 };
-
-const JOBS = [
-  {
-    title: "Sales Executive",
-    location: "Dubai, UAE",
-    type: "Full-time",
-    description: "Responsible for B2B sales, client relationship management, and achieving sales targets across the UAE.",
-  },
-  {
-    title: "Warehouse Supervisor",
-    location: "Sharjah, UAE",
-    type: "Full-time",
-    description: "Oversee daily warehouse operations, inventory management, and coordinate with the delivery team.",
-  },
-  {
-    title: "Delivery Driver",
-    location: "Dubai, UAE",
-    type: "Full-time",
-    description: "Ensure timely delivery of products across all emirates with proper vehicle maintenance and documentation.",
-  },
-];
 
 export default function CareersPage() {
   return (
@@ -72,8 +52,8 @@ export default function CareersPage() {
           <h2 className="section-heading mb-10">Current Vacancies</h2>
         </div>
         <div className="space-y-4">
-          {JOBS.map((job) => (
-            <div key={job.title} className="rounded-2xl border border-gray-100 bg-white p-6 transition-all hover:shadow-md">
+          {CAREERS.map((job) => (
+            <div key={job.slug} className="rounded-2xl border border-gray-100 bg-white p-6 transition-all hover:shadow-md">
               <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
                 <div>
                   <h3 className="text-lg font-semibold text-gray-900">{job.title}</h3>
@@ -84,8 +64,23 @@ export default function CareersPage() {
                     <span className="inline-flex items-center gap-1">
                       <Clock className="h-4 w-4" /> {job.type}
                     </span>
+                    <span className="inline-flex items-center gap-1">
+                      <Briefcase className="h-4 w-4" /> {job.department}
+                    </span>
                   </div>
                   <p className="mt-3 text-base text-gray-500 max-w-2xl">{job.description}</p>
+                  {job.requirements && (
+                    <div className="mt-3 flex items-start gap-2 text-base text-gray-500">
+                      <ListChecks className="h-4 w-4 mt-1 shrink-0 text-vega-blue" />
+                      <span>{job.requirements}</span>
+                    </div>
+                  )}
+                  {job.salaryRange && (
+                    <div className="mt-2 flex items-center gap-2 text-base text-gray-500">
+                      <DollarSign className="h-4 w-4 text-vega-blue" />
+                      <span>{job.salaryRange}</span>
+                    </div>
+                  )}
                 </div>
                 <Link href="/contact-us" className="pill-btn shrink-0">
                   Apply Now <ArrowRight className="ml-2 h-4 w-4" />
