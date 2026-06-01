@@ -18,7 +18,6 @@ export default function HomePage() {
   return (
     <main>
       <HeroSlider />
-      <UaeProudSection />
       <PopularCategoriesSection />
       <AboutStatsSection />
       <QualitySection />
@@ -29,6 +28,7 @@ export default function HomePage() {
       <ReviewsSection />
       <IndustriesSection />
       <FaqSection />
+      <UaeProudSection />
       <CtaSection />
     </main>
   );
