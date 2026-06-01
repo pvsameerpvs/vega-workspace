@@ -1,6 +1,7 @@
 import {
   HeroSlider,
   PopularCategoriesSection,
+  UaeProudSection,
   AboutStatsSection,
   QualitySection,
   TrustSection,
@@ -17,6 +18,7 @@ export default function HomePage() {
   return (
     <main>
       <HeroSlider />
+      <UaeProudSection />
       <PopularCategoriesSection />
       <AboutStatsSection />
       <QualitySection />

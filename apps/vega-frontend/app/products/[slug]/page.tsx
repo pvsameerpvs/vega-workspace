@@ -7,6 +7,7 @@ import {
   getRelatedProducts,
 } from "@/lib/data";
 import { ProductGrid } from "@/components/product/ProductGrid";
+import { ProtectedImage } from "@/components/ProtectedImage";
 import { getWhatsAppLink } from "@/lib/whatsapp";
 import Link from "next/link";
 import { ArrowLeft, Check, Truck, Package, BadgePercent, MapPin, ArrowUpRight } from "lucide-react";
@@ -90,24 +91,20 @@ export default function ProductOrCategoryPage({
           <div className="space-y-4">
             <div className="overflow-hidden rounded-2xl border border-slate-100 bg-slate-50 shadow-card">
               <div className="aspect-square overflow-hidden">
-                <img
+                <ProtectedImage
                   src={product!.image}
                   alt={product!.name}
                   className="h-full w-full object-cover transition-transform duration-700 hover:scale-105"
-                  draggable={false}
-                  onContextMenu={(e) => e.preventDefault()}
                 />
               </div>
             </div>
             <div className="grid grid-cols-4 gap-3">
               {product!.images.map((img, i) => (
                 <div key={i} className="aspect-square overflow-hidden rounded-xl border border-slate-100 bg-slate-50 shadow-subtle transition-all duration-300 hover:shadow-md hover:border-vega-blue/20">
-                  <img
+                  <ProtectedImage
                     src={img}
                     alt={`${product!.name} ${i + 1}`}
                     className="h-full w-full object-cover transition-transform duration-500 hover:scale-105"
-                    draggable={false}
-                    onContextMenu={(e) => e.preventDefault()}
                   />
                 </div>
               ))}
@@ -123,6 +120,9 @@ export default function ProductOrCategoryPage({
               {product!.name}
             </h1>
             <p className="mt-2 text-sm text-slate-400">SKU: {product!.sku}</p>
+            <p className="mt-3 text-sm text-slate-600 leading-relaxed max-w-md">
+              {product!.description}
+            </p>
 
             {/* Spec Sheet */}
             <div className="mt-8 overflow-hidden rounded-2xl border border-slate-100 bg-white shadow-card">

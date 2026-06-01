@@ -10,3 +10,4 @@ export { IndustriesSection } from "./IndustriesSection";
 export { FaqSection } from "./FaqSection";
 export { CtaSection } from "./CtaSection";
 export { PopularCategoriesSection } from "./PopularCategoriesSection";
+export { UaeProudSection } from "./UaeProudSection";
