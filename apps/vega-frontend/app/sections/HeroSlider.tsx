@@ -75,7 +75,7 @@ export function HeroSlider() {
                   <div className="animate-fade-in-up" style={{ animationDelay: "0.4s" }}>
                     <Link
                       href={slide.ctaLink}
-                      className="group inline-flex items-center gap-3 rounded-full bg-vega-yellow px-8 py-3.5 text-sm font-bold text-vega-blue shadow-yellow transition-all duration-300 hover:bg-white hover:shadow-lg hover:-translate-y-0.5"
+                      className="group inline-flex items-center gap-3 rounded-full bg-vega-yellow px-8 py-3.5 text-sm font-bold text-vega-blue shadow-yellow transition-all duration-300 hover:bg-white hover:shadow-lg hover:-translate-y-0.5 font-heading"
                     >
                       {slide.ctaText}
                       <ArrowUpRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />

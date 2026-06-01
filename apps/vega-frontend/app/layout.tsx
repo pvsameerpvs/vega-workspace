@@ -1,9 +1,19 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Inter, Poppins, Cairo } from "next/font/google";
 import "./globals.css";
 import { Navbar, Footer } from "@/components/layout";
 
-const inter = Inter({ subsets: ["latin"], variable: "--font-sans" });
+const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
+const poppins = Poppins({
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700", "800"],
+  variable: "--font-poppins",
+});
+const cairo = Cairo({
+  subsets: ["arabic"],
+  weight: ["400", "500", "600", "700"],
+  variable: "--font-cairo",
+});
 
 export const metadata: Metadata = {
   title: "Vega - Reliable Furniture, Barriers & Camp Supply Solutions UAE",
@@ -34,7 +44,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang={locale} dir={locale === "ar" ? "rtl" : "ltr"}>
-      <body className={`${inter.variable} font-sans antialiased`}>
+      <body className={`${inter.variable} ${poppins.variable} ${cairo.variable} font-sans antialiased`}>
         <Navbar />
         {children}
         <Footer />

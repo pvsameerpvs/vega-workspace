@@ -24,7 +24,7 @@ export default function ProductsPage() {
             <a
               key={cat.id}
               href={`/products/${cat.slug}`}
-              className="group inline-flex items-center gap-1 rounded-full border border-slate-200 px-4 py-2 text-sm font-semibold text-vega-blue hover:border-vega-blue hover:bg-vega-blue hover:text-white transition-all duration-300"
+              className="group inline-flex items-center gap-1 rounded-full border border-slate-200 px-4 py-2 text-sm font-semibold text-vega-blue hover:border-vega-blue hover:bg-vega-blue hover:text-white transition-all duration-300 font-heading"
             >
               {cat.name} <ArrowUpRight className="h-3.5 w-3.5 opacity-0 transition-all duration-300 group-hover:opacity-100 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
             </a>

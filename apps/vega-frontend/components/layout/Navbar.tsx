@@ -78,7 +78,7 @@ export function Navbar() {
         <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
           {/* Logo */}
           <Link href="/" className="flex items-center gap-2">
-            <span className={`text-xl font-bold tracking-tight transition-colors duration-300 ${isTransparent ? "text-white" : "text-vega-blue"}`}>
+            <span className={`text-xl font-bold tracking-tight transition-colors duration-300 font-heading ${isTransparent ? "text-white" : "text-vega-blue"}`}>
               VEGA
             </span>
             <Star className="h-4 w-4 fill-vega-yellow text-vega-yellow" />

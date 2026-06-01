@@ -58,10 +58,10 @@ module.exports = {
         sm: "calc(var(--radius) - 4px)",
       },
       fontFamily: {
-        sans: ["var(--font-sans)", "system-ui", "sans-serif"],
-        serif: ["var(--font-serif)", "Georgia", "serif"],
-        arabic: ["var(--font-arabic)", "system-ui", "sans-serif"],
-        display: ["'Playfair Display'", "Georgia", "serif"],
+        sans: ["var(--font-inter)", "var(--font-sans)", "system-ui", "sans-serif"],
+        heading: ["var(--font-poppins)", "var(--font-sans)", "system-ui", "sans-serif"],
+        arabic: ["var(--font-cairo)", "var(--font-sans)", "system-ui", "sans-serif"],
+        display: ["var(--font-poppins)", "var(--font-sans)", "system-ui", "sans-serif"],
       },
       boxShadow: {
         'glass': '0 8px 32px 0 rgb(31 58 147 / 0.08)',

@@ -66,7 +66,7 @@ export function ProductGrid({ products }: ProductGridProps) {
               <div className="absolute inset-0 flex items-center justify-center gap-3 opacity-0 transition-all duration-500 group-hover:opacity-100 bg-black/20 backdrop-blur-[2px]">
                 <Link
                   href={`/products/${product.slug}`}
-                  className="inline-flex items-center gap-1.5 rounded-full bg-white px-4 py-2 text-xs font-bold text-vega-blue shadow-lg transition-all duration-300 hover:bg-vega-blue hover:text-white hover:scale-105"
+                  className="inline-flex items-center gap-1.5 rounded-full bg-white px-4 py-2 text-xs font-bold text-vega-blue shadow-lg transition-all duration-300 hover:bg-vega-blue hover:text-white hover:scale-105 font-heading"
                 >
                   <Eye className="h-3.5 w-3.5" /> View
                 </Link>
@@ -109,7 +109,7 @@ export function ProductGrid({ products }: ProductGridProps) {
               <div className="flex items-center gap-3">
                 <Link
                   href={`/products/${product.slug}`}
-                  className="flex-1 inline-flex items-center justify-center gap-1.5 rounded-full border border-slate-200 px-4 py-2.5 text-xs font-bold text-vega-blue transition-all duration-300 hover:border-vega-blue hover:bg-vega-blue hover:text-white hover:shadow-md"
+                  className="flex-1 inline-flex items-center justify-center gap-1.5 rounded-full border border-slate-200 px-4 py-2.5 text-xs font-bold text-vega-blue transition-all duration-300 hover:border-vega-blue hover:bg-vega-blue hover:text-white hover:shadow-md font-heading"
                 >
                   <Eye className="h-3.5 w-3.5" /> Details
                 </Link>

@@ -23,10 +23,10 @@ export function CtaSection() {
           product options, availability, delivery, and installation support.
         </p>
         <div className="mt-10 flex flex-wrap justify-center gap-3">
-          <Link href="/contact-us" className="group inline-flex items-center gap-2 rounded-full bg-vega-yellow px-7 py-3.5 text-sm font-bold text-vega-blue shadow-yellow transition-all duration-300 hover:bg-vega-yellow-dark hover:shadow-lg hover:-translate-y-0.5">
+          <Link href="/contact-us" className="group inline-flex items-center gap-2 rounded-full bg-vega-yellow px-7 py-3.5 text-sm font-bold text-vega-blue shadow-yellow transition-all duration-300 hover:bg-vega-yellow-dark hover:shadow-lg hover:-translate-y-0.5 font-heading">
             Request a Quote <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
           </Link>
-          <Link href="/catalog" className="inline-flex items-center rounded-full border border-white/20 bg-white/5 px-7 py-3.5 text-sm font-semibold text-white/80 backdrop-blur-sm transition-all duration-300 hover:bg-white/15 hover:text-white">
+          <Link href="/catalog" className="inline-flex items-center rounded-full border border-white/20 bg-white/5 px-7 py-3.5 text-sm font-semibold text-white/80 backdrop-blur-sm transition-all duration-300 hover:bg-white/15 hover:text-white font-heading">
             Download Catalog
           </Link>
         </div>
