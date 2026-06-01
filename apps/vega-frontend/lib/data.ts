@@ -620,58 +620,60 @@ export const INDUSTRIES = [
 
 export const FAQS = [
   {
-    q: "Do you deliver to Dubai?",
-    a: "Yes, delivery is available as per location.",
+    q: "Do you have delivery to Dubai?",
+    a: "Yes we can deliver for free in Dubai with a minimum order value of AED 3000. Incase the order value is less than the specified amount, a nominal delivery cost will be applicable as per the location.",
   },
   {
     q: "Do you deliver across UAE apart from Dubai?",
-    a: "Yes, delivery is applicable as per location.",
+    a: "Yes we can deliver across UAE apart from Dubai with a minimum order value of AED 7000. Incase the order value is less than the specified amount, a nominal delivery cost will be applicable as per the location.",
   },
   {
     q: "Do you install the supplied furniture?",
-    a: "Yes, installation cost will be confirmed to the customer.",
+    a: "We can provide installation services at a nominal labour cost to the customer.",
   },
   {
-    q: "Do you provide data sheets for all supplied products?",
-    a: "Yes, verified data sheets can be provided before transaction.",
+    q: "Do you provide data sheets for all the supplied products?",
+    a: "Yes. Most of our products carry data sheets, and can be verified before the transaction takes place.",
   },
   {
-    q: "Do you exchange or return products?",
-    a: "Returned goods will be handled as per company policy.",
+    q: "Do you exchange or return the products?",
+    a: "Yes. We do have exchange policy within 15 days of purchase, must be in original packing & condition (Should not been installed). Credit note will be issued for the returned goods.",
   },
   {
     q: "What if I receive damaged goods?",
-    a: "Damaged goods can be reported for replacement or support.",
+    a: "Our team will fix the issue and address your concern at the earliest.",
   },
   {
-    q: "Do you provide warranty?",
-    a: "Warranty availability should be checked before purchase.",
+    q: "Do you provide a warranty?",
+    a: "Yes. Most of the products carry a standard warranty still advisable to check before the purchase.",
   },
   {
-    q: "Do you provide metal barriers on sale and rental basis?",
-    a: "Yes, available until the end of the rental period.",
+    q: "Do you provide Metal Barriers on Sale and Rental basis?",
+    a: "Yes, we provide metal police barriers On sale and rental basis. We can install them at your site and collect them at the end of the rental period.",
   },
   {
-    q: "Do you deliver across UAE?",
-    a: "Yes, Vega can deliver and install metal barriers across UAE.",
+    q: "Do you Deliver across UAE?",
+    a: "Yes, we can deliver and install the metal barriers across UAE.",
   },
   {
     q: "What is the lead time if I place an order today?",
-    a: "Lead time depends on stock, order quantity, and working days.",
+    a: "We are maintaining ready stock of all the products so the lead time for each order is typically 1-2 working days depending upon the delivery schedule. For customized requirements and logo printing services the lead time is 2-3 working days.",
   },
   {
-    q: "What are the payment methods?",
-    a: "Cheque and payment link.",
+    q: "What is the Minimum order Quantity and payment methods?",
+    a: "The minimum order quantity is 6 units and we are accepting several payment methods including Cash, Bank Transfers, Cheque and Payment Link.",
   },
 ];
 
-export const VIDEO_CATEGORIES = [
-  { title: "Camp Furniture", video: "/videos/camp-furniture", thumbnail: "https://placehold.co/800x450/1F3A93/FFD400?text=camp-furniture" },
-  { title: "Queue Barriers", video: "/videos/queue-barriers", thumbnail: "https://placehold.co/800x450/1F3A93/FFD400?text=queue-barriers" },
-  { title: "Flag Poles", video: "/videos/flag-poles", thumbnail: "https://placehold.co/800x450/1F3A93/FFD400?text=flag-poles" },
-  { title: "Office Furniture", video: "/videos/office-furniture", thumbnail: "https://placehold.co/800x450/1F3A93/FFD400?text=office-furniture" },
-  { title: "Metal Barriers", video: "/videos/metal-barriers", thumbnail: "https://placehold.co/800x450/1F3A93/FFD400?text=metal-barriers" },
-  { title: "Hospitality Equipment", video: "/videos/hospitality", thumbnail: "https://placehold.co/800x450/1F3A93/FFD400?text=hospitality" },
+export const POPULAR_RANGES = [
+  { id: "bunk-bed", name: "Bunk Bed", slug: "camp-furniture", image: "https://placehold.co/400x400/1F3A93/FFD400?text=Bunk+Bed" },
+  { id: "mattresses-bedding", name: "Mattresses and Bedding", slug: "camp-furniture", image: "https://placehold.co/400x400/1F3A93/FFD400?text=Mattresses+%26+Bedding" },
+  { id: "office-furniture", name: "Office Furniture", slug: "office-furniture", image: "https://placehold.co/400x400/1F3A93/FFD400?text=Office+Furniture" },
+  { id: "plastic-furniture", name: "Plastic Furniture", slug: "plastic-furniture", image: "https://placehold.co/400x400/1F3A93/FFD400?text=Plastic+Furniture" },
+  { id: "hospitality", name: "Hospitality Equipment", slug: "hospitality", image: "https://placehold.co/400x400/1F3A93/FFD400?text=Hospitality" },
+  { id: "queue-barriers", name: "Queue Barriers", slug: "queue-barriers", image: "https://placehold.co/400x400/1F3A93/FFD400?text=Queue+Barriers" },
+  { id: "flags-poles", name: "Flags & Flag Poles", slug: "flags-poles", image: "https://placehold.co/400x400/1F3A93/FFD400?text=Flags+%26+Poles" },
+  { id: "waste-bins", name: "Waste Bins", slug: "waste-bins", image: "https://placehold.co/400x400/1F3A93/FFD400?text=Waste+Bins" },
 ];
 
 export const GOOGLE_REVIEWS = [

@@ -53,6 +53,15 @@ export function Navbar() {
               <span>+971 56 735 1095</span>
             </a>
             <a
+              href="tel:+971569310575"
+              className={`flex items-center gap-1.5 transition-colors hover:text-white ${
+                isTransparent ? "text-white/60" : "text-white/60"
+              }`}
+            >
+              <Phone className="h-3 w-3" />
+              <span>+971 56 931 0575</span>
+            </a>
+            <a
               href="https://wa.me/971567351095"
               target="_blank"
               className={`flex items-center gap-1.5 transition-colors hover:text-white ${
@@ -62,6 +71,16 @@ export function Navbar() {
               <MessageCircle className="h-3 w-3" />
               <span className="hidden sm:inline">WhatsApp</span>
             </a>
+            <div className="flex items-center gap-1.5">
+              <img
+                src="https://upload.wikimedia.org/wikipedia/commons/7/7b/Flag_of_the_United_Arab_Emirates.gif"
+                alt="UAE Flag"
+                className="h-4 w-auto object-contain select-none"
+                draggable={false}
+                onContextMenu={(e) => e.preventDefault()}
+              />
+              <span className="hidden sm:inline text-white/80 font-medium text-[10px] uppercase tracking-wider">Proud of UAE</span>
+            </div>
           </div>
           <div className="flex items-center gap-3 text-xs">
             <span className="text-white/90 font-medium">EN</span>

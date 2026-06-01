@@ -1,9 +1,10 @@
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
+import { ProtectedImage } from "@/components/ProtectedImage";
 
 export function QualitySection() {
   return (
-    <section className="py-24 bg-gray-50/50">
+    <section className="py-32 bg-gray-50/50">
       <div className="mx-auto max-w-7xl px-6">
         <div className="grid items-center gap-12 lg:grid-cols-2">
           <div className="order-2 lg:order-1">
@@ -26,7 +27,7 @@ export function QualitySection() {
           </div>
           <div className="order-1 lg:order-2">
             <div className="img-rounded aspect-[4/3] bg-gray-200">
-              <img
+              <ProtectedImage
                 src="https://placehold.co/800x600/e5e7eb/1f2937?text=Quality+Products"
                 alt="Quality Products"
                 className="h-full w-full object-cover"

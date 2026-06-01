@@ -1,14 +1,15 @@
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
+import { ProtectedImage } from "@/components/ProtectedImage";
 
 export function DeliverySection() {
   return (
-    <section className="py-24 bg-white">
+    <section className="py-32 bg-white">
       <div className="mx-auto max-w-7xl px-6">
         <div className="grid items-center gap-12 lg:grid-cols-2">
           <div>
             <div className="img-rounded aspect-[4/3] bg-gray-200">
-              <img
+              <ProtectedImage
                 src="https://placehold.co/800x600/e5e7eb/1f2937?text=Delivery+Across+UAE"
                 alt="Delivery"
                 className="h-full w-full object-cover"

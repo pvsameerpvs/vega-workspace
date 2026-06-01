@@ -30,23 +30,25 @@ export function HeroSlider() {
                   src={slide.image}
                   alt={slide.title}
                   className="h-full w-full object-cover"
+                  draggable={false}
+                  onContextMenu={(e) => e.preventDefault()}
                 />
                 <div className="absolute inset-0 bg-black/40" />
               </div>
 
               {/* Content */}
-              <div className="relative flex h-full flex-col justify-center px-6 pt-24 lg:px-16">
+                <div className="relative flex h-full flex-col justify-center px-6 pt-40 lg:px-16">
                 <div className="mx-auto w-full max-w-7xl">
                   <div className="max-w-2xl">
                     {/* Tagline */}
                     <div className="mb-6 flex items-center gap-3">
-                      <span className="text-xs font-medium uppercase tracking-[0.2em] text-white/60">
+                      <span className="text-sm font-medium uppercase tracking-[0.2em] text-white/60">
                         For Businesses Across UAE
                       </span>
                     </div>
 
                     {/* Main Heading */}
-                    <h1 className="text-4xl font-light leading-[1.15] text-white md:text-5xl lg:text-6xl">
+                    <h1 className="text-3xl font-semibold leading-tight text-white md:text-4xl lg:text-5xl">
                       {slide.title}
                     </h1>
 
@@ -59,13 +61,13 @@ export function HeroSlider() {
                     <div className="mt-8 flex flex-wrap gap-3">
                       <Link
                         href={slide.ctaLink}
-                        className="rounded-full border border-white/40 px-7 py-3 text-sm text-white hover:bg-white hover:text-gray-900 transition-all duration-300"
+                        className="rounded-full border border-white/40 px-7 py-3 text-sm font-medium text-white hover:bg-white hover:text-gray-900 transition-all duration-300"
                       >
                         {slide.ctaText}
                       </Link>
                       <Link
                         href={slide.ctaSecondaryLink}
-                        className="rounded-full border border-white/40 px-7 py-3 text-sm text-white hover:bg-white hover:text-gray-900 transition-all duration-300"
+                        className="rounded-full border border-white/40 px-7 py-3 text-sm font-medium text-white hover:bg-white hover:text-gray-900 transition-all duration-300"
                       >
                         {slide.ctaSecondaryText}
                       </Link>
@@ -73,7 +75,6 @@ export function HeroSlider() {
                   </div>
                 </div>
               </div>
-
             </div>
           </SwiperSlide>
         ))}

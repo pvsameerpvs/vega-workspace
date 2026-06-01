@@ -9,12 +9,12 @@ export const metadata: Metadata = {
 
 export default function ProductsPage() {
   return (
-    <main className="py-20">
+    <main className="pt-40 pb-20">
       <div className="mx-auto max-w-7xl px-6">
         <div className="mb-16">
           <div className="label-line mb-4">Catalogue</div>
           <h1 className="section-heading">Our Products</h1>
-          <p className="mt-4 text-gray-500 max-w-lg">
+          <p className="mt-4 text-base text-gray-500 max-w-lg">
             Explore our complete catalogue of camp furniture, queue barriers, metal barriers, and office furniture.
           </p>
         </div>
@@ -23,7 +23,7 @@ export default function ProductsPage() {
             <a
               key={cat.id}
               href={`/products/${cat.slug}`}
-              className="rounded-full border border-gray-200 px-4 py-2 text-sm text-gray-600 hover:border-gray-400 hover:text-gray-900 transition-all"
+              className="rounded-full border border-gray-200 px-4 py-2 text-base text-gray-600 hover:border-gray-400 hover:text-gray-900 transition-all"
             >
               {cat.name}
             </a>
