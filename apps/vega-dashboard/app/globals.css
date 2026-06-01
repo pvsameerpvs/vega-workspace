@@ -32,6 +32,12 @@
     @apply border-border;
   }
   body {
-    @apply bg-background text-foreground;
+    @apply bg-slate-50 text-slate-900;
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
   }
+}
+
+::selection {
+  background: rgba(255, 212, 0, 0.35);
+  color: #1F3A93;
 }

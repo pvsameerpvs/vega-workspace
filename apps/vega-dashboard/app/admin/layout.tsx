@@ -33,31 +33,40 @@ export default function AdminLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div className="flex min-h-screen">
+    <div className="flex min-h-screen bg-slate-50">
       {/* Sidebar */}
-      <aside className="w-64 bg-vega-blue text-white">
-        <div className="p-6">
-          <h2 className="text-xl font-bold text-vega-yellow">VEGA Admin</h2>
+      <aside className="w-64 bg-slate-900 text-white flex flex-col">
+        <div className="p-6 border-b border-white/10">
+          <h2 className="text-lg font-bold tracking-tight text-white">
+            VEGA <span className="text-vega-yellow">Admin</span>
+          </h2>
         </div>
-        <nav className="space-y-1 px-4">
+        <nav className="flex-1 space-y-0.5 px-3 py-4">
           {navItems.map((item) => {
             const Icon = item.icon;
             return (
               <Link
                 key={item.href}
                 href={item.href}
-                className="flex items-center gap-3 rounded-lg px-4 py-3 text-sm transition hover:bg-white/10"
+                className="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium text-white/60 transition-all duration-200 hover:bg-white/5 hover:text-white"
               >
-                <Icon className="h-5 w-5" />
+                <Icon className="h-4 w-4" />
                 {item.label}
               </Link>
             );
           })}
         </nav>
+        <div className="p-4 border-t border-white/10">
+          <div className="rounded-lg bg-white/5 px-3 py-2.5 text-xs text-white/40">
+            v1.0.0 &middot; Vega Dashboard
+          </div>
+        </div>
       </aside>
 
       {/* Main Content */}
-      <main className="flex-1 overflow-y-auto bg-gray-50">{children}</main>
+      <main className="flex-1 overflow-y-auto">
+        {children}
+      </main>
     </div>
   );
 }

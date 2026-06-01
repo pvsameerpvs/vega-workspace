@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { ChevronDown, Menu, X, Mail, Phone, MessageCircle } from "lucide-react";
+import { ChevronDown, Menu, X, Mail, Phone, MessageCircle, Star } from "lucide-react";
 import { PRODUCT_CATEGORIES } from "@/lib/data";
 
 export function Navbar() {
@@ -14,9 +14,7 @@ export function Navbar() {
   const isHome = pathname === "/";
 
   useEffect(() => {
-    const handleScroll = () => {
-      setScrolled(window.scrollY > 50);
-    };
+    const handleScroll = () => setScrolled(window.scrollY > 50);
     handleScroll();
     window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
@@ -29,45 +27,20 @@ export function Navbar() {
       {/* Top Bar */}
       <div
         className={`transition-all duration-500 ${
-          isHome ? (isTransparent ? "bg-transparent" : "bg-gray-900") : "bg-gray-900"
-        } ${isHome && scrolled ? "hidden" : "block"}`}
+          isHome ? (isTransparent ? "bg-transparent" : "bg-vega-blue/95 backdrop-blur-md") : "bg-vega-blue/95 backdrop-blur-md"
+        } ${isHome && scrolled ? "opacity-0 h-0 overflow-hidden" : "opacity-100 h-auto"}`}
       >
-        <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-2">
+        <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-2.5">
           <div className="flex items-center gap-5 text-xs">
-            <a
-              href="mailto:Sales@thevegauae.com"
-              className={`flex items-center gap-1.5 transition-colors hover:text-white ${
-                isTransparent ? "text-white/60" : "text-white/60"
-              }`}
-            >
+            <a href="mailto:Sales@thevegauae.com" className="flex items-center gap-1.5 text-white/60 hover:text-white transition-colors">
               <Mail className="h-3 w-3" />
               <span className="hidden sm:inline">Sales@thevegauae.com</span>
             </a>
-            <a
-              href="tel:+971567351095"
-              className={`flex items-center gap-1.5 transition-colors hover:text-white ${
-                isTransparent ? "text-white/60" : "text-white/60"
-              }`}
-            >
+            <a href="tel:+971567351095" className="flex items-center gap-1.5 text-white/60 hover:text-white transition-colors">
               <Phone className="h-3 w-3" />
               <span>+971 56 735 1095</span>
             </a>
-            <a
-              href="tel:+971569310575"
-              className={`flex items-center gap-1.5 transition-colors hover:text-white ${
-                isTransparent ? "text-white/60" : "text-white/60"
-              }`}
-            >
-              <Phone className="h-3 w-3" />
-              <span>+971 56 931 0575</span>
-            </a>
-            <a
-              href="https://wa.me/971567351095"
-              target="_blank"
-              className={`flex items-center gap-1.5 transition-colors hover:text-white ${
-                isTransparent ? "text-white/60" : "text-white/60"
-              }`}
-            >
+            <a href="https://wa.me/971567351095" target="_blank" className="flex items-center gap-1.5 text-white/60 hover:text-white transition-colors">
               <MessageCircle className="h-3 w-3" />
               <span className="hidden sm:inline">WhatsApp</span>
             </a>
@@ -79,15 +52,13 @@ export function Navbar() {
                 draggable={false}
                 onContextMenu={(e) => e.preventDefault()}
               />
-              <span className="hidden sm:inline text-white/80 font-medium text-[10px] uppercase tracking-wider">Proud of UAE</span>
+              <span className="hidden sm:inline text-white/70 font-semibold text-[10px] uppercase tracking-wider">Proud of UAE</span>
             </div>
           </div>
           <div className="flex items-center gap-3 text-xs">
-            <span className="text-white/90 font-medium">EN</span>
-            <span className="text-white/30">|</span>
-            <Link href="/ar" className="text-white/60 hover:text-white transition-colors">
-              AR
-            </Link>
+            <span className="text-white/90 font-semibold">EN</span>
+            <span className="text-white/20">|</span>
+            <Link href="/ar" className="text-white/50 hover:text-white transition-colors">AR</Link>
           </div>
         </div>
       </div>
@@ -97,61 +68,38 @@ export function Navbar() {
         className={`transition-all duration-500 ${
           isTransparent
             ? "bg-transparent"
-            : "bg-white/95 backdrop-blur-xl shadow-sm border-b border-gray-100"
+            : "bg-white/95 backdrop-blur-xl border-b border-slate-100/80 shadow-subtle"
         }`}
       >
         <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
           {/* Logo */}
           <Link href="/" className="flex items-center gap-2">
-            <span
-              className={`text-xl font-semibold tracking-tight transition-colors duration-300 ${
-                isTransparent ? "text-white" : "text-gray-900"
-              }`}
-            >
+            <span className={`text-xl font-bold tracking-tight transition-colors duration-300 ${isTransparent ? "text-white" : "text-vega-blue"}`}>
               VEGA
             </span>
+            <Star className="h-4 w-4 fill-vega-yellow text-vega-yellow" />
           </Link>
 
-          {/* Desktop Nav */}
           <nav className="hidden lg:flex items-center gap-8">
-            <Link
-              href="/"
-              className={`text-sm transition-colors duration-300 ${
-                isTransparent ? "text-white/80 hover:text-white" : "text-gray-600 hover:text-gray-900"
-              }`}
-            >
+            <Link href="/" className={`text-sm font-semibold transition-colors duration-300 ${isTransparent ? "text-white/80 hover:text-white" : "text-slate-500 hover:text-vega-blue"}`}>
               Home
             </Link>
-            <div
-              className="relative"
-              onMouseEnter={() => setActiveMega("products")}
-              onMouseLeave={() => setActiveMega(null)}
-            >
-              <button
-                className={`flex items-center gap-1 text-sm transition-colors duration-300 ${
-                  isTransparent ? "text-white/80 hover:text-white" : "text-gray-600 hover:text-gray-900"
-                }`}
-              >
-                Products
-                <ChevronDown className="h-3.5 w-3.5" />
+            <div className="relative" onMouseEnter={() => setActiveMega("products")} onMouseLeave={() => setActiveMega(null)}>
+              <button className={`flex items-center gap-1 text-sm font-semibold transition-colors duration-300 ${isTransparent ? "text-white/80 hover:text-white" : "text-slate-500 hover:text-vega-blue"}`}>
+                Products <ChevronDown className="h-3.5 w-3.5 transition-transform duration-300" />
               </button>
               {activeMega === "products" && (
-                <div className="absolute left-1/2 top-full -translate-x-1/2 pt-4">
-                  <div className="w-[680px] rounded-2xl bg-white p-6 shadow-[0_8px_40px_-12px_rgba(0,0,0,0.12)] border border-gray-100">
+                <div className="absolute left-1/2 top-full -translate-x-1/2 pt-3">
+                  <div className="w-[720px] rounded-2xl bg-white p-6 shadow-elevated border border-slate-100 animate-scale-in origin-top">
                     <div className="grid grid-cols-4 gap-5">
                       {PRODUCT_CATEGORIES.map((cat) => (
                         <div key={cat.id}>
-                          <Link
-                            href={`/products/${cat.slug}`}
-                            className="block text-sm font-semibold text-gray-900 mb-2 hover:text-gray-600"
-                          >
+                          <Link href={`/products/${cat.slug}`} className="block text-sm font-bold text-vega-blue mb-2 hover:text-vega-blue-light transition-colors">
                             {cat.name}
                           </Link>
                           <ul className="space-y-1.5">
                             {cat.subcategories.slice(0, 4).map((sub) => (
-                              <li key={sub}>
-                                <span className="text-xs text-gray-400">{sub}</span>
-                              </li>
+                              <li key={sub}><span className="text-xs text-slate-400">{sub}</span></li>
                             ))}
                           </ul>
                         </div>
@@ -162,39 +110,26 @@ export function Navbar() {
               )}
             </div>
             {["About Us", "Careers", "Blog", "Gallery", "Catalog"].map((item) => (
-              <Link
-                key={item}
-                href={`/${item.toLowerCase().replace(/ /g, "-")}`}
-                className={`text-sm transition-colors duration-300 ${
-                  isTransparent ? "text-white/80 hover:text-white" : "text-gray-600 hover:text-gray-900"
-                }`}
-              >
+              <Link key={item} href={`/${item.toLowerCase().replace(/ /g, "-")}`}
+                className={`text-sm font-semibold transition-colors duration-300 ${isTransparent ? "text-white/80 hover:text-white" : "text-slate-500 hover:text-vega-blue"}`}>
                 {item}
               </Link>
             ))}
           </nav>
 
-          {/* Desktop CTA */}
           <div className="hidden lg:flex items-center gap-4">
-            <Link
-              href="/contact-us"
-              className={`rounded-full px-5 py-2 text-sm font-medium transition-all duration-300 ${
+            <Link href="/contact-us"
+              className={`rounded-full px-5 py-2.5 text-sm font-bold transition-all duration-300 ${
                 isTransparent
-                  ? "border border-white/30 text-white hover:bg-white hover:text-gray-900"
-                  : "border border-gray-300 text-gray-700 hover:bg-gray-900 hover:text-white hover:border-gray-900"
-              }`}
-            >
+                  ? "bg-vega-yellow text-vega-blue hover:bg-white hover:shadow-md hover:-translate-y-0.5"
+                  : "bg-vega-yellow text-vega-blue hover:bg-vega-yellow-dark hover:shadow-yellow hover:-translate-y-0.5"
+              }`}>
               Contact Us
             </Link>
           </div>
 
-          {/* Mobile Toggle */}
-          <button
-            onClick={() => setMobileOpen(!mobileOpen)}
-            className={`lg:hidden rounded-lg p-2 transition-colors ${
-              isTransparent ? "text-white hover:bg-white/10" : "text-gray-900 hover:bg-gray-100"
-            }`}
-          >
+          <button onClick={() => setMobileOpen(!mobileOpen)}
+            className={`lg:hidden rounded-lg p-2 transition-colors ${isTransparent ? "text-white hover:bg-white/10" : "text-vega-blue hover:bg-slate-100"}`}>
             {mobileOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
           </button>
         </div>
@@ -202,21 +137,19 @@ export function Navbar() {
 
       {/* Mobile Menu */}
       {mobileOpen && (
-        <div className="lg:hidden bg-white border-t border-gray-100 shadow-lg">
+        <div className="lg:hidden bg-white/95 backdrop-blur-xl border-t border-slate-100 shadow-lg animate-fade-in">
           <nav className="flex flex-col p-6 space-y-1">
-            <Link href="/" className="py-3 text-sm text-gray-900 font-medium" onClick={() => setMobileOpen(false)}>Home</Link>
-            <div className="border-t border-gray-100 py-3">
-              <span className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2 block">Products</span>
+            <Link href="/" className="py-3 text-sm font-bold text-vega-blue" onClick={() => setMobileOpen(false)}>Home</Link>
+            <div className="border-t border-slate-100 py-3">
+              <span className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2 block">Products</span>
               <div className="space-y-2 ml-2">
                 {PRODUCT_CATEGORIES.map((cat) => (
-                  <Link key={cat.id} href={`/products/${cat.slug}`} className="block text-sm text-gray-600" onClick={() => setMobileOpen(false)}>
-                    {cat.name}
-                  </Link>
+                  <Link key={cat.id} href={`/products/${cat.slug}`} className="block text-sm text-slate-600" onClick={() => setMobileOpen(false)}>{cat.name}</Link>
                 ))}
               </div>
             </div>
             {["About Us", "Careers", "Blog", "Gallery", "Catalog", "Contact Us"].map((item) => (
-              <Link key={item} href={`/${item.toLowerCase().replace(/ /g, "-")}`} className="border-t border-gray-100 py-3 text-sm text-gray-600" onClick={() => setMobileOpen(false)}>
+              <Link key={item} href={`/${item.toLowerCase().replace(/ /g, "-")}`} className="border-t border-slate-100 py-3 text-sm font-semibold text-slate-600" onClick={() => setMobileOpen(false)}>
                 {item}
               </Link>
             ))}

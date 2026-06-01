@@ -388,14 +388,6 @@ export function getProductsByCategory(category: string): Product[] {
   );
 }
 
-export function getProductsBySubcategory(subcategory: string): Product[] {
-  return PRODUCTS.filter(
-    (p) =>
-      p.subcategory.toLowerCase().replace(/\s+/g, "-") ===
-      subcategory.toLowerCase()
-  );
-}
-
 export function getRelatedProducts(
   product: Product,
   limit = 4

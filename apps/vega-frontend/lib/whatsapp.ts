@@ -1,6 +1,6 @@
 import { Product } from "./data";
 
-export function generateWhatsAppEnquiryMessage(product: Product): string {
+function generateWhatsAppEnquiryMessage(product: Product): string {
   const text = `Hello Vega, I am interested in this product:
 
 Product Name: ${product.name}

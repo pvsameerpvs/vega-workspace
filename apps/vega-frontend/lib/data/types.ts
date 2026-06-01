@@ -100,12 +100,6 @@ export interface HeroSlide {
   image: string;
 }
 
-export interface StatItem {
-  value: string;
-  label: string;
-  icon?: string;
-}
-
 export interface PopularRange {
   id: string;
   name: string;

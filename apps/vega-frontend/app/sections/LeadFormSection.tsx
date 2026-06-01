@@ -15,49 +15,51 @@ export function LeadFormSection() {
   };
 
   return (
-    <section className="py-32 bg-white">
+    <section className="py-24 bg-white">
       <div className="mx-auto max-w-2xl px-6">
-        <div className="mb-16 text-center">
+        <div className="mb-14 text-center">
           <div className="label-line mb-4 justify-center">Get in Touch</div>
           <h2 className="section-heading">Request a Quote</h2>
-          <p className="mt-4 text-base text-gray-500">
+          <p className="mt-4 text-base text-slate-500">
             Tell us what you need and our team will reply within 24 hours
           </p>
         </div>
 
-        <div className="rounded-3xl border border-gray-100 bg-gray-50/50 p-8 md:p-10">
+        <div className="rounded-3xl border border-slate-100 bg-slate-50/50 p-8 md:p-10 shadow-card">
           {submitted ? (
-            <div className="flex flex-col items-center py-12 text-center">
-              <CheckCircle className="mb-4 h-10 w-10 text-green-500" />
-              <h3 className="text-lg font-semibold text-gray-900">Thank you!</h3>
-              <p className="mt-2 text-base text-gray-500">We will contact you shortly.</p>
+            <div className="flex flex-col items-center py-14 text-center animate-scale-in">
+              <div className="mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-vega-yellow/20">
+                <CheckCircle className="h-8 w-8 text-vega-yellow" />
+              </div>
+              <h3 className="text-xl font-bold text-vega-blue">Thank you!</h3>
+              <p className="mt-2 text-sm text-slate-500">We will contact you shortly.</p>
             </div>
           ) : (
             <form onSubmit={handleSubmit} className="space-y-5">
               <div className="grid gap-5 md:grid-cols-2">
                 <div className="space-y-2">
-                  <Label htmlFor="name" className="text-sm font-medium text-gray-500 uppercase">Name</Label>
-                  <Input id="name" placeholder="Full name" required className="rounded-xl border-gray-200 bg-white text-base" />
+                  <Label htmlFor="name" className="text-xs font-bold text-vega-blue uppercase tracking-wider">Name</Label>
+                  <Input id="name" placeholder="Full name" required className="rounded-xl border-slate-200 bg-white text-sm focus:ring-2 focus:ring-vega-blue/20 focus:border-vega-blue transition-all" />
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="company" className="text-sm font-medium text-gray-500 uppercase">Company</Label>
-                  <Input id="company" placeholder="Company name" required className="rounded-xl border-gray-200 bg-white text-base" />
-                </div>
-              </div>
-              <div className="grid gap-5 md:grid-cols-2">
-                <div className="space-y-2">
-                  <Label htmlFor="email" className="text-sm font-medium text-gray-500 uppercase">Email</Label>
-                  <Input id="email" type="email" placeholder="you@company.com" required className="rounded-xl border-gray-200 bg-white text-base" />
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="phone" className="text-sm font-medium text-gray-500 uppercase">Phone</Label>
-                  <Input id="phone" type="tel" placeholder="+971 5X XXX XXXX" required className="rounded-xl border-gray-200 bg-white text-base" />
+                  <Label htmlFor="company" className="text-xs font-bold text-vega-blue uppercase tracking-wider">Company</Label>
+                  <Input id="company" placeholder="Company name" required className="rounded-xl border-slate-200 bg-white text-sm focus:ring-2 focus:ring-vega-blue/20 focus:border-vega-blue transition-all" />
                 </div>
               </div>
               <div className="grid gap-5 md:grid-cols-2">
                 <div className="space-y-2">
-                  <Label htmlFor="category" className="text-sm font-medium text-gray-500 uppercase">Category</Label>
-                  <select id="category" className="flex h-10 w-full rounded-xl border border-gray-200 bg-white px-3 py-2 text-base focus:outline-none focus:ring-2 focus:ring-gray-200" required>
+                  <Label htmlFor="email" className="text-xs font-bold text-vega-blue uppercase tracking-wider">Email</Label>
+                  <Input id="email" type="email" placeholder="you@company.com" required className="rounded-xl border-slate-200 bg-white text-sm focus:ring-2 focus:ring-vega-blue/20 focus:border-vega-blue transition-all" />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="phone" className="text-xs font-bold text-vega-blue uppercase tracking-wider">Phone</Label>
+                  <Input id="phone" type="tel" placeholder="+971 5X XXX XXXX" required className="rounded-xl border-slate-200 bg-white text-sm focus:ring-2 focus:ring-vega-blue/20 focus:border-vega-blue transition-all" />
+                </div>
+              </div>
+              <div className="grid gap-5 md:grid-cols-2">
+                <div className="space-y-2">
+                  <Label htmlFor="category" className="text-xs font-bold text-vega-blue uppercase tracking-wider">Category</Label>
+                  <select id="category" className="flex h-10 w-full rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-vega-blue/20 focus:border-vega-blue transition-all" required>
                     <option value="">Select</option>
                     {PRODUCT_CATEGORIES.map((cat) => (
                       <option key={cat.id} value={cat.id}>{cat.name}</option>
@@ -65,16 +67,16 @@ export function LeadFormSection() {
                   </select>
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="quantity" className="text-sm font-medium text-gray-500 uppercase">Quantity</Label>
-                  <Input id="quantity" placeholder="e.g. 50 units" required className="rounded-xl border-gray-200 bg-white text-base" />
+                  <Label htmlFor="quantity" className="text-xs font-bold text-vega-blue uppercase tracking-wider">Quantity</Label>
+                  <Input id="quantity" placeholder="e.g. 50 units" required className="rounded-xl border-slate-200 bg-white text-sm focus:ring-2 focus:ring-vega-blue/20 focus:border-vega-blue transition-all" />
                 </div>
               </div>
               <div className="space-y-2">
-                <Label htmlFor="message" className="text-sm font-medium text-gray-500 uppercase">Message</Label>
-                <Textarea id="message" placeholder="Any requirements..." rows={3} className="rounded-xl border-gray-200 bg-white text-base" />
+                <Label htmlFor="message" className="text-xs font-bold text-vega-blue uppercase tracking-wider">Message</Label>
+                <Textarea id="message" placeholder="Any requirements..." rows={3} className="rounded-xl border-slate-200 bg-white text-sm focus:ring-2 focus:ring-vega-blue/20 focus:border-vega-blue transition-all" />
               </div>
-              <button type="submit" className="pill-btn-primary w-full text-base">
-                <Send className="mr-2 inline h-4 w-4" />
+              <button type="submit" className="pill-btn-yellow w-full text-sm group">
+                <Send className="mr-2 inline h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5" />
                 Submit Enquiry
               </button>
             </form>

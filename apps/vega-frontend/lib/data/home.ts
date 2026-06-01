@@ -1,4 +1,4 @@
-import { HeroSlide, StatItem, PopularRange, IndustryItem } from "./types";
+import { HeroSlide, PopularRange, IndustryItem } from "./types";
 
 export const HERO_SLIDES: HeroSlide[] = [
   {
@@ -41,16 +41,6 @@ export const HERO_SLIDES: HeroSlide[] = [
     ctaSecondaryLink: "/contact-us",
     image: "/images/hero/slide-4.jpg",
   },
-];
-
-export const STATS: StatItem[] = [
-  { value: "10,000+", label: "sq ft warehouse facility", icon: "warehouse" },
-  { value: "300+", label: "products in stock", icon: "box" },
-  { value: "1,500+", label: "satisfied customers", icon: "users" },
-  { value: "15+", label: "years of experience", icon: "award" },
-  { value: "15+", label: "industries served", icon: "building" },
-  { value: "24/7", label: "dedicated customer support", icon: "headset" },
-  { value: "Multiple", label: "secured payment options", icon: "credit-card" },
 ];
 
 export const POPULAR_RANGES: PopularRange[] = [
