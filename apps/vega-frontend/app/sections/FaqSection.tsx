@@ -5,32 +5,27 @@ import { ChevronDown } from "lucide-react";
 import { FAQS } from "@/lib/data";
 
 export function FaqSection() {
-  const [openIndex, setOpenIndex] = useState<number | null>(0);
+  const [open, setOpen] = useState<number | null>(0);
 
   return (
-    <section className="py-32 bg-white border-t border-slate-100">
-      <div className="mx-auto max-w-3xl px-6">
-        <div className="mb-20 text-center">
-          <span className="mb-6 block text-sm text-slate-400">Support</span>
-          <h2 className="section-heading text-4xl md:text-5xl">Common Questions</h2>
-        </div>
-        <div className="space-y-0">
+    <section className="py-12 bg-slate-50">
+      <div className="mx-auto max-w-3xl px-4">
+        <h2 className="text-center text-xl font-bold text-slate-900 mb-8 font-display">Frequently Asked Questions</h2>
+        <div className="space-y-2">
           {FAQS.map((faq, i) => (
-            <div key={i} className="border-b border-slate-100">
+            <div key={i} className="rounded-xl border border-slate-100 bg-white overflow-hidden">
               <button
-                onClick={() => setOpenIndex(openIndex === i ? null : i)}
-                className="flex w-full items-center justify-between py-6 text-left transition-colors hover:bg-slate-50/50"
+                onClick={() => setOpen(open === i ? null : i)}
+                className="flex w-full items-center justify-between px-4 py-3 text-left"
               >
-                <span className="text-base font-semibold text-slate-900 pr-4">{faq.q}</span>
-                <div className={`shrink-0 flex h-8 w-8 items-center justify-center rounded-full transition-all duration-300 ${openIndex === i ? 'bg-vega-yellow text-vega-blue rotate-180' : 'bg-slate-50 text-slate-400'}`}>
-                  <ChevronDown className="h-4 w-4" />
-                </div>
+                <span className="text-sm font-semibold text-slate-900">{faq.q}</span>
+                <ChevronDown className={`h-4 w-4 text-slate-400 transition-transform ${open === i ? "rotate-180" : ""}`} />
               </button>
-              <div className={`overflow-hidden transition-all duration-300 ease-in-out ${openIndex === i ? 'max-h-96 pb-6' : 'max-h-0'}`}>
-                <div className="text-base text-slate-500 leading-relaxed">
+              {open === i && (
+                <div className="px-4 pb-3 text-xs text-slate-500 leading-relaxed">
                   {faq.a}
                 </div>
-              </div>
+              )}
             </div>
           ))}
         </div>

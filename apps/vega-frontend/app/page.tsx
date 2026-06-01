@@ -1,35 +1,39 @@
 import {
-  HeroSlider,
-  PopularCategoriesSection,
-  UaeProudSection,
-  AboutStatsSection,
-  QualitySection,
-  TrustSection,
-  DeliverySection,
-  CategoriesSection,
-  LeadFormSection,
-  ReviewsSection,
-  IndustriesSection,
+  HeroBanner,
+  TrustBar,
+  PromoBanner,
+  PopularCategories,
+  FeaturedProducts,
+  SpotlightSection,
+  BusinessSolutions,
+  BestSellers,
+  NewArrivals,
+  ProductRanges,
+  LimitedDeals,
+  RecentViewed,
+  Testimonials,
+  SeoContent,
   FaqSection,
-  CtaSection,
 } from "./sections";
 
 export default function HomePage() {
   return (
     <main>
-      <HeroSlider />
-      <PopularCategoriesSection />
-      <AboutStatsSection />
-      <QualitySection />
-      <TrustSection />
-      <DeliverySection />
-      <CategoriesSection />
-      <LeadFormSection />
-      <ReviewsSection />
-      <IndustriesSection />
+      <HeroBanner />
+      <TrustBar />
+      <PromoBanner />
+      <PopularCategories />
+      <FeaturedProducts />
+      <SpotlightSection />
+      <BusinessSolutions />
+      <BestSellers />
+      <NewArrivals />
+      <ProductRanges />
+      <LimitedDeals />
+      <RecentViewed />
+      <Testimonials />
+      <SeoContent />
       <FaqSection />
-      <UaeProudSection />
-      <CtaSection />
     </main>
   );
 }

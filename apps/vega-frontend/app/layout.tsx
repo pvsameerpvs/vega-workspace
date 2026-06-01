@@ -44,7 +44,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang={locale} dir={locale === "ar" ? "rtl" : "ltr"}>
-      <body className={`${inter.variable} ${poppins.variable} ${cairo.variable} font-sans antialiased`}>
+      <body className={`${inter.variable} ${poppins.variable} ${cairo.variable} font-sans antialiased pt-28`}>
         <Navbar />
         {children}
         <Footer />
