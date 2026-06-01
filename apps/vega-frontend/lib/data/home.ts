@@ -9,7 +9,7 @@ export const HERO_SLIDES: HeroSlide[] = [
     ctaLink: "/contact-us",
     ctaSecondaryText: "View Products",
     ctaSecondaryLink: "/products",
-    image: "/images/hero/slide-1.jpg",
+    image: "https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=1920&q=80",
   },
   {
     id: "2",
@@ -19,7 +19,7 @@ export const HERO_SLIDES: HeroSlide[] = [
     ctaLink: "/products/metal-barriers",
     ctaSecondaryText: "View Catalog",
     ctaSecondaryLink: "/catalog",
-    image: "/images/hero/slide-2.jpg",
+    image: "https://images.unsplash.com/photo-1531058020387-3be344556be6?w=1920&q=80",
   },
   {
     id: "3",
@@ -29,7 +29,7 @@ export const HERO_SLIDES: HeroSlide[] = [
     ctaLink: "/products/camp-furniture",
     ctaSecondaryText: "Contact Us",
     ctaSecondaryLink: "/contact-us",
-    image: "/images/hero/slide-3.jpg",
+    image: "https://images.unsplash.com/photo-1595526114035-0d45ed16cfbf?w=1920&q=80",
   },
   {
     id: "4",
@@ -39,7 +39,7 @@ export const HERO_SLIDES: HeroSlide[] = [
     ctaLink: "/products/office-furniture",
     ctaSecondaryText: "Request a Quote",
     ctaSecondaryLink: "/contact-us",
-    image: "/images/hero/slide-4.jpg",
+    image: "https://images.unsplash.com/photo-1497366216548-37526070297c?w=1920&q=80",
   },
 ];
 
