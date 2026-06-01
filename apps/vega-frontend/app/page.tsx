@@ -15,11 +15,14 @@ import {
   SeoContent,
   FaqSection,
 } from "./sections";
+import { getBanners } from "@/lib/api";
 
-export default function HomePage() {
+export default async function HomePage() {
+  const banners = await getBanners();
+
   return (
     <main>
-      <HeroBanner />
+      <HeroBanner banners={banners} />
       <TrustBar />
       <PromoBanner />
       <PopularCategories />

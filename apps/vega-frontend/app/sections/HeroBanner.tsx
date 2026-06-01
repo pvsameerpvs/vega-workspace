@@ -8,7 +8,37 @@ import { ArrowRight } from "lucide-react";
 import "swiper/css";
 import "swiper/css/pagination";
 
-export function HeroBanner() {
+interface Banner {
+  id: number;
+  image?: string;
+  title?: string;
+  subtitle?: string;
+  ctaText?: string;
+  ctaLink?: string;
+  ctaSecondaryText?: string;
+  ctaSecondaryLink?: string;
+  isActive?: boolean;
+}
+
+interface HeroBannerProps {
+  banners?: Banner[];
+}
+
+export function HeroBanner({ banners }: HeroBannerProps) {
+  const activeBanners = banners?.filter((b) => b.isActive && b.image) || [];
+  const slides = activeBanners.length > 0
+    ? activeBanners.map((b) => ({
+        id: String(b.id),
+        title: b.title || "",
+        subtitle: b.subtitle || "",
+        ctaText: b.ctaText || "Request a Quote",
+        ctaLink: b.ctaLink || "/contact-us",
+        ctaSecondaryText: b.ctaSecondaryText || "View Products",
+        ctaSecondaryLink: b.ctaSecondaryLink || "/products",
+        image: b.image,
+      }))
+    : HERO_SLIDES;
+
   return (
     <section className="relative overflow-hidden">
       <Swiper
@@ -18,7 +48,7 @@ export function HeroBanner() {
         loop
         className="w-full"
       >
-        {HERO_SLIDES.map((slide) => (
+        {slides.map((slide) => (
           <SwiperSlide key={slide.id}>
             <div className="relative w-full">
               <img

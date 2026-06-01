@@ -1,17 +1,19 @@
 import { Metadata } from "next";
 import { ProtectedImage } from "@/components/ProtectedImage";
-import { GALLERY } from "@/lib/data";
+import { getGallery, mapGalleryToFrontend } from "@/lib/api";
 
 export const metadata: Metadata = {
   title: "Gallery | Vega UAE",
   description: "Explore our product gallery, warehouse, fleet, and team photos.",
 };
 
-export default function GalleryPage() {
+export default async function GalleryPage() {
+  const items = await getGallery();
+  const mapped = items.map(mapGalleryToFrontend).filter(Boolean);
+
   return (
     <main className="pt-36 pb-32">
       <div className="mx-auto max-w-7xl px-6">
-        {/* Header */}
         <div className="mb-20">
           <span className="mb-6 block text-sm text-slate-400">Portfolio</span>
           <h1 className="section-heading text-4xl md:text-5xl">Gallery</h1>
@@ -20,10 +22,9 @@ export default function GalleryPage() {
           </p>
         </div>
 
-        {/* Gallery Grid */}
         <div className="grid grid-cols-2 gap-6 md:grid-cols-4">
-          {GALLERY.map((item, i) => (
-            <div key={item.name} className="group animate-fade-in-up" style={{ animationDelay: `${i * 0.03}s` }}>
+          {mapped.map((item, i) => (
+            <div key={item.name + i} className="group animate-fade-in-up" style={{ animationDelay: `${i * 0.03}s` }}>
               <div className="aspect-square overflow-hidden rounded-3xl bg-slate-100 mb-3">
                 <ProtectedImage
                   src={item.image}

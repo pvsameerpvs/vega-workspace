@@ -45,4 +45,16 @@ router.post("/", async (req, res) => {
   }
 });
 
+router.delete("/:id", async (req, res) => {
+  try {
+    if (db) {
+      await db.delete(blogs).where(eq(blogs.id, Number(req.params.id)));
+      return res.json({ success: true });
+    }
+    res.json({ success: true });
+  } catch (error) {
+    res.status(500).json({ error: "Failed to delete blog" });
+  }
+});
+
 export default router;

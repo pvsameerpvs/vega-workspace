@@ -1,0 +1,92 @@
+"use client";
+
+import { useState } from "react";
+import { useGallery } from "@/hooks/use-content";
+import { useToast } from "@vega/ui";
+import { PageHeader } from "@/components/admin/PageHeader";
+import { ImageUpload } from "@/components/admin/ImageUpload";
+import { FormDialog } from "@/components/admin/FormDialog";
+import { DeleteDialog } from "@/components/admin/DeleteDialog";
+import { Trash2 } from "lucide-react";
+
+export function GalleryManager() {
+  const { items, loading, create, remove } = useGallery();
+  const { toast } = useToast();
+  const [formOpen, setFormOpen] = useState(false);
+  const [deleteId, setDeleteId] = useState<number | null>(null);
+  const [form, setForm] = useState<any>({});
+
+  const updateForm = (k: string, v: any) => setForm((f: any) => ({ ...f, [k]: v }));
+
+  const handleCreate = async () => {
+    await create({ ...form, isActive: true, createdAt: new Date().toISOString() });
+    toast({ title: "Gallery item added", description: "The image has been uploaded." });
+    setFormOpen(false);
+    setForm({});
+  };
+
+  const handleDelete = async () => {
+    if (deleteId) {
+      await remove(deleteId);
+      toast({ title: "Deleted", description: "Image removed from gallery." });
+      setDeleteId(null);
+    }
+  };
+
+  return (
+    <div className="p-8">
+      <PageHeader title="Gallery Manager" subtitle="Upload and organize gallery images." actionLabel="Add Image" onAction={() => setFormOpen(true)} />
+
+      {loading ? (
+        <div className="grid grid-cols-2 gap-4 md:grid-cols-4">{Array.from({ length: 4 }).map((_, i) => <div key={i} className="aspect-square animate-pulse rounded-xl bg-slate-200" />)}</div>
+      ) : items.length === 0 ? (
+        <div className="rounded-xl border bg-white py-16 text-center"><p className="text-sm text-slate-400">No gallery items yet.</p></div>
+      ) : (
+        <div className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4">
+          {items.map((item) => (
+            <div key={item.id} className="group relative overflow-hidden rounded-xl border bg-white shadow-sm">
+              <img src={item.image} alt={item.title} className="aspect-square w-full object-cover" />
+              <div className="absolute inset-0 flex items-end justify-between bg-gradient-to-t from-black/60 to-transparent p-4 opacity-0 transition-opacity group-hover:opacity-100">
+                <div>
+                  <p className="text-sm font-medium text-white">{item.title}</p>
+                  <p className="text-xs text-white/70">{item.category}</p>
+                </div>
+                <button onClick={() => setDeleteId(item.id)} className="rounded-md bg-red-500 p-1.5 text-white hover:bg-red-600">
+                  <Trash2 className="h-4 w-4" />
+                </button>
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
+
+      <FormDialog open={formOpen} onClose={() => setFormOpen(false)} title="Add Gallery Image" onSubmit={handleCreate}>
+        <div className="space-y-4">
+          <ImageUpload folder="gallery" onChange={(url) => updateForm("image", url)} label="Image" />
+          <div>
+            <label className="mb-1 block text-xs font-semibold text-slate-700">Title</label>
+            <input value={form.title || ""} onChange={(e) => updateForm("title", e.target.value)} className="w-full rounded-md border border-slate-200 px-3 py-2 text-sm focus:border-vega-blue focus:outline-none" placeholder="Image title" />
+          </div>
+          <div>
+            <label className="mb-1 block text-xs font-semibold text-slate-700">Title (Arabic)</label>
+            <input value={form.titleAr || ""} onChange={(e) => updateForm("titleAr", e.target.value)} className="w-full rounded-md border border-slate-200 px-3 py-2 text-sm focus:border-vega-blue focus:outline-none" placeholder="العنوان" />
+          </div>
+          <div>
+            <label className="mb-1 block text-xs font-semibold text-slate-700">Category</label>
+            <input value={form.category || ""} onChange={(e) => updateForm("category", e.target.value)} className="w-full rounded-md border border-slate-200 px-3 py-2 text-sm focus:border-vega-blue focus:outline-none" placeholder="Category" />
+          </div>
+          <div>
+            <label className="mb-1 block text-xs font-semibold text-slate-700">Alt Text</label>
+            <input value={form.altText || ""} onChange={(e) => updateForm("altText", e.target.value)} className="w-full rounded-md border border-slate-200 px-3 py-2 text-sm focus:border-vega-blue focus:outline-none" placeholder="Alt text for accessibility" />
+          </div>
+          <div>
+            <label className="mb-1 block text-xs font-semibold text-slate-700">Display Order</label>
+            <input type="number" value={form.displayOrder || 0} onChange={(e) => updateForm("displayOrder", Number(e.target.value))} className="w-full rounded-md border border-slate-200 px-3 py-2 text-sm focus:border-vega-blue focus:outline-none" />
+          </div>
+        </div>
+      </FormDialog>
+
+      <DeleteDialog open={!!deleteId} onClose={() => setDeleteId(null)} onConfirm={handleDelete} title="Delete Image" />
+    </div>
+  );
+}

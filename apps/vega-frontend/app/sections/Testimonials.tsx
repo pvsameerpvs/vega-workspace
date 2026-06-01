@@ -3,10 +3,17 @@
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation } from "swiper/modules";
 import { ChevronLeft, ChevronRight, Play, Star } from "lucide-react";
+import { useEffect, useState } from "react";
 import { GOOGLE_REVIEWS } from "@/lib/data";
 import "swiper/css";
 
 export function Testimonials() {
+  const [reviews, setReviews] = useState<any[]>([]);
+
+  useEffect(() => {
+    setReviews(GOOGLE_REVIEWS);
+  }, []);
+
   return (
     <section className="py-12 bg-slate-50">
       <div className="mx-auto max-w-7xl px-4">
@@ -26,7 +33,7 @@ export function Testimonials() {
           slidesPerView={1}
           breakpoints={{ 640: { slidesPerView: 2 }, 1024: { slidesPerView: 4 } }}
         >
-          {GOOGLE_REVIEWS.map((review, i) => (
+          {reviews.map((review, i) => (
             <SwiperSlide key={i}>
               <div className="bg-white rounded-xl border border-slate-100 p-4 h-full flex flex-col">
                 <div className="relative mb-4 rounded-lg overflow-hidden aspect-video bg-slate-100 flex items-center justify-center">

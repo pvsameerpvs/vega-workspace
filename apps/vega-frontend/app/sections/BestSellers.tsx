@@ -3,12 +3,21 @@
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation } from "swiper/modules";
 import { ChevronLeft, ChevronRight } from "lucide-react";
-import { PRODUCTS } from "@/lib/data";
 import { ProductCard } from "@/components/product/ProductCard";
+import { getProducts, mapProductToFrontend } from "@/lib/api";
+import { useEffect, useState } from "react";
 import "swiper/css";
 
 export function BestSellers() {
-  const items = PRODUCTS.slice(4, 12);
+  const [items, setItems] = useState<any[]>([]);
+
+  useEffect(() => {
+    getProducts().then((data) => {
+      const mapped = data.map(mapProductToFrontend).filter(Boolean);
+      setItems(mapped.filter((p: any) => p.isPopular).slice(0, 8));
+    });
+  }, []);
+
   return (
     <section className="py-12 bg-white">
       <div className="mx-auto max-w-7xl px-4">

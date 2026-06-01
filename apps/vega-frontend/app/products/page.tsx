@@ -1,5 +1,10 @@
 import { Metadata } from "next";
-import { PRODUCTS, PRODUCT_CATEGORIES } from "@/lib/data";
+import {
+  getProducts,
+  getCategories,
+  mapProductToFrontend,
+  mapCategoryToFrontend,
+} from "@/lib/api";
 import { ProductGrid } from "@/components/product/ProductGrid";
 import { ArrowRight } from "lucide-react";
 
@@ -8,7 +13,15 @@ export const metadata: Metadata = {
   description: "Browse our full range of camp furniture, barriers, office furniture, and more.",
 };
 
-export default function ProductsPage() {
+export default async function ProductsPage() {
+  const [products, categories] = await Promise.all([
+    getProducts(),
+    getCategories(),
+  ]);
+
+  const mappedProducts = products.map(mapProductToFrontend).filter(Boolean);
+  const mappedCategories = categories.map(mapCategoryToFrontend).filter(Boolean);
+
   return (
     <main className="pt-36 pb-32">
       <div className="mx-auto max-w-7xl px-6">
@@ -20,7 +33,7 @@ export default function ProductsPage() {
           </p>
         </div>
         <div className="mb-16 flex flex-wrap gap-3">
-          {PRODUCT_CATEGORIES.map((cat) => (
+          {mappedCategories.map((cat) => (
             <a
               key={cat.id}
               href={`/products/${cat.slug}`}
@@ -30,7 +43,7 @@ export default function ProductsPage() {
             </a>
           ))}
         </div>
-        <ProductGrid products={PRODUCTS} />
+        <ProductGrid products={mappedProducts} />
       </div>
     </main>
   );

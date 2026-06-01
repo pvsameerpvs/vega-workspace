@@ -2,18 +2,20 @@ import { Metadata } from "next";
 import Link from "next/link";
 import { ArrowRight, Calendar } from "lucide-react";
 import { ProtectedImage } from "@/components/ProtectedImage";
-import { BLOGS } from "@/lib/data";
+import { getBlogPosts, mapBlogToFrontend } from "@/lib/api";
 
 export const metadata: Metadata = {
   title: "Blog | Vega UAE",
   description: "Latest articles, industry insights, and product updates from Vega.",
 };
 
-export default function BlogPage() {
+export default async function BlogPage() {
+  const blogs = await getBlogPosts();
+  const mapped = blogs.map(mapBlogToFrontend).filter(Boolean);
+
   return (
     <main className="pt-36 pb-32">
       <div className="mx-auto max-w-7xl px-6">
-        {/* Header */}
         <div className="mb-20">
           <span className="mb-6 block text-sm text-slate-400">Insights</span>
           <h1 className="section-heading text-4xl md:text-5xl">Blog & Articles</h1>
@@ -22,9 +24,8 @@ export default function BlogPage() {
           </p>
         </div>
 
-        {/* Blog Grid */}
         <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
-          {BLOGS.map((blog) => (
+          {mapped.map((blog) => (
             <Link
               key={blog.slug}
               href={`/blog/${blog.slug}`}

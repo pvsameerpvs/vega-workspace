@@ -1,11 +1,11 @@
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
 import {
-  PRODUCT_CATEGORIES,
-  getProductBySlug,
-  getProductsByCategory,
-  getRelatedProducts,
-} from "@/lib/data";
+  getProducts,
+  getCategories,
+  mapProductToFrontend,
+  mapCategoryToFrontend,
+} from "@/lib/api";
 import { ProductGrid } from "@/components/product/ProductGrid";
 import { ProtectedImage } from "@/components/ProtectedImage";
 import { getWhatsAppLink } from "@/lib/whatsapp";
@@ -17,18 +17,12 @@ export async function generateMetadata({
 }: {
   params: { slug: string };
 }): Promise<Metadata> {
-  const category = PRODUCT_CATEGORIES.find((c) => c.slug === params.slug);
-  if (category) {
+  const all = await getProducts();
+  const p = all.find((x: any) => x.slug === params.slug);
+  if (p) {
     return {
-      title: `${category.name} | Vega UAE`,
-      description: `Browse ${category.name} products from Vega UAE.`,
-    };
-  }
-  const product = getProductBySlug(params.slug);
-  if (product) {
-    return {
-      title: `${product.name} | Vega UAE`,
-      description: product.description,
+      title: `${p.name} | Vega UAE`,
+      description: p.shortDescription || p.fullDescription,
     };
   }
   return {
@@ -37,20 +31,30 @@ export async function generateMetadata({
   };
 }
 
-export default function ProductOrCategoryPage({
+export default async function ProductOrCategoryPage({
   params,
 }: {
   params: { slug: string };
 }) {
-  const category = PRODUCT_CATEGORIES.find((c) => c.slug === params.slug);
-  const product = getProductBySlug(params.slug);
+  const [products, categories] = await Promise.all([
+    getProducts(),
+    getCategories(),
+  ]);
+
+  const mappedProducts = products.map(mapProductToFrontend).filter(Boolean);
+  const mappedCategories = categories.map(mapCategoryToFrontend).filter(Boolean);
+
+  const category = mappedCategories.find((c) => c.slug === params.slug);
+  const product = mappedProducts.find((p) => p.slug === params.slug);
 
   if (!category && !product) {
     notFound();
   }
 
   if (category) {
-    const categoryProducts = getProductsByCategory(category.slug);
+    const categoryProducts = mappedProducts.filter(
+      (p) => p.category.toLowerCase().replace(/\s+/g, "-") === category.slug.toLowerCase()
+    );
     return (
       <main className="pt-36 pb-32">
         <div className="mx-auto max-w-7xl px-6">
@@ -65,7 +69,7 @@ export default function ProductOrCategoryPage({
             </p>
           </div>
           <div className="mb-16 flex flex-wrap gap-3">
-            {category.subcategories.map((sub) => (
+            {category.subcategories.map((sub: string) => (
               <span key={sub} className="text-sm text-slate-500">
                 {sub}
               </span>
@@ -77,7 +81,9 @@ export default function ProductOrCategoryPage({
     );
   }
 
-  const related = getRelatedProducts(product!);
+  const related = mappedProducts.filter(
+    (p) => p.category === product!.category && p.id !== product!.id
+  ).slice(0, 4);
 
   return (
     <main className="pt-36 pb-32">
@@ -99,7 +105,7 @@ export default function ProductOrCategoryPage({
               </div>
             </div>
             <div className="grid grid-cols-4 gap-4">
-              {product!.images.map((img, i) => (
+              {product!.images.map((img: string, i: number) => (
                 <div key={i} className="aspect-square overflow-hidden rounded-2xl bg-slate-100">
                   <ProtectedImage
                     src={img}
@@ -120,6 +126,11 @@ export default function ProductOrCategoryPage({
               {product!.name}
             </h1>
             <p className="mt-2 text-sm text-slate-400">SKU: {product!.sku}</p>
+            {product!.price && product!.showPrice && (
+              <p className="mt-3 text-2xl font-bold text-vega-blue">
+                AED {product!.price.toLocaleString()}
+              </p>
+            )}
             <p className="mt-6 text-lg text-slate-500 leading-relaxed max-w-md">
               {product!.description}
             </p>
@@ -152,7 +163,7 @@ export default function ProductOrCategoryPage({
               <div className="mt-12">
                 <span className="mb-4 block text-sm text-slate-400">Features</span>
                 <ul className="space-y-3">
-                  {product!.features.map((f) => (
+                  {product!.features.map((f: string) => (
                     <li key={f} className="flex items-center gap-3 text-base text-slate-500">
                       <Check className="h-4 w-4 text-vega-yellow" /> {f}
                     </li>
@@ -164,10 +175,10 @@ export default function ProductOrCategoryPage({
             {/* Extra Info */}
             <div className="mt-12 space-y-4">
               {[
-                { icon: Package, text: "Available in bulk quantity." },
-                { icon: BadgePercent, text: `Wholesale Discount ${product!.wholesaleNote}.` },
-                { icon: Truck, text: "Delivery and Installation all across UAE." },
-                { icon: MapPin, text: product!.deliveryInfo },
+                { icon: Package, text: product!.bulkAvailable ? "Available in bulk quantity." : "Standard quantity available." },
+                { icon: BadgePercent, text: product!.wholesaleNote || "Wholesale pricing available." },
+                { icon: Truck, text: product!.deliveryInfo || "Delivery and Installation all across UAE." },
+                { icon: MapPin, text: product!.installation || "Installation available on request." },
               ].map((item) => (
                 <div key={item.text} className="flex items-center gap-3 text-base text-slate-500">
                   <item.icon className="h-4 w-4 text-vega-yellow" />

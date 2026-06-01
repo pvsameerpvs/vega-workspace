@@ -3,13 +3,24 @@
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation } from "swiper/modules";
 import { ChevronLeft, ChevronRight } from "lucide-react";
-import { PRODUCTS } from "@/lib/data";
 import { ProductCard } from "@/components/product/ProductCard";
+import { getProducts, mapProductToFrontend } from "@/lib/api";
+import { useEffect, useState } from "react";
 import "swiper/css";
 import "swiper/css/navigation";
 
 export function FeaturedProducts() {
-  const featured = PRODUCTS.slice(0, 8);
+  const [products, setProducts] = useState<any[]>([]);
+
+  useEffect(() => {
+    getProducts().then((data) => {
+      const mapped = data.map(mapProductToFrontend).filter(Boolean);
+      setProducts(mapped.filter((p: any) => p.isFeatured).slice(0, 8));
+    });
+  }, []);
+
+  const featured = products.length > 0 ? products : [];
+
   return (
     <section className="py-12 bg-slate-50">
       <div className="mx-auto max-w-7xl px-4">

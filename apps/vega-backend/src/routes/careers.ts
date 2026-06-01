@@ -68,6 +68,44 @@ router.get("/applications", async (_req, res) => {
   }
 });
 
+router.post("/jobs", async (req, res) => {
+  try {
+    if (db) {
+      const result = await db.insert(careers).values(req.body).returning();
+      return res.status(201).json(result[0]);
+    }
+    res.status(201).json({ ...req.body, id: MOCK_CAREERS.length + 1 });
+  } catch (error) {
+    res.status(500).json({ error: "Failed to create job" });
+  }
+});
+
+router.put("/jobs/:id", async (req, res) => {
+  try {
+    if (db) {
+      const result = await db.update(careers).set(req.body).where(eq(careers.id, Number(req.params.id))).returning();
+      return res.json(result[0]);
+    }
+    const found = MOCK_CAREERS.find((c) => c.id === Number(req.params.id));
+    if (!found) return res.status(404).json({ error: "Job not found" });
+    res.json({ ...found, ...req.body });
+  } catch (error) {
+    res.status(500).json({ error: "Failed to update job" });
+  }
+});
+
+router.delete("/jobs/:id", async (req, res) => {
+  try {
+    if (db) {
+      await db.delete(careers).where(eq(careers.id, Number(req.params.id)));
+      return res.json({ success: true });
+    }
+    res.json({ success: true });
+  } catch (error) {
+    res.status(500).json({ error: "Failed to delete job" });
+  }
+});
+
 router.post("/applications", async (req, res) => {
   try {
     if (db) {

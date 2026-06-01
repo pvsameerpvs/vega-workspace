@@ -1,14 +1,17 @@
 import Link from "next/link";
 import { ProtectedImage } from "@/components/ui/ProtectedImage";
-import { PRODUCT_CATEGORIES } from "@/lib/data";
+import { getCategories, mapCategoryToFrontend } from "@/lib/api";
 
-export function PopularCategories() {
+export async function PopularCategories() {
+  const categories = await getCategories();
+  const mapped = categories.map(mapCategoryToFrontend).filter(Boolean);
+
   return (
     <section className="py-12 bg-white">
       <div className="mx-auto max-w-7xl px-4">
         <h2 className="text-center text-xl font-bold text-slate-900 mb-8 font-display">Popular Categories</h2>
         <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-8 gap-6">
-          {PRODUCT_CATEGORIES.map((cat) => (
+          {mapped.slice(0, 8).map((cat) => (
             <Link
               key={cat.id}
               href={`/products/${cat.slug}`}

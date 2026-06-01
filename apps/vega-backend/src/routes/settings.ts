@@ -37,4 +37,70 @@ router.put("/:key", async (req, res) => {
   }
 });
 
+router.post("/banner", async (req, res) => {
+  try {
+    if (db) {
+      const result = await db.insert(homeBanners).values(req.body).returning();
+      return res.status(201).json(result[0]);
+    }
+    res.status(201).json({ ...req.body, id: MOCK_BANNERS.length + 1 });
+  } catch (error) {
+    res.status(500).json({ error: "Failed to create banner" });
+  }
+});
+
+router.put("/banner/:id", async (req, res) => {
+  try {
+    if (db) {
+      const result = await db.update(homeBanners).set(req.body).where(eq(homeBanners.id, Number(req.params.id))).returning();
+      return res.json(result[0]);
+    }
+    const found = MOCK_BANNERS.find((b) => b.id === Number(req.params.id));
+    if (!found) return res.status(404).json({ error: "Banner not found" });
+    res.json({ ...found, ...req.body });
+  } catch (error) {
+    res.status(500).json({ error: "Failed to update banner" });
+  }
+});
+
+router.delete("/banner/:id", async (req, res) => {
+  try {
+    if (db) {
+      await db.delete(homeBanners).where(eq(homeBanners.id, Number(req.params.id)));
+      return res.json({ success: true });
+    }
+    res.json({ success: true });
+  } catch (error) {
+    res.status(500).json({ error: "Failed to delete banner" });
+  }
+});
+
+router.put("/counter/:id", async (req, res) => {
+  try {
+    if (db) {
+      const result = await db.update(counters).set(req.body).where(eq(counters.id, Number(req.params.id))).returning();
+      return res.json(result[0]);
+    }
+    const found = MOCK_COUNTERS.find((c) => c.id === Number(req.params.id));
+    if (!found) return res.status(404).json({ error: "Counter not found" });
+    res.json({ ...found, ...req.body });
+  } catch (error) {
+    res.status(500).json({ error: "Failed to update counter" });
+  }
+});
+
+router.put("/seo/:id", async (req, res) => {
+  try {
+    if (db) {
+      const result = await db.update(seoMeta).set(req.body).where(eq(seoMeta.id, Number(req.params.id))).returning();
+      return res.json(result[0]);
+    }
+    const found = MOCK_SEO.find((s) => s.id === Number(req.params.id));
+    if (!found) return res.status(404).json({ error: "SEO entry not found" });
+    res.json({ ...found, ...req.body });
+  } catch (error) {
+    res.status(500).json({ error: "Failed to update SEO" });
+  }
+});
+
 export default router;

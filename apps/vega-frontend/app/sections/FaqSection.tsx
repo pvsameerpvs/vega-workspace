@@ -1,18 +1,26 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { ChevronDown } from "lucide-react";
-import { FAQS } from "@/lib/data";
+import { getFaqs, mapFaqToFrontend } from "@/lib/api";
 
 export function FaqSection() {
+  const [faqs, setFaqs] = useState<any[]>([]);
   const [open, setOpen] = useState<number | null>(0);
+
+  useEffect(() => {
+    getFaqs().then((data) => {
+      const mapped = data.map(mapFaqToFrontend).filter(Boolean);
+      setFaqs(mapped);
+    });
+  }, []);
 
   return (
     <section className="py-12 bg-slate-50">
       <div className="mx-auto max-w-3xl px-4">
         <h2 className="text-center text-xl font-bold text-slate-900 mb-8 font-display">Frequently Asked Questions</h2>
         <div className="space-y-2">
-          {FAQS.map((faq, i) => (
+          {faqs.map((faq, i) => (
             <div key={i} className="rounded-xl border border-slate-100 bg-white overflow-hidden">
               <button
                 onClick={() => setOpen(open === i ? null : i)}

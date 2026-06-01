@@ -2,18 +2,30 @@ import { Metadata } from "next";
 import { ArrowRight, MapPin, Phone, Mail, Warehouse, Linkedin } from "lucide-react";
 import { ProtectedImage } from "@/components/ProtectedImage";
 import Link from "next/link";
-import { TEAM } from "@/lib/data";
+import { getTeam, getCounters, mapTeamToFrontend } from "@/lib/api";
 
 export const metadata: Metadata = {
   title: "About Us | Vega UAE",
   description: "Learn about Vega, a trusted supplier of camp furniture, barriers, and industrial supplies across the UAE.",
 };
 
-export default function AboutUsPage() {
+export default async function AboutUsPage() {
+  const [team, counters] = await Promise.all([getTeam(), getCounters()]);
+  const mappedTeam = team.map(mapTeamToFrontend).filter(Boolean);
+  const mappedCounters = counters.filter(Boolean);
+
+  const stats = mappedCounters.length > 0
+    ? mappedCounters.slice(0, 4).map((c: any) => ({ value: c.value || c.label, label: c.label || c.labelAr }))
+    : [
+        { value: "15+", label: "Years of experience" },
+        { value: "10,000+", label: "sq ft warehouse" },
+        { value: "1,500+", label: "Satisfied customers" },
+        { value: "300+", label: "Products in stock" },
+      ];
+
   return (
     <main className="pt-36 pb-32">
       <div className="mx-auto max-w-7xl px-6">
-        {/* Header */}
         <div className="mb-20">
           <span className="mb-6 block text-sm text-slate-400">Company</span>
           <h1 className="section-heading text-4xl md:text-5xl">About Us</h1>
@@ -22,7 +34,6 @@ export default function AboutUsPage() {
           </p>
         </div>
 
-        {/* Content Grid */}
         <div className="grid gap-20 lg:grid-cols-2 mb-24">
           <div className="space-y-6">
             <p className="text-lg text-slate-500 leading-relaxed">
@@ -47,14 +58,8 @@ export default function AboutUsPage() {
           </div>
         </div>
 
-        {/* Stats */}
         <div className="mb-24 grid grid-cols-2 gap-12 border-t border-slate-100 pt-20 md:grid-cols-4">
-          {[
-            { value: "15+", label: "Years of experience" },
-            { value: "10,000+", label: "sq ft warehouse" },
-            { value: "1,500+", label: "Satisfied customers" },
-            { value: "300+", label: "Products in stock" },
-          ].map((stat, i) => (
+          {stats.map((stat: any, i: number) => (
             <div key={stat.label} className="text-center animate-fade-in-up" style={{ animationDelay: `${i * 0.05}s` }}>
               <div className="stat-number mb-2 text-3xl md:text-4xl">{stat.value}</div>
               <p className="text-sm text-slate-400">{stat.label}</p>
@@ -62,7 +67,6 @@ export default function AboutUsPage() {
           ))}
         </div>
 
-        {/* Team Section */}
         <div className="mb-24">
           <div className="mb-16 text-center">
             <span className="mb-6 block text-sm text-slate-400">Our People</span>
@@ -72,7 +76,7 @@ export default function AboutUsPage() {
             </p>
           </div>
           <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-3">
-            {TEAM.map((member, i) => (
+            {mappedTeam.map((member: any, i: number) => (
               <div key={member.name} className="text-center group animate-fade-in-up" style={{ animationDelay: `${i * 0.05}s` }}>
                 <div className="mx-auto mb-5 h-28 w-28 overflow-hidden rounded-full bg-slate-100">
                   <ProtectedImage
@@ -101,7 +105,6 @@ export default function AboutUsPage() {
           </div>
         </div>
 
-        {/* Contact Cards */}
         <div className="mb-4 text-center">
           <span className="mb-6 block text-sm text-slate-400">Reach Us</span>
           <h2 className="section-heading mb-16 text-4xl md:text-5xl">Get in Touch</h2>

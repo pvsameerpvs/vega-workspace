@@ -4,6 +4,7 @@ import { eq, asc } from "drizzle-orm";
 
 const router = Router();
 
+// GET all categories
 router.get("/", async (_req, res) => {
   try {
     if (db) {
@@ -16,16 +17,100 @@ router.get("/", async (_req, res) => {
   }
 });
 
+// POST new category
+router.post("/", async (req, res) => {
+  try {
+    if (db) {
+      const result = await db.insert(categories).values(req.body).returning();
+      return res.status(201).json(result[0]);
+    }
+    res.status(201).json({ ...req.body, id: MOCK_CATEGORIES.length + 1 });
+  } catch (error) {
+    res.status(500).json({ error: "Failed to create category" });
+  }
+});
+
+// PUT category
+router.put("/:id", async (req, res) => {
+  try {
+    if (db) {
+      const result = await db.update(categories).set(req.body).where(eq(categories.id, Number(req.params.id))).returning();
+      return res.json(result[0]);
+    }
+    const found = MOCK_CATEGORIES.find((c) => c.id === Number(req.params.id));
+    if (!found) return res.status(404).json({ error: "Category not found" });
+    res.json({ ...found, ...req.body });
+  } catch (error) {
+    res.status(500).json({ error: "Failed to update category" });
+  }
+});
+
+// DELETE category
+router.delete("/:id", async (req, res) => {
+  try {
+    if (db) {
+      await db.delete(categories).where(eq(categories.id, Number(req.params.id)));
+      return res.json({ success: true });
+    }
+    res.json({ success: true });
+  } catch (error) {
+    res.status(500).json({ error: "Failed to delete category" });
+  }
+});
+
+// GET subcategories by category ID
 router.get("/:id/subcategories", async (req, res) => {
   try {
     if (db) {
-      const all = await db.select().from(subcategories).where(eq(subcategories.categoryId, Number(req.params.id)));
+      const all = await db.select().from(subcategories).where(eq(subcategories.categoryId, Number(req.params.id))).orderBy(asc(subcategories.displayOrder));
       return res.json(all);
     }
     const filtered = MOCK_SUBCATEGORIES.filter((s) => s.categoryId === Number(req.params.id));
     res.json(filtered);
   } catch (error) {
     res.json(MOCK_SUBCATEGORIES.filter((s) => s.categoryId === Number(req.params.id)));
+  }
+});
+
+// POST new subcategory
+router.post("/:id/subcategories", async (req, res) => {
+  try {
+    const data = { ...req.body, categoryId: Number(req.params.id) };
+    if (db) {
+      const result = await db.insert(subcategories).values(data).returning();
+      return res.status(201).json(result[0]);
+    }
+    res.status(201).json({ ...data, id: MOCK_SUBCATEGORIES.length + 1 });
+  } catch (error) {
+    res.status(500).json({ error: "Failed to create subcategory" });
+  }
+});
+
+// PUT subcategory
+router.put("/subcategories/:id", async (req, res) => {
+  try {
+    if (db) {
+      const result = await db.update(subcategories).set(req.body).where(eq(subcategories.id, Number(req.params.id))).returning();
+      return res.json(result[0]);
+    }
+    const found = MOCK_SUBCATEGORIES.find((s) => s.id === Number(req.params.id));
+    if (!found) return res.status(404).json({ error: "Subcategory not found" });
+    res.json({ ...found, ...req.body });
+  } catch (error) {
+    res.status(500).json({ error: "Failed to update subcategory" });
+  }
+});
+
+// DELETE subcategory
+router.delete("/subcategories/:id", async (req, res) => {
+  try {
+    if (db) {
+      await db.delete(subcategories).where(eq(subcategories.id, Number(req.params.id)));
+      return res.json({ success: true });
+    }
+    res.json({ success: true });
+  } catch (error) {
+    res.status(500).json({ error: "Failed to delete subcategory" });
   }
 });
 

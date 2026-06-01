@@ -1,18 +1,20 @@
 import { Metadata } from "next";
 import { MapPin, Clock, Briefcase, ArrowRight, DollarSign, ListChecks } from "lucide-react";
 import Link from "next/link";
-import { CAREERS } from "@/lib/data";
+import { getCareers, mapCareerToFrontend } from "@/lib/api";
 
 export const metadata: Metadata = {
   title: "Careers | Vega UAE",
   description: "Join the Vega team. Explore current job openings and career opportunities.",
 };
 
-export default function CareersPage() {
+export default async function CareersPage() {
+  const jobs = await getCareers();
+  const mapped = jobs.map(mapCareerToFrontend).filter(Boolean);
+
   return (
     <main className="pt-36 pb-32">
       <div className="mx-auto max-w-7xl px-6">
-        {/* Header */}
         <div className="mb-20 text-center">
           <span className="mb-6 block text-sm text-slate-400">Join Us</span>
           <h1 className="section-heading text-4xl md:text-5xl">Careers at Vega</h1>
@@ -21,7 +23,6 @@ export default function CareersPage() {
           </p>
         </div>
 
-        {/* Why Join */}
         <div className="mb-20 grid gap-12 sm:grid-cols-3">
           {[
             { icon: Briefcase, title: "Growth Opportunities", desc: "Build your career with a fast-growing company in the UAE." },
@@ -38,13 +39,12 @@ export default function CareersPage() {
           ))}
         </div>
 
-        {/* Job Listings */}
         <div className="mb-4">
           <span className="mb-6 block text-sm text-slate-400">Openings</span>
           <h2 className="section-heading mb-16 text-4xl">Current Vacancies</h2>
         </div>
         <div className="space-y-0">
-          {CAREERS.map((job, i) => (
+          {mapped.map((job, i) => (
             <div key={job.slug} className="border-b border-slate-100 py-10 animate-fade-in-up" style={{ animationDelay: `${i * 0.05}s` }}>
               <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-6">
                 <div>
