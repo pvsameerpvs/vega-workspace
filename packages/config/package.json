@@ -1,0 +1,15 @@
+{
+  "name": "@vega/config",
+  "version": "0.0.1",
+  "private": true,
+  "files": [
+    "tailwind.config.js",
+    "eslint.config.js",
+    "tsconfig.json"
+  ],
+  "exports": {
+    "./tailwind": "./tailwind.config.js",
+    "./eslint": "./eslint.config.js",
+    "./tsconfig": "./tsconfig.json"
+  }
+}

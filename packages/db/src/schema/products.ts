@@ -1,0 +1,54 @@
+import { pgTable, serial, varchar, text, integer, boolean, timestamp, jsonb, index } from "drizzle-orm/pg-core";
+import { categories } from "./categories";
+import { subcategories } from "./categories";
+import { productStatusEnum } from "./enums";
+
+export const products = pgTable(
+  "products",
+  {
+    id: serial("id").primaryKey(),
+    name: varchar("name", { length: 255 }).notNull(),
+    nameAr: varchar("name_ar", { length: 255 }),
+    slug: varchar("slug", { length: 255 }).notNull().unique(),
+    sku: varchar("sku", { length: 100 }).notNull().unique(),
+    categoryId: integer("category_id").notNull().references(() => categories.id),
+    subcategoryId: integer("subcategory_id").references(() => subcategories.id),
+    shortDescription: text("short_description"),
+    shortDescriptionAr: text("short_description_ar"),
+    fullDescription: text("full_description"),
+    fullDescriptionAr: text("full_description_ar"),
+    color: varchar("color", { length: 100 }),
+    design: varchar("design", { length: 100 }),
+    weight: varchar("weight", { length: 100 }),
+    dimensions: varchar("dimensions", { length: 100 }),
+    material: varchar("material", { length: 100 }),
+    fittingType: varchar("fitting_type", { length: 100 }),
+    features: text("features"),
+    featuresAr: text("features_ar"),
+    warranty: varchar("warranty", { length: 255 }),
+    brand: varchar("brand", { length: 100 }),
+    country: varchar("country", { length: 100 }),
+    availabilityStatus: varchar("availability_status", { length: 100 }),
+    bulkQuantityNote: text("bulk_quantity_note"),
+    wholesaleDiscountNote: text("wholesale_discount_note"),
+    deliveryAvailable: boolean("delivery_available").default(false),
+    installationAvailable: boolean("installation_available").default(false),
+    mainImage: text("main_image"),
+    gallery: jsonb("gallery").$type<string[]>(),
+    isFeatured: boolean("is_featured").default(false),
+    isPopular: boolean("is_popular").default(false),
+    seoTitle: varchar("seo_title", { length: 255 }),
+    seoDescription: text("seo_description"),
+    seoKeywords: text("seo_keywords"),
+    status: productStatusEnum("status").notNull().default("draft"),
+    createdAt: timestamp("created_at", { withTimezone: true }).defaultNow(),
+    updatedAt: timestamp("updated_at", { withTimezone: true }).defaultNow(),
+  },
+  (table) => ({
+    slugIdx: index("product_slug_idx").on(table.slug),
+    skuIdx: index("product_sku_idx").on(table.sku),
+    categoryIdx: index("product_category_idx").on(table.categoryId),
+    subcategoryIdx: index("product_subcategory_idx").on(table.subcategoryId),
+    statusIdx: index("product_status_idx").on(table.status),
+  })
+);
