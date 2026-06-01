@@ -45,13 +45,17 @@ export function Navbar() {
               <span className="hidden sm:inline">WhatsApp</span>
             </a>
             <div className="flex items-center gap-1.5">
-              <img
-                src="https://upload.wikimedia.org/wikipedia/commons/7/7b/Flag_of_the_United_Arab_Emirates.gif"
-                alt="UAE Flag"
-                className="h-4 w-auto object-contain select-none"
-                draggable={false}
-                onContextMenu={(e) => e.preventDefault()}
-              />
+              {/* UAE Flag SVG */}
+              <svg
+                viewBox="0 0 300 150"
+                className="h-4 w-6 rounded-[2px] shadow-sm"
+                aria-label="UAE Flag"
+              >
+                <rect x="0" y="0" width="75" height="150" fill="#FF0000" />
+                <rect x="75" y="0" width="225" height="50" fill="#00732F" />
+                <rect x="75" y="50" width="225" height="50" fill="#FFFFFF" />
+                <rect x="75" y="100" width="225" height="50" fill="#000000" />
+              </svg>
               <span className="hidden sm:inline text-white/70 font-semibold text-[10px] uppercase tracking-wider">Proud of UAE</span>
             </div>
           </div>
