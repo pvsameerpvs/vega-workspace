@@ -269,22 +269,22 @@ html {
   font-family: var(--font-cairo), system-ui, sans-serif;
 }
 
-/* Modern card */
+/* Modern card — softer, more minimal */
 .modern-card {
-  @apply rounded-2xl border bg-white;
-  border-color: #e2e8f0;
-  box-shadow: var(--shadow-card);
+  @apply rounded-3xl border bg-white;
+  border-color: #f1f5f9;
+  box-shadow: var(--shadow-sm);
   transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
 .modern-card:hover {
-  box-shadow: var(--shadow-card-hover);
+  box-shadow: var(--shadow-card);
   transform: translateY(-2px);
-  border-color: rgba(31, 58, 147, 0.12);
+  border-color: #e2e8f0;
 }
 
 /* Rounded image */
 .img-rounded {
-  @apply overflow-hidden rounded-2xl;
+  @apply overflow-hidden rounded-3xl;
 }
 
 /* Fade in up animation */

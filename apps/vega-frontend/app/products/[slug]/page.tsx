@@ -10,7 +10,7 @@ import { ProductGrid } from "@/components/product/ProductGrid";
 import { ProtectedImage } from "@/components/ProtectedImage";
 import { getWhatsAppLink } from "@/lib/whatsapp";
 import Link from "next/link";
-import { ArrowLeft, Check, Truck, Package, BadgePercent, MapPin, ArrowUpRight } from "lucide-react";
+import { ArrowLeft, Check, Truck, Package, BadgePercent, MapPin, ArrowRight } from "lucide-react";
 
 export async function generateMetadata({
   params,
@@ -52,21 +52,21 @@ export default function ProductOrCategoryPage({
   if (category) {
     const categoryProducts = getProductsByCategory(category.slug);
     return (
-      <main className="pt-36 pb-24">
+      <main className="pt-36 pb-32">
         <div className="mx-auto max-w-7xl px-6">
           <Link href="/products" className="mb-8 inline-flex items-center gap-2 text-sm font-semibold text-slate-400 hover:text-vega-blue transition-colors">
             <ArrowLeft className="h-4 w-4" /> Back to Products
           </Link>
-          <div className="mb-12">
-            <div className="label-line mb-4">Category</div>
-            <h1 className="section-heading">{category.name}</h1>
-            <p className="mt-4 text-base text-slate-500 max-w-lg leading-relaxed">
+          <div className="mb-16">
+            <span className="mb-6 block text-sm text-slate-400">Category</span>
+            <h1 className="section-heading text-4xl md:text-5xl">{category.name}</h1>
+            <p className="mt-6 text-lg text-slate-500 max-w-lg leading-relaxed">
               Browse our {category.name.toLowerCase()} collection.
             </p>
           </div>
-          <div className="mb-10 flex flex-wrap gap-2">
+          <div className="mb-16 flex flex-wrap gap-3">
             {category.subcategories.map((sub) => (
-              <span key={sub} className="rounded-full border border-slate-200 px-4 py-2 text-sm text-slate-500 bg-slate-50">
+              <span key={sub} className="text-sm text-slate-500">
                 {sub}
               </span>
             ))}
@@ -80,16 +80,16 @@ export default function ProductOrCategoryPage({
   const related = getRelatedProducts(product!);
 
   return (
-    <main className="pt-36 pb-24">
+    <main className="pt-36 pb-32">
       <div className="mx-auto max-w-7xl px-6">
         <Link href="/products" className="mb-8 inline-flex items-center gap-2 text-sm font-semibold text-slate-400 hover:text-vega-blue transition-colors">
           <ArrowLeft className="h-4 w-4" /> Back to Products
         </Link>
 
-        <div className="grid gap-12 lg:grid-cols-2">
+        <div className="grid gap-20 lg:grid-cols-2">
           {/* Image Gallery */}
-          <div className="space-y-4">
-            <div className="overflow-hidden rounded-2xl border border-slate-100 bg-slate-50 shadow-card">
+          <div className="space-y-5">
+            <div className="overflow-hidden rounded-3xl bg-slate-100">
               <div className="aspect-square overflow-hidden">
                 <ProtectedImage
                   src={product!.image}
@@ -98,9 +98,9 @@ export default function ProductOrCategoryPage({
                 />
               </div>
             </div>
-            <div className="grid grid-cols-4 gap-3">
+            <div className="grid grid-cols-4 gap-4">
               {product!.images.map((img, i) => (
-                <div key={i} className="aspect-square overflow-hidden rounded-xl border border-slate-100 bg-slate-50 shadow-subtle transition-all duration-300 hover:shadow-md hover:border-vega-blue/20">
+                <div key={i} className="aspect-square overflow-hidden rounded-2xl bg-slate-100">
                   <ProtectedImage
                     src={img}
                     alt={`${product!.name} ${i + 1}`}
@@ -113,23 +113,23 @@ export default function ProductOrCategoryPage({
 
           {/* Product Details */}
           <div>
-            <div className="mb-3 inline-flex items-center gap-2 rounded-full bg-vega-blue/10 px-3 py-1 text-xs font-bold text-vega-blue border border-vega-blue/10">
+            <span className="mb-3 inline-block text-sm text-slate-400">
               {product!.category}
-            </div>
-            <h1 className="text-2xl font-bold text-vega-blue md:text-3xl tracking-tight">
+            </span>
+            <h1 className="text-3xl font-bold text-slate-900 md:text-4xl tracking-tight">
               {product!.name}
             </h1>
             <p className="mt-2 text-sm text-slate-400">SKU: {product!.sku}</p>
-            <p className="mt-3 text-sm text-slate-600 leading-relaxed max-w-md">
+            <p className="mt-6 text-lg text-slate-500 leading-relaxed max-w-md">
               {product!.description}
             </p>
 
             {/* Spec Sheet */}
-            <div className="mt-8 overflow-hidden rounded-2xl border border-slate-100 bg-white shadow-card">
-              <div className="bg-slate-50 px-5 py-3 border-b border-slate-100">
-                <span className="text-xs font-bold text-vega-blue uppercase tracking-wider">Product Specifications</span>
+            <div className="mt-12 overflow-hidden rounded-3xl bg-slate-50">
+              <div className="px-6 py-4 border-b border-slate-100">
+                <span className="text-sm font-semibold text-slate-900">Product Specifications</span>
               </div>
-              <div className="divide-y divide-slate-50">
+              <div className="divide-y divide-slate-100">
                 {[
                   { label: "SKU", value: product!.sku },
                   { label: "Item Name", value: product!.name },
@@ -139,9 +139,9 @@ export default function ProductOrCategoryPage({
                   { label: "Fitting", value: product!.fittingType },
                   { label: "Dimensions", value: product!.dimensions },
                 ].map((row) => (
-                  <div key={row.label} className="px-5 py-3 grid grid-cols-3 gap-4">
-                    <span className="text-xs font-bold text-slate-400 uppercase tracking-wider">{row.label}</span>
-                    <span className="text-sm text-vega-blue col-span-2 font-semibold">{row.value}</span>
+                  <div key={row.label} className="px-6 py-4 grid grid-cols-3 gap-4">
+                    <span className="text-sm text-slate-400">{row.label}</span>
+                    <span className="text-sm text-slate-900 col-span-2 font-medium">{row.value}</span>
                   </div>
                 ))}
               </div>
@@ -149,11 +149,11 @@ export default function ProductOrCategoryPage({
 
             {/* Features */}
             {product!.features.length > 0 && (
-              <div className="mt-8">
-                <div className="label-line mb-3">Features</div>
-                <ul className="space-y-2">
+              <div className="mt-12">
+                <span className="mb-4 block text-sm text-slate-400">Features</span>
+                <ul className="space-y-3">
                   {product!.features.map((f) => (
-                    <li key={f} className="flex items-center gap-2 text-sm text-slate-500">
+                    <li key={f} className="flex items-center gap-3 text-base text-slate-500">
                       <Check className="h-4 w-4 text-vega-yellow" /> {f}
                     </li>
                   ))}
@@ -162,14 +162,14 @@ export default function ProductOrCategoryPage({
             )}
 
             {/* Extra Info */}
-            <div className="mt-8 space-y-3">
+            <div className="mt-12 space-y-4">
               {[
                 { icon: Package, text: "Available in bulk quantity." },
                 { icon: BadgePercent, text: `Wholesale Discount ${product!.wholesaleNote}.` },
                 { icon: Truck, text: "Delivery and Installation all across UAE." },
                 { icon: MapPin, text: product!.deliveryInfo },
               ].map((item) => (
-                <div key={item.text} className="flex items-center gap-2 text-sm text-slate-600">
+                <div key={item.text} className="flex items-center gap-3 text-base text-slate-500">
                   <item.icon className="h-4 w-4 text-vega-yellow" />
                   <span>{item.text}</span>
                 </div>
@@ -177,21 +177,21 @@ export default function ProductOrCategoryPage({
             </div>
 
             {/* Actions */}
-            <div className="mt-10 flex flex-wrap gap-3">
-              <Link href="/catalog" className="pill-btn">
-                Download Catalog
+            <div className="mt-12 flex flex-wrap gap-4">
+              <Link href="/catalog" className="inline-flex items-center gap-2 text-sm font-semibold text-slate-600 hover:text-vega-blue transition-all">
+                Download Catalog <ArrowRight className="h-4 w-4" />
               </Link>
-              <Link href={getWhatsAppLink(product!)} target="_blank" className="pill-btn-yellow group">
-                Enquire on WhatsApp <ArrowUpRight className="ml-2 h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+              <Link href={getWhatsAppLink(product!)} target="_blank" className="pill-btn-yellow text-sm group">
+                Enquire on WhatsApp <ArrowRight className="ml-2 h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5" />
               </Link>
             </div>
           </div>
         </div>
 
         {related.length > 0 && (
-          <div className="mt-24">
-            <div className="label-line mb-4">You May Also Like</div>
-            <h2 className="section-heading mb-10">Related Products</h2>
+          <div className="mt-32">
+            <span className="mb-6 block text-sm text-slate-400">You May Also Like</span>
+            <h2 className="section-heading mb-16 text-4xl">Related Products</h2>
             <ProductGrid products={related} />
           </div>
         )}

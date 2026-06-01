@@ -2,15 +2,14 @@ import { Flag } from "lucide-react";
 
 export function UaeProudSection() {
   return (
-    <section className="py-16 bg-gradient-to-b from-vega-blue to-[#162d6e]">
+    <section className="py-24 bg-white border-t border-slate-100">
       <div className="mx-auto max-w-7xl px-6">
-        <div className="flex flex-col items-center justify-center gap-6 text-center md:flex-row md:gap-10">
+        <div className="flex flex-col items-center justify-center gap-10 text-center md:flex-row md:gap-16">
           <div className="relative flex items-center justify-center">
-            <div className="absolute inset-0 rounded-full bg-white/10 blur-2xl" />
             {/* UAE Flag SVG */}
             <svg
               viewBox="0 0 300 150"
-              className="relative h-20 w-40 rounded-md shadow-2xl md:h-24 md:w-48"
+              className="relative h-20 w-40 rounded-md shadow-sm md:h-24 md:w-48"
               aria-label="UAE Flag"
             >
               {/* Red vertical stripe */}
@@ -27,14 +26,14 @@ export function UaeProudSection() {
           </div>
 
           <div className="flex flex-col items-center md:items-start">
-            <div className="mb-2 flex items-center gap-2 text-vega-yellow">
+            <div className="mb-3 flex items-center gap-2 text-slate-400">
               <Flag className="h-4 w-4" />
-              <span className="text-xs font-bold uppercase tracking-widest">Made in UAE</span>
+              <span className="text-xs font-semibold uppercase tracking-widest">Made in UAE</span>
             </div>
-            <h2 className="text-2xl font-bold text-white md:text-3xl">
+            <h2 className="text-2xl font-bold text-slate-900 md:text-3xl">
               Proud of <span className="text-vega-yellow">UAE</span>
             </h2>
-            <p className="mt-2 max-w-md text-sm text-white/80 leading-relaxed">
+            <p className="mt-3 max-w-md text-base text-slate-500 leading-relaxed">
               A proudly UAE-based company serving businesses across all seven emirates with quality, reliability, and dedication.
             </p>
           </div>

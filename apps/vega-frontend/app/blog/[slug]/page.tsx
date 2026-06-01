@@ -25,13 +25,13 @@ export default function BlogPostPage({ params }: { params: { slug: string } }) {
   const image = blog?.featuredImage || `/images/blog/placeholder.jpg`;
 
   return (
-    <main className="pt-36 pb-24">
+    <main className="pt-36 pb-32">
       <div className="mx-auto max-w-3xl px-6">
-        <Link href="/blog" className="mb-8 inline-flex items-center gap-2 text-sm font-bold text-slate-400 hover:text-vega-blue transition-colors">
+        <Link href="/blog" className="mb-8 inline-flex items-center gap-2 text-sm font-semibold text-slate-400 hover:text-vega-blue transition-colors">
           <ArrowLeft className="h-4 w-4" /> Back to Blog
         </Link>
 
-        <div className="mb-6 flex items-center gap-4 text-sm text-slate-400">
+        <div className="mb-6 flex items-center gap-6 text-sm text-slate-400">
           <span className="inline-flex items-center gap-1.5">
             <Calendar className="h-3.5 w-3.5" /> {date}
           </span>
@@ -40,11 +40,11 @@ export default function BlogPostPage({ params }: { params: { slug: string } }) {
           </span>
         </div>
 
-        <h1 className="text-2xl font-bold text-vega-blue md:text-3xl mb-6 capitalize tracking-tight">
+        <h1 className="text-3xl font-bold text-slate-900 md:text-4xl mb-8 capitalize tracking-tight">
           {title}
         </h1>
 
-        <div className="mb-8 img-rounded aspect-video overflow-hidden bg-slate-100 shadow-card">
+        <div className="mb-10 img-rounded aspect-video overflow-hidden bg-slate-100">
           <ProtectedImage
             src={image}
             alt={title}
@@ -52,7 +52,7 @@ export default function BlogPostPage({ params }: { params: { slug: string } }) {
           />
         </div>
 
-        <div className="space-y-4 text-base text-slate-600 leading-relaxed">
+        <div className="space-y-6 text-lg text-slate-500 leading-relaxed">
           <p>{content}</p>
           <p>
             For any enquiries related to the topics discussed in this article, feel free to reach out to us via WhatsApp or the contact form on our website.
