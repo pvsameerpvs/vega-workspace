@@ -1,18 +1,42 @@
 import { Router } from "express";
 import { db, blogs, MOCK_BLOGS } from "@vega/db";
-import { eq, desc } from "drizzle-orm";
+import { eq, desc, like, and, or } from "drizzle-orm";
+import { getPaginationParams, paginateResponse, filterBySearch, filterByStatus } from "../lib/pagination";
 
 const router = Router();
 
-router.get("/", async (_req, res) => {
+// GET /api/blog?page=1&limit=20&search=office&status=published
+router.get("/", async (req, res) => {
   try {
+    const { page, limit, search, status } = getPaginationParams(req);
+
     if (db) {
-      const all = await db.select().from(blogs).orderBy(desc(blogs.createdAt));
-      return res.json(all);
+      const conditions = [];
+      if (search) {
+        conditions.push(
+          or(
+            like(blogs.title, `%${search}%`),
+            like(blogs.slug, `%${search}%`),
+            like(blogs.category, `%${search}%`)
+          )
+        );
+      }
+      if (status) conditions.push(eq(blogs.status, status as any));
+
+      if (conditions.length === 0) {
+        const all = await db.select().from(blogs).orderBy(desc(blogs.createdAt));
+        return res.json(paginateResponse(all, page, limit));
+      }
+      const all = await db.select().from(blogs).where(and(...conditions)).orderBy(desc(blogs.createdAt));
+      return res.json(paginateResponse(all, page, limit));
     }
-    res.json(MOCK_BLOGS);
+
+    let filtered = [...MOCK_BLOGS];
+    if (search) filtered = filterBySearch(filtered, search, ["title", "titleAr", "category", "excerpt"]);
+    if (status) filtered = filterByStatus(filtered, status);
+    res.json(paginateResponse(filtered, page, limit));
   } catch (error) {
-    res.json(MOCK_BLOGS);
+    res.json(paginateResponse(MOCK_BLOGS, 1, 20));
   }
 });
 

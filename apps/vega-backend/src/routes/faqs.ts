@@ -1,18 +1,29 @@
 import { Router } from "express";
 import { db, faqs, MOCK_FAQS } from "@vega/db";
-import { eq, asc } from "drizzle-orm";
+import { eq, asc, like } from "drizzle-orm";
+import { getPaginationParams, paginateResponse, filterBySearch } from "../lib/pagination";
 
 const router = Router();
 
-router.get("/", async (_req, res) => {
+// GET /api/faqs?page=1&limit=20&search=delivery
+router.get("/", async (req, res) => {
   try {
+    const { page, limit, search } = getPaginationParams(req);
+
     if (db) {
+      if (search) {
+        const all = await db.select().from(faqs).where(like(faqs.question, `%${search}%`)).orderBy(asc(faqs.displayOrder));
+        return res.json(paginateResponse(all, page, limit));
+      }
       const all = await db.select().from(faqs).orderBy(asc(faqs.displayOrder));
-      return res.json(all);
+      return res.json(paginateResponse(all, page, limit));
     }
-    res.json(MOCK_FAQS);
+
+    let filtered = [...MOCK_FAQS];
+    if (search) filtered = filterBySearch(filtered, search, ["question", "questionAr", "answer", "category"]);
+    res.json(paginateResponse(filtered, page, limit));
   } catch (error) {
-    res.json(MOCK_FAQS);
+    res.json(paginateResponse(MOCK_FAQS, 1, 20));
   }
 });
 

@@ -1,18 +1,39 @@
 import { Router } from "express";
 import { db, products, MOCK_PRODUCTS } from "@vega/db";
-import { eq, desc } from "drizzle-orm";
+import { eq, desc, like, and } from "drizzle-orm";
+import { getPaginationParams, paginateResponse, filterBySearch, filterByStatus, filterByCategory } from "../lib/pagination";
 
 const router = Router();
 
-router.get("/", async (_req, res) => {
+// GET /api/products?page=1&limit=20&search=bed&status=published&category=Camp+Furniture
+router.get("/", async (req, res) => {
   try {
+    const { page, limit, search, sortBy, sortOrder, status, category } = getPaginationParams(req);
+
     if (db) {
-      const all = await db.select().from(products).orderBy(desc(products.createdAt));
-      return res.json(all);
+      const conditions = [];
+      if (search) conditions.push(like(products.name, `%${search}%`));
+      if (status) conditions.push(eq(products.status, status as any));
+      if (category) conditions.push(eq(products.categoryId, Number(category)));
+
+      const order = sortBy === "createdAt" ? (sortOrder === "asc" ? products.createdAt : desc(products.createdAt)) : desc(products.createdAt);
+
+      if (conditions.length === 0) {
+        const all = await db.select().from(products).orderBy(order);
+        return res.json(paginateResponse(all, page, limit));
+      }
+      const all = await db.select().from(products).where(and(...conditions)).orderBy(order);
+      return res.json(paginateResponse(all, page, limit));
     }
-    res.json(MOCK_PRODUCTS);
+
+    let filtered = [...MOCK_PRODUCTS];
+    if (search) filtered = filterBySearch(filtered, search, ["name", "nameAr", "sku", "description"]);
+    if (status) filtered = filterByStatus(filtered, status);
+    if (category) filtered = filterByCategory(filtered, category, "category");
+
+    res.json(paginateResponse(filtered, page, limit));
   } catch (error) {
-    res.json(MOCK_PRODUCTS);
+    res.json(paginateResponse(MOCK_PRODUCTS, 1, 20));
   }
 });
 

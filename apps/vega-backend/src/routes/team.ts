@@ -1,18 +1,29 @@
 import { Router } from "express";
 import { db, teamMembers, MOCK_TEAM } from "@vega/db";
-import { eq, asc } from "drizzle-orm";
+import { eq, asc, like } from "drizzle-orm";
+import { getPaginationParams, paginateResponse, filterBySearch } from "../lib/pagination";
 
 const router = Router();
 
-router.get("/", async (_req, res) => {
+// GET /api/team?page=1&limit=20&search=faisal
+router.get("/", async (req, res) => {
   try {
+    const { page, limit, search } = getPaginationParams(req);
+
     if (db) {
+      if (search) {
+        const all = await db.select().from(teamMembers).where(like(teamMembers.name, `%${search}%`)).orderBy(asc(teamMembers.displayOrder));
+        return res.json(paginateResponse(all, page, limit));
+      }
       const all = await db.select().from(teamMembers).orderBy(asc(teamMembers.displayOrder));
-      return res.json(all);
+      return res.json(paginateResponse(all, page, limit));
     }
-    res.json(MOCK_TEAM);
+
+    let filtered = [...MOCK_TEAM];
+    if (search) filtered = filterBySearch(filtered, search, ["name", "designation", "department"]);
+    res.json(paginateResponse(filtered, page, limit));
   } catch (error) {
-    res.json(MOCK_TEAM);
+    res.json(paginateResponse(MOCK_TEAM, 1, 20));
   }
 });
 

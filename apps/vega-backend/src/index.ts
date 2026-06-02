@@ -15,6 +15,10 @@ import teamRoutes from "./routes/team";
 import faqRoutes from "./routes/faqs";
 import settingsRoutes from "./routes/settings";
 import uploadRoutes from "./routes/upload";
+import homepageRoutes from "./routes/homepage";
+import translationRoutes from "./routes/translations";
+
+import { errorHandler, notFoundHandler } from "./middleware/error";
 
 const app = express();
 const PORT = process.env.PORT || 4000;
@@ -37,11 +41,19 @@ app.use("/api/team", teamRoutes);
 app.use("/api/faqs", faqRoutes);
 app.use("/api/settings", settingsRoutes);
 app.use("/api/upload", uploadRoutes);
+app.use("/api/homepage", homepageRoutes);
+app.use("/api/translations", translationRoutes);
 
 // Health check
 app.get("/api/health", (_req, res) => {
   res.json({ status: "ok", timestamp: new Date().toISOString() });
 });
+
+// 404 handler
+app.use(notFoundHandler);
+
+// Global error handler
+app.use(errorHandler);
 
 app.listen(PORT, () => {
   console.log(`Vega API server running on port ${PORT}`);

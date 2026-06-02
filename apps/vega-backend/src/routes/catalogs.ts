@@ -1,18 +1,34 @@
 import { Router } from "express";
 import { db, catalogs, MOCK_CATALOGS } from "@vega/db";
-import { eq, desc } from "drizzle-orm";
+import { eq, desc, like, and } from "drizzle-orm";
+import { getPaginationParams, paginateResponse, filterBySearch, filterByCategory } from "../lib/pagination";
 
 const router = Router();
 
-router.get("/", async (_req, res) => {
+// GET /api/catalogs?page=1&limit=20&search=office&category=Camp+Furniture
+router.get("/", async (req, res) => {
   try {
+    const { page, limit, search, category } = getPaginationParams(req);
+
     if (db) {
-      const all = await db.select().from(catalogs).orderBy(desc(catalogs.createdAt));
-      return res.json(all);
+      const conditions = [];
+      if (search) conditions.push(like(catalogs.title, `%${search}%`));
+      if (category) conditions.push(eq(catalogs.category, category));
+
+      if (conditions.length === 0) {
+        const all = await db.select().from(catalogs).orderBy(desc(catalogs.createdAt));
+        return res.json(paginateResponse(all, page, limit));
+      }
+      const all = await db.select().from(catalogs).where(and(...conditions)).orderBy(desc(catalogs.createdAt));
+      return res.json(paginateResponse(all, page, limit));
     }
-    res.json(MOCK_CATALOGS);
+
+    let filtered = [...MOCK_CATALOGS];
+    if (search) filtered = filterBySearch(filtered, search, ["title", "titleAr", "category"]);
+    if (category) filtered = filterByCategory(filtered, category);
+    res.json(paginateResponse(filtered, page, limit));
   } catch (error) {
-    res.json(MOCK_CATALOGS);
+    res.json(paginateResponse(MOCK_CATALOGS, 1, 20));
   }
 });
 

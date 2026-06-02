@@ -1,40 +1,74 @@
 import { Router } from "express";
-import bcrypt from "bcryptjs";
-import jwt from "jsonwebtoken";
-import { db, users, MOCK_USERS } from "@vega/db";
-import { eq } from "drizzle-orm";
+import { z } from "zod";
+import { validateBody } from "../middleware/validate";
+import { authenticate, AuthRequest } from "../middleware/auth";
+import { registerUser, loginUser, getUserProfile, refreshAccessToken, revokeToken, getAllUsers } from "../services/auth";
 
 const router = Router();
 
-router.post("/login", async (req, res) => {
+const loginSchema = z.object({
+  email: z.string().email("Invalid email address"),
+  password: z.string().min(1, "Password is required"),
+});
+
+const registerSchema = z.object({
+  email: z.string().email("Invalid email address"),
+  password: z.string().min(6, "Password must be at least 6 characters"),
+  name: z.string().min(1, "Name is required"),
+  role: z.enum(["super_admin", "product_manager", "content_editor", "hr_manager", "sales_team"]).optional(),
+});
+
+router.post("/register", validateBody(registerSchema), async (req, res) => {
   try {
-    const { email, password } = req.body;
-    let user;
-    if (db) {
-      const result = await db.select().from(users).where(eq(users.email, email)).limit(1);
-      user = result[0];
-    } else {
-      user = MOCK_USERS.find((u) => u.email === email);
-    }
+    const user = await registerUser(req.body);
+    res.status(201).json(user);
+  } catch (error: any) {
+    res.status(error.message === "User already exists" ? 400 : 500).json({ error: error.message || "Registration failed" });
+  }
+});
 
-    if (!user) {
-      return res.status(401).json({ error: "Invalid credentials" });
-    }
+router.post("/login", validateBody(loginSchema), async (req, res) => {
+  try {
+    const result = await loginUser(req.body);
+    res.json(result);
+  } catch (error: any) {
+    res.status(error.message === "Invalid credentials" ? 401 : 500).json({ error: error.message || "Login failed" });
+  }
+});
 
-    const valid = await bcrypt.compare(password, user.password);
-    if (!valid) {
-      return res.status(401).json({ error: "Invalid credentials" });
-    }
+router.get("/me", authenticate, async (req: AuthRequest, res) => {
+  try {
+    const user = await getUserProfile(req.user!.id);
+    res.json(user);
+  } catch (error: any) {
+    res.status(error.message === "User not found" ? 404 : 500).json({ error: error.message || "Failed to fetch user" });
+  }
+});
 
-    const token = jwt.sign(
-      { id: user.id, email: user.email, role: user.role },
-      process.env.JWT_SECRET!,
-      { expiresIn: "7d" }
-    );
+router.post("/refresh", async (req, res) => {
+  try {
+    const { refreshToken } = req.body;
+    if (!refreshToken) return res.status(400).json({ error: "Refresh token required" });
+    const result = refreshAccessToken(refreshToken);
+    res.json(result);
+  } catch (error: any) {
+    res.status(401).json({ error: error.message || "Invalid refresh token" });
+  }
+});
 
-    res.json({ token, user: { id: user.id, name: user.name, email: user.email, role: user.role } });
-  } catch (error) {
-    res.status(500).json({ error: "Login failed" });
+router.post("/logout", authenticate, (req: AuthRequest, res) => {
+  const token = req.headers.authorization?.split(" ")[1];
+  if (token) revokeToken(token);
+  res.json({ success: true, message: "Logged out" });
+});
+
+router.get("/users", authenticate, async (req: AuthRequest, res) => {
+  try {
+    if (req.user!.role !== "super_admin") return res.status(403).json({ error: "Forbidden" });
+    const users = await getAllUsers();
+    res.json(users);
+  } catch (error: any) {
+    res.status(500).json({ error: error.message || "Failed to fetch users" });
   }
 });
 

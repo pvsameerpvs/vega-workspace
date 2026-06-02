@@ -1,23 +1,30 @@
 import { Router } from "express";
 import { db, categories, subcategories, MOCK_CATEGORIES, MOCK_SUBCATEGORIES } from "@vega/db";
 import { eq, asc } from "drizzle-orm";
+import { getPaginationParams, paginateResponse, filterBySearch } from "../lib/pagination";
 
 const router = Router();
 
 // GET all categories
-router.get("/", async (_req, res) => {
+router.get("/", async (req, res) => {
   try {
+    const { page, limit, search } = getPaginationParams(req);
+
     if (db) {
-      const all = await db.select().from(categories).orderBy(asc(categories.displayOrder));
-      return res.json(all);
+      let query = db.select().from(categories).orderBy(asc(categories.displayOrder));
+      const all = await query;
+      let filtered = search ? all.filter((c) => c.name.toLowerCase().includes(search.toLowerCase())) : all;
+      return res.json(paginateResponse(filtered, page, limit));
     }
-    res.json(MOCK_CATEGORIES);
+
+    let filtered = [...MOCK_CATEGORIES];
+    if (search) filtered = filterBySearch(filtered, search, ["name", "nameAr"]);
+    res.json(paginateResponse(filtered, page, limit));
   } catch (error) {
-    res.json(MOCK_CATEGORIES);
+    res.json(paginateResponse(MOCK_CATEGORIES, 1, 20));
   }
 });
 
-// POST new category
 router.post("/", async (req, res) => {
   try {
     if (db) {
@@ -30,7 +37,6 @@ router.post("/", async (req, res) => {
   }
 });
 
-// PUT category
 router.put("/:id", async (req, res) => {
   try {
     if (db) {
@@ -45,7 +51,6 @@ router.put("/:id", async (req, res) => {
   }
 });
 
-// DELETE category
 router.delete("/:id", async (req, res) => {
   try {
     if (db) {
@@ -72,7 +77,6 @@ router.get("/:id/subcategories", async (req, res) => {
   }
 });
 
-// POST new subcategory
 router.post("/:id/subcategories", async (req, res) => {
   try {
     const data = { ...req.body, categoryId: Number(req.params.id) };
@@ -86,7 +90,6 @@ router.post("/:id/subcategories", async (req, res) => {
   }
 });
 
-// PUT subcategory
 router.put("/subcategories/:id", async (req, res) => {
   try {
     if (db) {
@@ -101,7 +104,6 @@ router.put("/subcategories/:id", async (req, res) => {
   }
 });
 
-// DELETE subcategory
 router.delete("/subcategories/:id", async (req, res) => {
   try {
     if (db) {

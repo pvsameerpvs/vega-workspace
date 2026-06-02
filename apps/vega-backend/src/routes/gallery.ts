@@ -1,18 +1,34 @@
 import { Router } from "express";
 import { db, gallery, MOCK_GALLERY } from "@vega/db";
-import { eq, asc } from "drizzle-orm";
+import { eq, asc, like, and } from "drizzle-orm";
+import { getPaginationParams, paginateResponse, filterBySearch, filterByCategory } from "../lib/pagination";
 
 const router = Router();
 
-router.get("/", async (_req, res) => {
+// GET /api/gallery?page=1&limit=20&search=barrier&category=Camp+Furniture
+router.get("/", async (req, res) => {
   try {
+    const { page, limit, search, category } = getPaginationParams(req);
+
     if (db) {
-      const all = await db.select().from(gallery).orderBy(asc(gallery.displayOrder));
-      return res.json(all);
+      const conditions = [];
+      if (search) conditions.push(like(gallery.title, `%${search}%`));
+      if (category) conditions.push(eq(gallery.category, category));
+
+      if (conditions.length === 0) {
+        const all = await db.select().from(gallery).orderBy(asc(gallery.displayOrder));
+        return res.json(paginateResponse(all, page, limit));
+      }
+      const all = await db.select().from(gallery).where(and(...conditions)).orderBy(asc(gallery.displayOrder));
+      return res.json(paginateResponse(all, page, limit));
     }
-    res.json(MOCK_GALLERY);
+
+    let filtered = [...MOCK_GALLERY];
+    if (search) filtered = filterBySearch(filtered, search, ["title", "titleAr", "category"]);
+    if (category) filtered = filterByCategory(filtered, category);
+    res.json(paginateResponse(filtered, page, limit));
   } catch (error) {
-    res.json(MOCK_GALLERY);
+    res.json(paginateResponse(MOCK_GALLERY, 1, 20));
   }
 });
 

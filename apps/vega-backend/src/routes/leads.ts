@@ -1,18 +1,42 @@
 import { Router } from "express";
 import { db, leads, MOCK_LEADS } from "@vega/db";
-import { eq, desc } from "drizzle-orm";
+import { eq, desc, like, and, or } from "drizzle-orm";
+import { getPaginationParams, paginateResponse, filterBySearch, filterByStatus } from "../lib/pagination";
 
 const router = Router();
 
-router.get("/", async (_req, res) => {
+// GET /api/leads?page=1&limit=20&search=ahmed&status=new
+router.get("/", async (req, res) => {
   try {
+    const { page, limit, search, status } = getPaginationParams(req);
+
     if (db) {
-      const all = await db.select().from(leads).orderBy(desc(leads.createdAt));
-      return res.json(all);
+      const conditions = [];
+      if (search) {
+        conditions.push(
+          or(
+            like(leads.name, `%${search}%`),
+            like(leads.email, `%${search}%`),
+            like(leads.companyName, `%${search}%`)
+          )
+        );
+      }
+      if (status) conditions.push(eq(leads.status, status as any));
+
+      if (conditions.length === 0) {
+        const all = await db.select().from(leads).orderBy(desc(leads.createdAt));
+        return res.json(paginateResponse(all, page, limit));
+      }
+      const all = await db.select().from(leads).where(and(...conditions)).orderBy(desc(leads.createdAt));
+      return res.json(paginateResponse(all, page, limit));
     }
-    res.json(MOCK_LEADS);
+
+    let filtered = [...MOCK_LEADS];
+    if (search) filtered = filterBySearch(filtered, search, ["name", "email", "companyName", "productName"]);
+    if (status) filtered = filterByStatus(filtered, status);
+    res.json(paginateResponse(filtered, page, limit));
   } catch (error) {
-    res.json(MOCK_LEADS);
+    res.json(paginateResponse(MOCK_LEADS, 1, 20));
   }
 });
 
