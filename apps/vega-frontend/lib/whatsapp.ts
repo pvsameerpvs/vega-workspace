@@ -1,4 +1,8 @@
-import { Product } from "./data";
+interface Product {
+  name: string;
+  sku: string;
+  category: string;
+}
 
 function generateWhatsAppEnquiryMessage(product: Product): string {
   const text = `Hello Vega, I am interested in this product:

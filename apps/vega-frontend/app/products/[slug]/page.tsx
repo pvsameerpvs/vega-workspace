@@ -86,6 +86,20 @@ export default async function ProductOrCategoryPage({
     (p) => p.category === product!.category && p.id !== product!.id
   ).slice(0, 4);
 
+  const specRows = [
+    { label: "SKU", value: product!.sku },
+    { label: "Item Name", value: product!.name },
+    { label: "Available Colours", value: product!.color },
+    { label: "Design", value: product!.design },
+    { label: "Material", value: product!.material },
+    { label: "Weight", value: product!.weight },
+    { label: "Fitting", value: product!.fittingType },
+    { label: "Dimensions", value: product!.dimensions },
+    { label: "Brand", value: product!.brand },
+    { label: "Country", value: product!.country },
+    { label: "Warranty", value: product!.warranty },
+  ].filter((row) => row.value && String(row.value).trim());
+
   return (
     <main className="pt-36 pb-32">
       <div className="mx-auto max-w-7xl px-6">
@@ -132,32 +146,30 @@ export default async function ProductOrCategoryPage({
                 AED {product!.price.toLocaleString()}
               </p>
             )}
-            <p className="mt-6 text-lg text-slate-500 leading-relaxed max-w-md">
-              {product!.description}
-            </p>
+
+            {/* Full Description */}
+            {product!.description && (
+              <p className="mt-6 text-lg text-slate-500 leading-relaxed max-w-md">
+                {product!.description}
+              </p>
+            )}
 
             {/* Spec Sheet */}
-            <div className="mt-12 overflow-hidden rounded-3xl bg-slate-50">
-              <div className="px-6 py-4 border-b border-slate-100">
-                <span className="text-sm font-semibold text-slate-900">Product Specifications</span>
+            {specRows.length > 0 && (
+              <div className="mt-12 overflow-hidden rounded-3xl bg-slate-50">
+                <div className="px-6 py-4 border-b border-slate-100">
+                  <span className="text-sm font-semibold text-slate-900">Product Specifications</span>
+                </div>
+                <div className="divide-y divide-slate-100">
+                  {specRows.map((row) => (
+                    <div key={row.label} className="px-6 py-4 grid grid-cols-3 gap-4">
+                      <span className="text-sm text-slate-400">{row.label}</span>
+                      <span className="text-sm text-slate-900 col-span-2 font-medium">{row.value}</span>
+                    </div>
+                  ))}
+                </div>
               </div>
-              <div className="divide-y divide-slate-100">
-                {[
-                  { label: "SKU", value: product!.sku },
-                  { label: "Item Name", value: product!.name },
-                  { label: "Colour", value: product!.color },
-                  { label: "Design", value: product!.design },
-                  { label: "Weight", value: product!.weight },
-                  { label: "Fitting", value: product!.fittingType },
-                  { label: "Dimensions", value: product!.dimensions },
-                ].map((row) => (
-                  <div key={row.label} className="px-6 py-4 grid grid-cols-3 gap-4">
-                    <span className="text-sm text-slate-400">{row.label}</span>
-                    <span className="text-sm text-slate-900 col-span-2 font-medium">{row.value}</span>
-                  </div>
-                ))}
-              </div>
-            </div>
+            )}
 
             {/* Features */}
             {product!.features.length > 0 && (
@@ -175,17 +187,36 @@ export default async function ProductOrCategoryPage({
 
             {/* Extra Info */}
             <div className="mt-12 space-y-4">
-              {[
-                { icon: Package, text: product!.bulkAvailable ? "Available in bulk quantity." : "Standard quantity available." },
-                { icon: BadgePercent, text: product!.wholesaleNote || "Wholesale pricing available." },
-                { icon: Truck, text: product!.deliveryInfo || "Delivery and Installation all across UAE." },
-                { icon: MapPin, text: product!.installation || "Installation available on request." },
-              ].map((item) => (
-                <div key={item.text} className="flex items-center gap-3 text-base text-slate-500">
-                  <item.icon className="h-4 w-4 text-vega-yellow" />
-                  <span>{item.text}</span>
+              {product!.bulkAvailable && (
+                <div className="flex items-center gap-3 text-base text-slate-500">
+                  <Package className="h-4 w-4 text-vega-yellow" />
+                  <span>{product!.bulkQuantityNote || "Available in bulk quantity."}</span>
                 </div>
-              ))}
+              )}
+              {product!.wholesaleDiscountNote && (
+                <div className="flex items-center gap-3 text-base text-slate-500">
+                  <BadgePercent className="h-4 w-4 text-vega-yellow" />
+                  <span>{product!.wholesaleDiscountNote}</span>
+                </div>
+              )}
+              {product!.wholesaleNote && !product!.wholesaleDiscountNote && (
+                <div className="flex items-center gap-3 text-base text-slate-500">
+                  <BadgePercent className="h-4 w-4 text-vega-yellow" />
+                  <span>{product!.wholesaleNote}</span>
+                </div>
+              )}
+              {product!.deliveryInfo && (
+                <div className="flex items-center gap-3 text-base text-slate-500">
+                  <Truck className="h-4 w-4 text-vega-yellow" />
+                  <span>{product!.deliveryInfo}</span>
+                </div>
+              )}
+              {product!.installation && (
+                <div className="flex items-center gap-3 text-base text-slate-500">
+                  <MapPin className="h-4 w-4 text-vega-yellow" />
+                  <span>{product!.installation}</span>
+                </div>
+              )}
             </div>
 
             {/* Actions */}

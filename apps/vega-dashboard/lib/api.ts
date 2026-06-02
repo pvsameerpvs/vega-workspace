@@ -29,7 +29,8 @@ export const api = {
   deleteProduct: (id: number) => fetcher<any>(`/products/${id}`, { method: "DELETE" }),
 
   // Categories
-  getCategories: () => fetcher<any[]>("/categories"),
+  getCategories: () =>
+    fetcher<any>("/categories").then((res) => (Array.isArray(res) ? res : res?.data ?? [])),
   createCategory: (data: any) => fetcher<any>("/categories", { method: "POST", body: JSON.stringify(data) }),
   updateCategory: (id: number, data: any) => fetcher<any>(`/categories/${id}`, { method: "PUT", body: JSON.stringify(data) }),
   deleteCategory: (id: number) => fetcher<any>(`/categories/${id}`, { method: "DELETE" }),
