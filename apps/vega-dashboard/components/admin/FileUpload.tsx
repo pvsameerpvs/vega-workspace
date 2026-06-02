@@ -1,6 +1,7 @@
 "use client";
 
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
+import { useToast } from "@vega/ui";
 import { useUpload } from "@/hooks/use-upload";
 import { Upload, X, FileText } from "lucide-react";
 
@@ -13,10 +14,25 @@ interface FileUploadProps {
 }
 
 export function FileUpload({ value, onChange, folder = "uploads", label = "File", accept = "application/pdf" }: FileUploadProps) {
+  const { toast } = useToast();
   const [uploading, setUploading] = useState(false);
   const [fileName, setFileName] = useState("");
   const inputRef = useRef<HTMLInputElement>(null);
   const { upload } = useUpload();
+
+  useEffect(() => {
+    if (value) {
+      try {
+        const url = new URL(value);
+        const name = url.pathname.split("/").pop();
+        setFileName(name || "File uploaded");
+      } catch {
+        setFileName("File uploaded");
+      }
+    } else {
+      setFileName("");
+    }
+  }, [value]);
 
   const handleFile = async (file: File) => {
     setUploading(true);
@@ -25,7 +41,7 @@ export function FileUpload({ value, onChange, folder = "uploads", label = "File"
       const url = await upload(file, folder);
       onChange(url);
     } catch (e) {
-      alert("Upload failed. Please try again.");
+      toast({ title: "Upload failed", description: "Please try again.", variant: "destructive" });
     } finally {
       setUploading(false);
     }

@@ -12,7 +12,7 @@ import { LimitedDealsManager } from "./LimitedDealsManager";
 import { PopularCategoriesManager } from "./PopularCategoriesManager";
 import { TestimonialsManager } from "./TestimonialsManager";
 import { BusinessSolutionsManager } from "./BusinessSolutionsManager";
-import { Eye, EyeOff, Save, RotateCcw } from "lucide-react";
+import { Save, RotateCcw } from "lucide-react";
 
 const defaultSections = {
   heroBanner: true,
@@ -30,7 +30,7 @@ const defaultSections = {
 };
 
 export function HomepageManager() {
-  const { products, loading: productsLoading } = useProducts();
+  const { items: products, loading: productsLoading } = useProducts();
   const { categories, loading: catsLoading } = useCategories();
   const { toast } = useToast();
   const [activeTab, setActiveTab] = useState("sections");

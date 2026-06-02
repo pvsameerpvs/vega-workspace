@@ -14,8 +14,15 @@ async function fetcher<T>(path: string, options?: RequestInit): Promise<T | null
   }
 }
 
+async function fetcherList<T>(path: string, options?: RequestInit): Promise<T[]> {
+  const res = await fetcher<{ data: T[] } | T[]>(path, options);
+  if (Array.isArray(res)) return res;
+  if (res && typeof res === "object" && "data" in res && Array.isArray(res.data)) return res.data;
+  return [];
+}
+
 export async function getProducts() {
-  return fetcher<any[]>("/products") || [];
+  return fetcherList<any>("/products");
 }
 
 export async function getProduct(slug: string) {
@@ -23,7 +30,7 @@ export async function getProduct(slug: string) {
 }
 
 export async function getCategories() {
-  return fetcher<any[]>("/categories") || [];
+  return fetcherList<any>("/categories");
 }
 
 export async function getBanners() {
@@ -37,27 +44,27 @@ export async function getCounters() {
 }
 
 export async function getFaqs() {
-  return fetcher<any[]>("/faqs") || [];
+  return fetcherList<any>("/faqs");
 }
 
 export async function getBlogPosts() {
-  return fetcher<any[]>("/blog") || [];
+  return fetcherList<any>("/blog");
 }
 
 export async function getGallery() {
-  return fetcher<any[]>("/gallery") || [];
+  return fetcherList<any>("/gallery");
 }
 
 export async function getCareers() {
-  return fetcher<any[]>("/careers/jobs") || [];
+  return fetcherList<any>("/careers/jobs");
 }
 
 export async function getTeam() {
-  return fetcher<any[]>("/team") || [];
+  return fetcherList<any>("/team");
 }
 
 export async function getCatalogs() {
-  return fetcher<any[]>("/catalogs") || [];
+  return fetcherList<any>("/catalogs");
 }
 
 export async function submitLead(data: any) {
@@ -65,7 +72,7 @@ export async function submitLead(data: any) {
 }
 
 export async function getSubcategories(categoryId: number) {
-  return fetcher<any[]>(`/categories/${categoryId}/subcategories`) || [];
+  return fetcherList<any>(`/categories/${categoryId}/subcategories`);
 }
 
 // Mappers

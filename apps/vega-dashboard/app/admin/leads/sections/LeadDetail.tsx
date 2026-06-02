@@ -1,6 +1,6 @@
 import { Dialog, DialogContent, DialogTitle } from "@vega/ui";
 import { StatusBadge } from "@/components/admin/StatusBadge";
-import { Mail, Phone, MapPin, Link, Calendar, MessageSquare } from "lucide-react";
+import { Mail, Phone, MapPin, Link, Calendar } from "lucide-react";
 
 interface LeadDetailProps {
   lead: any;

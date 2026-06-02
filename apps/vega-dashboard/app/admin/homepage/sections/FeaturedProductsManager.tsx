@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { useToast } from "@vega/ui";
 import { Badge } from "@vega/ui";
-import { Star, Package, Plus, Trash2 } from "lucide-react";
+import { Star } from "lucide-react";
 
 interface FeaturedProductsManagerProps {
   products: any[];
@@ -102,7 +102,14 @@ export function FeaturedProductsManager({ products, loading }: FeaturedProductsM
                     isSelected ? "border-vega-blue/30 bg-vega-blue/5" : "border-slate-200 hover:bg-slate-50"
                   }`}
                 >
-                  <img src={p.mainImage || p.image || "/images/placeholder.jpg"} alt={p.name} className="h-10 w-10 rounded-lg object-cover" />
+                  <img
+                    src={p.mainImage || p.image || "/images/placeholder.jpg"}
+                    alt={p.name}
+                    draggable={false}
+                    onContextMenu={(e) => e.preventDefault()}
+                    className="h-10 w-10 rounded-lg object-cover select-none pointer-events-none"
+                    style={{ WebkitUserDrag: "none" } as any}
+                  />
                   <div className="flex-1 min-w-0">
                     <p className="text-sm font-medium text-slate-900 truncate">{p.name}</p>
                     <p className="text-xs text-slate-400">{p.sku}</p>

@@ -20,7 +20,7 @@ export function PopularCategoriesManager({ categories, loading }: PopularCategor
 
   const moveItem = (order: number[], index: number, direction: "up" | "down") => {
     const newIndex = direction === "up" ? index - 1 : index + 1;
-    if (newIndex < 0 || newIndex >= order.length) return;
+    if (newIndex < 0 || newIndex >= order.length) return order;
     const newOrder = [...order];
     [newOrder[index], newOrder[newIndex]] = [newOrder[newIndex], newOrder[index]];
     return newOrder;
@@ -28,7 +28,6 @@ export function PopularCategoriesManager({ categories, loading }: PopularCategor
 
   return (
     <div className="space-y-6">
-      {/* Popular Categories */}
       <div className="rounded-xl border bg-white p-4 shadow-sm">
         <div className="mb-4 flex items-center justify-between">
           <div className="flex items-center gap-2">
@@ -49,13 +48,20 @@ export function PopularCategoriesManager({ categories, loading }: PopularCategor
             {categories.map((cat, index) => (
               <div key={cat.id} className="flex items-center gap-3 rounded-lg border border-slate-200 p-2">
                 <input type="checkbox" className="h-4 w-4" defaultChecked={index < 8} />
-                <img src={cat.image || "/images/placeholder.jpg"} alt={cat.name} className="h-8 w-8 rounded-lg object-cover" />
+                <img
+                  src={cat.image || "/images/placeholder.jpg"}
+                  alt={cat.name}
+                  draggable={false}
+                  onContextMenu={(e) => e.preventDefault()}
+                  className="h-8 w-8 rounded-lg object-cover select-none pointer-events-none"
+                  style={{ WebkitUserDrag: "none" } as any}
+                />
                 <span className="text-sm text-slate-900 flex-1">{cat.name}</span>
                 <div className="flex gap-1">
-                  <button className="rounded p-1 text-slate-400 hover:bg-slate-100" disabled={index === 0}>
+                  <button onClick={() => setPopularOrder((prev) => moveItem(prev.length ? prev : categories.map((c: any) => c.id), index, "up"))} className="rounded p-1 text-slate-400 hover:bg-slate-100" disabled={index === 0}>
                     <ArrowUp className="h-3 w-3" />
                   </button>
-                  <button className="rounded p-1 text-slate-400 hover:bg-slate-100" disabled={index === categories.length - 1}>
+                  <button onClick={() => setPopularOrder((prev) => moveItem(prev.length ? prev : categories.map((c: any) => c.id), index, "down"))} className="rounded p-1 text-slate-400 hover:bg-slate-100" disabled={index === categories.length - 1}>
                     <ArrowDown className="h-3 w-3" />
                   </button>
                 </div>

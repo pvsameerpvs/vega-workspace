@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { useFaqs } from "@/hooks/use-content";
+import { useFaqs } from "@/hooks/use-faqs";
 import { useToast } from "@vega/ui";
 import { PageHeader } from "@/components/admin/PageHeader";
 import { FormDialog } from "@/components/admin/FormDialog";
@@ -9,46 +9,52 @@ import { DeleteDialog } from "@/components/admin/DeleteDialog";
 import { Edit2, Trash2, ChevronDown, ChevronUp } from "lucide-react";
 
 export function FaqManager() {
-  const { faqs, loading, create, update, remove } = useFaqs();
+  const { items: faqs, loading, create, update, remove } = useFaqs();
   const { toast } = useToast();
   const [formOpen, setFormOpen] = useState(false);
   const [editFaq, setEditFaq] = useState<any>(null);
   const [deleteId, setDeleteId] = useState<number | null>(null);
   const [expanded, setExpanded] = useState<Record<number, boolean>>({});
   const [form, setForm] = useState<any>({});
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
 
   const toggle = (id: number) => setExpanded((prev) => ({ ...prev, [id]: !prev[id] }));
   const updateForm = (k: string, v: any) => setForm((f: any) => ({ ...f, [k]: v }));
 
-  const openCreate = () => {
-    setEditFaq(null);
-    setForm({});
-    setFormOpen(true);
-  };
-
-  const openEdit = (faq: any) => {
-    setEditFaq(faq);
-    setForm({ ...faq });
-    setFormOpen(true);
-  };
+  const openCreate = () => { setEditFaq(null); setForm({}); setFormOpen(true); };
+  const openEdit = (faq: any) => { setEditFaq(faq); setForm({ ...faq }); setFormOpen(true); };
 
   const handleSubmit = async () => {
-    if (editFaq) {
-      await update(editFaq.id, form);
-      toast({ title: "FAQ updated", description: "Changes saved successfully." });
-    } else {
-      await create({ ...form, isActive: true, createdAt: new Date().toISOString() });
-      toast({ title: "FAQ added", description: "New FAQ added successfully." });
+    setIsSubmitting(true);
+    try {
+      if (editFaq) {
+        await update(editFaq.id, form);
+        toast({ title: "FAQ updated", description: "Changes saved successfully." });
+      } else {
+        await create({ ...form, isActive: true, createdAt: new Date().toISOString() });
+        toast({ title: "FAQ added", description: "New FAQ added successfully." });
+      }
+      setFormOpen(false);
+      setEditFaq(null);
+      setForm({});
+    } catch (e) {
+      toast({ title: "Error", description: e instanceof Error ? e.message : "Failed to save.", variant: "destructive" });
+    } finally {
+      setIsSubmitting(false);
     }
-    setFormOpen(false);
-    setEditFaq(null);
-    setForm({});
   };
 
   const handleDelete = async () => {
-    if (deleteId) {
+    if (!deleteId) return;
+    setIsDeleting(true);
+    try {
       await remove(deleteId);
       toast({ title: "Deleted", description: "FAQ removed." });
+    } catch (e) {
+      toast({ title: "Error", description: e instanceof Error ? e.message : "Failed to delete.", variant: "destructive" });
+    } finally {
+      setIsDeleting(false);
       setDeleteId(null);
     }
   };
@@ -91,7 +97,7 @@ export function FaqManager() {
         </div>
       )}
 
-      <FormDialog open={formOpen} onClose={() => { setFormOpen(false); setEditFaq(null); setForm({}); }} title={editFaq ? "Edit FAQ" : "Add FAQ"} onSubmit={handleSubmit}>
+      <FormDialog open={formOpen} onClose={() => { setFormOpen(false); setEditFaq(null); setForm({}); }} title={editFaq ? "Edit FAQ" : "Add FAQ"} onSubmit={handleSubmit} loading={isSubmitting}>
         <div className="space-y-4">
           <div>
             <label className="mb-1 block text-xs font-semibold text-slate-700">Question</label>
@@ -109,9 +115,15 @@ export function FaqManager() {
             <label className="mb-1 block text-xs font-semibold text-slate-700">Answer (Arabic)</label>
             <textarea rows={3} value={form.answerAr || ""} onChange={(e) => updateForm("answerAr", e.target.value)} className="w-full rounded-md border border-slate-200 px-3 py-2 text-sm focus:border-vega-blue focus:outline-none" placeholder="الإجابة" />
           </div>
-          <div>
-            <label className="mb-1 block text-xs font-semibold text-slate-700">Category</label>
-            <input value={form.category || ""} onChange={(e) => updateForm("category", e.target.value)} className="w-full rounded-md border border-slate-200 px-3 py-2 text-sm focus:border-vega-blue focus:outline-none" placeholder="Category" />
+          <div className="grid grid-cols-2 gap-3">
+            <div>
+              <label className="mb-1 block text-xs font-semibold text-slate-700">Category</label>
+              <input value={form.category || ""} onChange={(e) => updateForm("category", e.target.value)} className="w-full rounded-md border border-slate-200 px-3 py-2 text-sm focus:border-vega-blue focus:outline-none" placeholder="Category" />
+            </div>
+            <div>
+              <label className="mb-1 block text-xs font-semibold text-slate-700">Category (Arabic)</label>
+              <input value={form.categoryAr || ""} onChange={(e) => updateForm("categoryAr", e.target.value)} className="w-full rounded-md border border-slate-200 px-3 py-2 text-sm focus:border-vega-blue focus:outline-none" placeholder="الفئة" />
+            </div>
           </div>
           <div>
             <label className="mb-1 block text-xs font-semibold text-slate-700">Display Order</label>

@@ -1,11 +1,12 @@
 import { StatusBadge } from "@/components/admin/StatusBadge";
-import { Eye, MessageSquare } from "lucide-react";
+import { Eye } from "lucide-react";
 
 interface LeadTableProps {
   leads: any[];
   loading: boolean;
   onStatusChange: (id: number, status: string) => void;
   onView: (lead: any) => void;
+  updatingId?: number | null;
 }
 
 const statusOptions = [
@@ -17,7 +18,7 @@ const statusOptions = [
   { value: "lost", label: "Lost" },
 ];
 
-export function LeadTable({ leads, loading, onStatusChange, onView }: LeadTableProps) {
+export function LeadTable({ leads, loading, onStatusChange, onView, updatingId }: LeadTableProps) {
   if (loading) {
     return (
       <div className="space-y-3">
@@ -65,7 +66,8 @@ export function LeadTable({ leads, loading, onStatusChange, onView }: LeadTableP
                 <select
                   value={l.status}
                   onChange={(e) => onStatusChange(l.id, e.target.value)}
-                  className="rounded-md border border-slate-200 px-2 py-1 text-xs font-medium focus:border-vega-blue focus:outline-none"
+                  disabled={updatingId === l.id}
+                  className="rounded-md border border-slate-200 px-2 py-1 text-xs font-medium focus:border-vega-blue focus:outline-none disabled:opacity-50"
                 >
                   {statusOptions.map((opt) => (
                     <option key={opt.value} value={opt.value}>{opt.label}</option>

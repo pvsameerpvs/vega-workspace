@@ -1,44 +1,45 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
+import { useCrud } from "./use-crud";
 import { api } from "@/lib/api";
 
+export type Product = {
+  id: number;
+  name: string;
+  nameAr?: string;
+  slug: string;
+  sku?: string;
+  status: string;
+  price?: number | null;
+  showPrice?: boolean;
+  categoryId?: number | null;
+  subcategoryId?: number | null;
+  isFeatured?: boolean;
+  isPopular?: boolean;
+  availabilityStatus?: string;
+  deliveryAvailable?: boolean;
+  installationAvailable?: boolean;
+  mainImage?: string;
+  image?: string;
+  gallery?: string[];
+  shortDescription?: string;
+  shortDescriptionAr?: string;
+  color?: string;
+  material?: string;
+  weight?: string;
+  dimensions?: string;
+  seoTitle?: string;
+  seoDescription?: string;
+  seoKeywords?: string;
+  createdAt?: string;
+  updatedAt?: string;
+};
+
 export function useProducts() {
-  const [products, setProducts] = useState<any[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-
-  const fetchProducts = useCallback(async () => {
-    setLoading(true);
-    try {
-      const data = await api.getProducts();
-      setProducts(data);
-      setError(null);
-    } catch (e: any) {
-      setError(e.message);
-    } finally {
-      setLoading(false);
-    }
-  }, []);
-
-  useEffect(() => { fetchProducts(); }, [fetchProducts]);
-
-  const create = async (data: any) => {
-    const created = await api.createProduct(data);
-    setProducts((prev) => [created, ...prev]);
-    return created;
-  };
-
-  const update = async (id: number, data: any) => {
-    const updated = await api.updateProduct(id, data);
-    setProducts((prev) => prev.map((p) => (p.id === id ? updated : p)));
-    return updated;
-  };
-
-  const remove = async (id: number) => {
-    await api.deleteProduct(id);
-    setProducts((prev) => prev.filter((p) => p.id !== id));
-  };
-
-  return { products, loading, error, refresh: fetchProducts, create, update, remove };
+  return useCrud<Product>(
+    () => api.getProducts(),
+    (data) => api.createProduct(data),
+    (id, data) => api.updateProduct(id, data),
+    (id) => api.deleteProduct(id)
+  );
 }

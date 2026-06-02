@@ -3,9 +3,39 @@
 import { useState, useEffect, useCallback } from "react";
 import { api } from "@/lib/api";
 
+export type Category = {
+  id: number;
+  name: string;
+  nameAr?: string;
+  slug: string;
+  description?: string;
+  descriptionAr?: string;
+  image?: string;
+  banner?: string;
+  displayOrder?: number;
+  isActive?: boolean;
+  createdAt?: string;
+  updatedAt?: string;
+};
+
+export type Subcategory = {
+  id: number;
+  name: string;
+  nameAr?: string;
+  slug: string;
+  description?: string;
+  descriptionAr?: string;
+  image?: string;
+  displayOrder?: number;
+  isActive?: boolean;
+  categoryId?: number;
+  createdAt?: string;
+  updatedAt?: string;
+};
+
 export function useCategories() {
-  const [categories, setCategories] = useState<any[]>([]);
-  const [subcategories, setSubcategories] = useState<Record<number, any[]>>({});
+  const [categories, setCategories] = useState<Category[]>([]);
+  const [subcategories, setSubcategories] = useState<Record<number, Subcategory[]>>({});
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -14,10 +44,9 @@ export function useCategories() {
     try {
       const data = await api.getCategories();
       setCategories(data);
-      // Fetch subcategories for each category
-      const subsMap: Record<number, any[]> = {};
+      const subsMap: Record<number, Subcategory[]> = {};
       await Promise.all(
-        data.map(async (cat: any) => {
+        data.map(async (cat: Category) => {
           try {
             const subs = await api.getSubcategories(cat.id);
             subsMap[cat.id] = subs;
@@ -28,8 +57,8 @@ export function useCategories() {
       );
       setSubcategories(subsMap);
       setError(null);
-    } catch (e: any) {
-      setError(e.message);
+    } catch (e) {
+      setError(e instanceof Error ? e.message : "Unknown error");
     } finally {
       setLoading(false);
     }
@@ -37,14 +66,14 @@ export function useCategories() {
 
   useEffect(() => { fetchCategories(); }, [fetchCategories]);
 
-  const createCategory = async (data: any) => {
+  const createCategory = async (data: Omit<Category, "id">) => {
     const created = await api.createCategory(data);
     setCategories((prev) => [...prev, created]);
     setSubcategories((prev) => ({ ...prev, [created.id]: [] }));
     return created;
   };
 
-  const updateCategory = async (id: number, data: any) => {
+  const updateCategory = async (id: number, data: Partial<Category>) => {
     const updated = await api.updateCategory(id, data);
     setCategories((prev) => prev.map((c) => (c.id === id ? { ...c, ...updated } : c)));
     return updated;
@@ -60,7 +89,7 @@ export function useCategories() {
     });
   };
 
-  const createSubcategory = async (categoryId: number, data: any) => {
+  const createSubcategory = async (categoryId: number, data: Omit<Subcategory, "id">) => {
     const created = await api.createSubcategory(categoryId, data);
     setSubcategories((prev) => ({
       ...prev,
@@ -69,7 +98,7 @@ export function useCategories() {
     return created;
   };
 
-  const updateSubcategory = async (id: number, categoryId: number, data: any) => {
+  const updateSubcategory = async (id: number, categoryId: number, data: Partial<Subcategory>) => {
     const updated = await api.updateSubcategory(id, data);
     setSubcategories((prev) => ({
       ...prev,

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { ImageUpload } from "./ImageUpload";
 import { Plus, X } from "lucide-react";
 
@@ -13,6 +13,10 @@ interface MultiImageUploadProps {
 
 export function MultiImageUpload({ value = [], onChange, folder = "uploads", label = "Gallery Images" }: MultiImageUploadProps) {
   const [images, setImages] = useState<string[]>(value);
+
+  useEffect(() => {
+    setImages(value);
+  }, [value]);
 
   const updateImage = (index: number, url: string) => {
     const next = [...images];

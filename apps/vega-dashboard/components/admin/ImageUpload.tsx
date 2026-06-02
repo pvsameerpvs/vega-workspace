@@ -1,7 +1,7 @@
 "use client";
 
-import { useState, useRef } from "react";
-import { Button } from "@vega/ui";
+import { useState, useEffect, useRef } from "react";
+import { useToast } from "@vega/ui";
 import { useUpload } from "@/hooks/use-upload";
 import { Upload, X } from "lucide-react";
 
@@ -13,20 +13,28 @@ interface ImageUploadProps {
 }
 
 export function ImageUpload({ value, onChange, folder = "uploads", label = "Image" }: ImageUploadProps) {
+  const { toast } = useToast();
   const [uploading, setUploading] = useState(false);
   const [preview, setPreview] = useState(value || "");
   const inputRef = useRef<HTMLInputElement>(null);
   const { upload } = useUpload();
 
+  useEffect(() => {
+    setPreview(value || "");
+  }, [value]);
+
   const handleFile = async (file: File) => {
-    if (!file.type.startsWith("image/")) return;
+    if (!file.type.startsWith("image/")) {
+      toast({ title: "Invalid file", description: "Please upload an image file.", variant: "destructive" });
+      return;
+    }
     setUploading(true);
     try {
       const url = await upload(file, folder);
       setPreview(url);
       onChange(url);
     } catch (e) {
-      alert("Upload failed. Please try again.");
+      toast({ title: "Upload failed", description: "Please try again.", variant: "destructive" });
     } finally {
       setUploading(false);
     }
@@ -65,7 +73,14 @@ export function ImageUpload({ value, onChange, folder = "uploads", label = "Imag
         />
         {preview ? (
           <div className="relative">
-            <img src={preview} alt="Preview" className="h-32 w-auto rounded-lg object-cover" />
+            <img
+              src={preview}
+              alt="Preview"
+              draggable={false}
+              onContextMenu={(e) => e.preventDefault()}
+              className="h-32 w-auto rounded-lg object-cover select-none pointer-events-none"
+              style={{ WebkitUserDrag: "none" } as any}
+            />
             <button
               type="button"
               onClick={(e) => { e.stopPropagation(); clear(); }}

@@ -19,6 +19,7 @@ export function ProductTable({ products, loading, onEdit, onDelete, categories =
     const sub = cat.subcategories?.find((s: any) => s.id === subId);
     return sub?.name || subId || "—";
   };
+
   if (loading) {
     return (
       <div className="space-y-3">
@@ -59,7 +60,10 @@ export function ProductTable({ products, loading, onEdit, onDelete, categories =
                 <img
                   src={p.mainImage || p.image || "/images/placeholder.jpg"}
                   alt={p.name}
-                  className="h-10 w-10 rounded-lg object-cover"
+                  draggable={false}
+                  onContextMenu={(e) => e.preventDefault()}
+                  className="h-10 w-10 rounded-lg object-cover select-none pointer-events-none"
+                  style={{ WebkitUserDrag: "none" } as any}
                 />
               </td>
               <td className="px-4 py-3">
@@ -69,7 +73,7 @@ export function ProductTable({ products, loading, onEdit, onDelete, categories =
               <td className="px-4 py-3 text-slate-600">{p.sku}</td>
               <td className="px-4 py-3">
                 <p className="text-slate-900">{getCategoryName(p.categoryId)}</p>
-                {p.subcategoryId && <p className="text-xs text-slate-400">Sub: {p.subcategoryId}</p>}
+                {p.subcategoryId && <p className="text-xs text-slate-400">Sub: {getSubcategoryName(p.subcategoryId, p.categoryId)}</p>}
               </td>
               <td className="px-4 py-3">
                 {p.price && p.showPrice ? (

@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { useTeam } from "@/hooks/use-content";
+import { useTeam } from "@/hooks/use-team";
 import { useToast } from "@vega/ui";
 import { PageHeader } from "@/components/admin/PageHeader";
 import { ImageUpload } from "@/components/admin/ImageUpload";
@@ -10,44 +10,50 @@ import { DeleteDialog } from "@/components/admin/DeleteDialog";
 import { Edit2, Trash2 } from "lucide-react";
 
 export function TeamManager() {
-  const { members, loading, create, update, remove } = useTeam();
+  const { items: members, loading, create, update, remove } = useTeam();
   const { toast } = useToast();
   const [formOpen, setFormOpen] = useState(false);
   const [editMember, setEditMember] = useState<any>(null);
   const [deleteId, setDeleteId] = useState<number | null>(null);
   const [form, setForm] = useState<any>({});
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
 
   const updateForm = (k: string, v: any) => setForm((f: any) => ({ ...f, [k]: v }));
 
-  const openCreate = () => {
-    setEditMember(null);
-    setForm({});
-    setFormOpen(true);
-  };
-
-  const openEdit = (member: any) => {
-    setEditMember(member);
-    setForm({ ...member });
-    setFormOpen(true);
-  };
+  const openCreate = () => { setEditMember(null); setForm({}); setFormOpen(true); };
+  const openEdit = (member: any) => { setEditMember(member); setForm({ ...member }); setFormOpen(true); };
 
   const handleSubmit = async () => {
-    if (editMember) {
-      await update(editMember.id, form);
-      toast({ title: "Team member updated", description: "Changes saved successfully." });
-    } else {
-      await create({ ...form, isActive: true, createdAt: new Date().toISOString() });
-      toast({ title: "Team member added", description: "New member added successfully." });
+    setIsSubmitting(true);
+    try {
+      if (editMember) {
+        await update(editMember.id, form);
+        toast({ title: "Team member updated", description: "Changes saved successfully." });
+      } else {
+        await create({ ...form, isActive: true, createdAt: new Date().toISOString() });
+        toast({ title: "Team member added", description: "New member added successfully." });
+      }
+      setFormOpen(false);
+      setEditMember(null);
+      setForm({});
+    } catch (e) {
+      toast({ title: "Error", description: e instanceof Error ? e.message : "Failed to save.", variant: "destructive" });
+    } finally {
+      setIsSubmitting(false);
     }
-    setFormOpen(false);
-    setEditMember(null);
-    setForm({});
   };
 
   const handleDelete = async () => {
-    if (deleteId) {
+    if (!deleteId) return;
+    setIsDeleting(true);
+    try {
       await remove(deleteId);
       toast({ title: "Deleted", description: "Team member removed." });
+    } catch (e) {
+      toast({ title: "Error", description: e instanceof Error ? e.message : "Failed to delete.", variant: "destructive" });
+    } finally {
+      setIsDeleting(false);
       setDeleteId(null);
     }
   };
@@ -64,44 +70,65 @@ export function TeamManager() {
         <div className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4">
           {members.map((m) => (
             <div key={m.id} className="rounded-xl border bg-white p-4 shadow-sm text-center">
-              <img src={m.photo || "/images/placeholder.jpg"} alt={m.name} className="mx-auto h-20 w-20 rounded-full object-cover" />
+              <img
+                src={m.photo || "/images/placeholder.jpg"}
+                alt={m.name}
+                draggable={false}
+                onContextMenu={(e) => e.preventDefault()}
+                className="mx-auto h-20 w-20 rounded-full object-cover select-none pointer-events-none"
+                style={{ WebkitUserDrag: "none" } as any}
+              />
               <p className="mt-3 font-medium text-slate-900">{m.name}</p>
               <p className="text-xs text-slate-500">{m.designation}</p>
               <p className="text-xs text-slate-400">{m.department}</p>
               <div className="mt-3 flex justify-center gap-2">
-                <button onClick={() => openEdit(m)} className="rounded-md p-1.5 text-slate-400 hover:bg-slate-100 hover:text-vega-blue">
-                  <Edit2 className="h-4 w-4" />
-                </button>
-                <button onClick={() => setDeleteId(m.id)} className="rounded-md p-1.5 text-slate-400 hover:bg-red-50 hover:text-red-500">
-                  <Trash2 className="h-4 w-4" />
-                </button>
+                <button onClick={() => openEdit(m)} className="rounded-md p-1.5 text-slate-400 hover:bg-slate-100 hover:text-vega-blue"><Edit2 className="h-4 w-4" /></button>
+                <button onClick={() => setDeleteId(m.id)} className="rounded-md p-1.5 text-slate-400 hover:bg-red-50 hover:text-red-500"><Trash2 className="h-4 w-4" /></button>
               </div>
             </div>
           ))}
         </div>
       )}
 
-      <FormDialog open={formOpen} onClose={() => { setFormOpen(false); setEditMember(null); setForm({}); }} title={editMember ? "Edit Team Member" : "Add Team Member"} onSubmit={handleSubmit}>
+      <FormDialog open={formOpen} onClose={() => { setFormOpen(false); setEditMember(null); setForm({}); }} title={editMember ? "Edit Team Member" : "Add Team Member"} onSubmit={handleSubmit} loading={isSubmitting}>
         <div className="space-y-4">
-          <div>
-            <label className="mb-1 block text-xs font-semibold text-slate-700">Name</label>
-            <input value={form.name || ""} onChange={(e) => updateForm("name", e.target.value)} className="w-full rounded-md border border-slate-200 px-3 py-2 text-sm focus:border-vega-blue focus:outline-none" placeholder="Full name" />
+          <div className="grid grid-cols-2 gap-3">
+            <div>
+              <label className="mb-1 block text-xs font-semibold text-slate-700">Name</label>
+              <input value={form.name || ""} onChange={(e) => updateForm("name", e.target.value)} className="w-full rounded-md border border-slate-200 px-3 py-2 text-sm focus:border-vega-blue focus:outline-none" placeholder="Full name" />
+            </div>
+            <div>
+              <label className="mb-1 block text-xs font-semibold text-slate-700">Name (Arabic)</label>
+              <input value={form.nameAr || ""} onChange={(e) => updateForm("nameAr", e.target.value)} className="w-full rounded-md border border-slate-200 px-3 py-2 text-sm focus:border-vega-blue focus:outline-none" placeholder="الاسم" />
+            </div>
           </div>
-          <div>
-            <label className="mb-1 block text-xs font-semibold text-slate-700">Name (Arabic)</label>
-            <input value={form.nameAr || ""} onChange={(e) => updateForm("nameAr", e.target.value)} className="w-full rounded-md border border-slate-200 px-3 py-2 text-sm focus:border-vega-blue focus:outline-none" placeholder="الاسم" />
+          <div className="grid grid-cols-2 gap-3">
+            <div>
+              <label className="mb-1 block text-xs font-semibold text-slate-700">Designation</label>
+              <input value={form.designation || ""} onChange={(e) => updateForm("designation", e.target.value)} className="w-full rounded-md border border-slate-200 px-3 py-2 text-sm focus:border-vega-blue focus:outline-none" placeholder="Job title" />
+            </div>
+            <div>
+              <label className="mb-1 block text-xs font-semibold text-slate-700">Designation (Arabic)</label>
+              <input value={form.designationAr || ""} onChange={(e) => updateForm("designationAr", e.target.value)} className="w-full rounded-md border border-slate-200 px-3 py-2 text-sm focus:border-vega-blue focus:outline-none" placeholder="المسمى الوظيفي" />
+            </div>
           </div>
-          <div>
-            <label className="mb-1 block text-xs font-semibold text-slate-700">Designation</label>
-            <input value={form.designation || ""} onChange={(e) => updateForm("designation", e.target.value)} className="w-full rounded-md border border-slate-200 px-3 py-2 text-sm focus:border-vega-blue focus:outline-none" placeholder="Job title" />
-          </div>
-          <div>
-            <label className="mb-1 block text-xs font-semibold text-slate-700">Department</label>
-            <input value={form.department || ""} onChange={(e) => updateForm("department", e.target.value)} className="w-full rounded-md border border-slate-200 px-3 py-2 text-sm focus:border-vega-blue focus:outline-none" placeholder="Department" />
+          <div className="grid grid-cols-2 gap-3">
+            <div>
+              <label className="mb-1 block text-xs font-semibold text-slate-700">Department</label>
+              <input value={form.department || ""} onChange={(e) => updateForm("department", e.target.value)} className="w-full rounded-md border border-slate-200 px-3 py-2 text-sm focus:border-vega-blue focus:outline-none" placeholder="Department" />
+            </div>
+            <div>
+              <label className="mb-1 block text-xs font-semibold text-slate-700">Department (Arabic)</label>
+              <input value={form.departmentAr || ""} onChange={(e) => updateForm("departmentAr", e.target.value)} className="w-full rounded-md border border-slate-200 px-3 py-2 text-sm focus:border-vega-blue focus:outline-none" placeholder="القسم" />
+            </div>
           </div>
           <div>
             <label className="mb-1 block text-xs font-semibold text-slate-700">Bio</label>
             <textarea rows={3} value={form.bio || ""} onChange={(e) => updateForm("bio", e.target.value)} className="w-full rounded-md border border-slate-200 px-3 py-2 text-sm focus:border-vega-blue focus:outline-none" placeholder="Short bio" />
+          </div>
+          <div>
+            <label className="mb-1 block text-xs font-semibold text-slate-700">Bio (Arabic)</label>
+            <textarea rows={3} value={form.bioAr || ""} onChange={(e) => updateForm("bioAr", e.target.value)} className="w-full rounded-md border border-slate-200 px-3 py-2 text-sm focus:border-vega-blue focus:outline-none" placeholder="نبذة مختصرة" />
           </div>
           <div>
             <label className="mb-1 block text-xs font-semibold text-slate-700">Email</label>

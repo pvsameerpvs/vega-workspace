@@ -10,15 +10,16 @@ import { ProductForm } from "./ProductForm";
 import { DeleteDialog } from "@/components/admin/DeleteDialog";
 
 export function ProductManager() {
-  const { products, loading, create, update, remove } = useProducts();
+  const { items: products, loading, create, update, remove } = useProducts();
   const { toast } = useToast();
   const [search, setSearch] = useState("");
   const [formOpen, setFormOpen] = useState(false);
   const [editProduct, setEditProduct] = useState<any>(null);
   const [deleteId, setDeleteId] = useState<number | null>(null);
   const [categories, setCategories] = useState<any[]>([]);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
 
-  // Load categories for display
   useEffect(() => {
     api.getCategories().then(setCategories).catch(() => setCategories([]));
   }, []);
@@ -33,20 +34,34 @@ export function ProductManager() {
   });
 
   const handleSave = async (data: any) => {
-    if (editProduct) {
-      await update(editProduct.id, data);
-      toast({ title: "Product updated", description: `${data.name} has been updated.` });
-    } else {
-      await create(data);
-      toast({ title: "Product created", description: `${data.name} has been added.` });
+    setIsSubmitting(true);
+    try {
+      if (editProduct) {
+        await update(editProduct.id, data);
+        toast({ title: "Product updated", description: `${data.name} has been updated.` });
+      } else {
+        await create(data);
+        toast({ title: "Product created", description: `${data.name} has been added.` });
+      }
+      setEditProduct(null);
+      setFormOpen(false);
+    } catch (e) {
+      toast({ title: "Error", description: e instanceof Error ? e.message : "Failed to save product.", variant: "destructive" });
+    } finally {
+      setIsSubmitting(false);
     }
-    setEditProduct(null);
   };
 
   const handleDelete = async () => {
-    if (deleteId) {
+    if (!deleteId) return;
+    setIsDeleting(true);
+    try {
       await remove(deleteId);
       toast({ title: "Product deleted", description: "The product has been removed." });
+    } catch (e) {
+      toast({ title: "Error", description: e instanceof Error ? e.message : "Failed to delete.", variant: "destructive" });
+    } finally {
+      setIsDeleting(false);
       setDeleteId(null);
     }
   };
@@ -92,6 +107,7 @@ export function ProductManager() {
         }}
         onSubmit={handleSave}
         product={editProduct}
+        loading={isSubmitting}
       />
 
       <DeleteDialog

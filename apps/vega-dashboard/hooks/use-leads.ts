@@ -3,8 +3,25 @@
 import { useState, useEffect, useCallback } from "react";
 import { api } from "@/lib/api";
 
+export type Lead = {
+  id: number;
+  name: string;
+  companyName?: string;
+  email?: string;
+  phone?: string;
+  productName?: string;
+  sku?: string;
+  quantity?: string;
+  location?: string;
+  message?: string;
+  status: string;
+  sourcePage?: string;
+  createdAt?: string;
+  updatedAt?: string;
+};
+
 export function useLeads() {
-  const [leads, setLeads] = useState<any[]>([]);
+  const [leads, setLeads] = useState<Lead[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -14,8 +31,8 @@ export function useLeads() {
       const data = await api.getLeads();
       setLeads(data);
       setError(null);
-    } catch (e: any) {
-      setError(e.message);
+    } catch (e) {
+      setError(e instanceof Error ? e.message : "Unknown error");
     } finally {
       setLoading(false);
     }

@@ -13,6 +13,7 @@ export function LeadManager() {
   const [search, setSearch] = useState("");
   const [statusFilter, setStatusFilter] = useState("");
   const [detailLead, setDetailLead] = useState<any>(null);
+  const [updatingId, setUpdatingId] = useState<number | null>(null);
 
   const filtered = leads.filter((l) => {
     const q = search.toLowerCase();
@@ -26,8 +27,15 @@ export function LeadManager() {
   });
 
   const handleStatusChange = async (id: number, status: string) => {
-    await updateStatus(id, status);
-    toast({ title: "Status updated", description: `Lead status changed to ${status.replace(/_/g, " ")}.` });
+    setUpdatingId(id);
+    try {
+      await updateStatus(id, status);
+      toast({ title: "Status updated", description: `Lead status changed to ${status.replace(/_/g, " ")}.` });
+    } catch (e) {
+      toast({ title: "Error", description: e instanceof Error ? e.message : "Failed to update status.", variant: "destructive" });
+    } finally {
+      setUpdatingId(null);
+    }
   };
 
   return (
@@ -65,6 +73,7 @@ export function LeadManager() {
         loading={loading}
         onStatusChange={handleStatusChange}
         onView={(lead) => setDetailLead(lead)}
+        updatingId={updatingId}
       />
 
       <LeadDetail lead={detailLead} onClose={() => setDetailLead(null)} />

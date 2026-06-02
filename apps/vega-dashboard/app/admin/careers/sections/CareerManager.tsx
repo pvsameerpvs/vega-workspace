@@ -1,12 +1,13 @@
 "use client";
 
 import { useState } from "react";
-import { useCareers } from "@/hooks/use-content";
+import { useCareers } from "@/hooks/use-careers";
 import { useToast } from "@vega/ui";
 import { PageHeader } from "@/components/admin/PageHeader";
 import { StatusBadge } from "@/components/admin/StatusBadge";
 import { FormDialog } from "@/components/admin/FormDialog";
 import { DeleteDialog } from "@/components/admin/DeleteDialog";
+import { JobForm } from "@/components/admin/careers";
 import { Briefcase, Users, Trash2 } from "lucide-react";
 
 export function CareerManager() {
@@ -16,6 +17,8 @@ export function CareerManager() {
   const [formOpen, setFormOpen] = useState(false);
   const [deleteId, setDeleteId] = useState<number | null>(null);
   const [form, setForm] = useState<any>({});
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
 
   const updateForm = (k: string, v: any) => setForm((f: any) => ({ ...f, [k]: v }));
 
@@ -25,16 +28,29 @@ export function CareerManager() {
   ];
 
   const handleCreate = async () => {
-    await create({ ...form, isActive: true, createdAt: new Date().toISOString(), updatedAt: new Date().toISOString() });
-    toast({ title: "Job created", description: "New job listing added successfully." });
-    setFormOpen(false);
-    setForm({});
+    setIsSubmitting(true);
+    try {
+      await create({ ...form, isActive: true, createdAt: new Date().toISOString(), updatedAt: new Date().toISOString() });
+      toast({ title: "Job created", description: "New job listing added successfully." });
+      setFormOpen(false);
+      setForm({});
+    } catch (e) {
+      toast({ title: "Error", description: e instanceof Error ? e.message : "Failed to create job.", variant: "destructive" });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const handleDelete = async () => {
-    if (deleteId) {
+    if (!deleteId) return;
+    setIsDeleting(true);
+    try {
       await remove(deleteId);
       toast({ title: "Deleted", description: "Job listing removed." });
+    } catch (e) {
+      toast({ title: "Error", description: e instanceof Error ? e.message : "Failed to delete.", variant: "destructive" });
+    } finally {
+      setIsDeleting(false);
       setDeleteId(null);
     }
   };
@@ -92,7 +108,7 @@ export function CareerManager() {
                     <td className="px-4 py-3 text-slate-600">{a.position}</td>
                     <td className="px-4 py-3 text-slate-600 max-w-xs truncate">{a.experience}</td>
                     <td className="px-4 py-3"><StatusBadge status={a.status} /></td>
-                    <td className="px-4 py-3 text-slate-400">{new Date(a.createdAt).toLocaleDateString()}</td>
+                    <td className="px-4 py-3 text-slate-400">{a.createdAt ? new Date(a.createdAt).toLocaleDateString() : "—"}</td>
                   </tr>
                 ))}
               </tbody>
@@ -101,49 +117,8 @@ export function CareerManager() {
         )
       )}
 
-      <FormDialog open={formOpen} onClose={() => setFormOpen(false)} title="Add Job Listing" onSubmit={handleCreate}>
-        <div className="space-y-4">
-          <div>
-            <label className="mb-1 block text-xs font-semibold text-slate-700">Title</label>
-            <input value={form.title || ""} onChange={(e) => updateForm("title", e.target.value)} className="w-full rounded-md border border-slate-200 px-3 py-2 text-sm focus:border-vega-blue focus:outline-none" placeholder="Job title" />
-          </div>
-          <div>
-            <label className="mb-1 block text-xs font-semibold text-slate-700">Title (Arabic)</label>
-            <input value={form.titleAr || ""} onChange={(e) => updateForm("titleAr", e.target.value)} className="w-full rounded-md border border-slate-200 px-3 py-2 text-sm focus:border-vega-blue focus:outline-none" placeholder="العنوان" />
-          </div>
-          <div>
-            <label className="mb-1 block text-xs font-semibold text-slate-700">Department</label>
-            <input value={form.department || ""} onChange={(e) => updateForm("department", e.target.value)} className="w-full rounded-md border border-slate-200 px-3 py-2 text-sm focus:border-vega-blue focus:outline-none" placeholder="Department" />
-          </div>
-          <div>
-            <label className="mb-1 block text-xs font-semibold text-slate-700">Location</label>
-            <input value={form.location || ""} onChange={(e) => updateForm("location", e.target.value)} className="w-full rounded-md border border-slate-200 px-3 py-2 text-sm focus:border-vega-blue focus:outline-none" placeholder="e.g. Dubai, UAE" />
-          </div>
-          <div>
-            <label className="mb-1 block text-xs font-semibold text-slate-700">Job Type</label>
-            <input value={form.jobType || ""} onChange={(e) => updateForm("jobType", e.target.value)} className="w-full rounded-md border border-slate-200 px-3 py-2 text-sm focus:border-vega-blue focus:outline-none" placeholder="Full-time, Part-time, etc." />
-          </div>
-          <div>
-            <label className="mb-1 block text-xs font-semibold text-slate-700">Salary Range</label>
-            <input value={form.salaryRange || ""} onChange={(e) => updateForm("salaryRange", e.target.value)} className="w-full rounded-md border border-slate-200 px-3 py-2 text-sm focus:border-vega-blue focus:outline-none" placeholder="e.g. AED 5,000 - 7,000" />
-          </div>
-          <div>
-            <label className="mb-1 block text-xs font-semibold text-slate-700">Description</label>
-            <textarea rows={3} value={form.description || ""} onChange={(e) => updateForm("description", e.target.value)} className="w-full rounded-md border border-slate-200 px-3 py-2 text-sm focus:border-vega-blue focus:outline-none" placeholder="Job description" />
-          </div>
-          <div>
-            <label className="mb-1 block text-xs font-semibold text-slate-700">Requirements</label>
-            <textarea rows={3} value={form.requirements || ""} onChange={(e) => updateForm("requirements", e.target.value)} className="w-full rounded-md border border-slate-200 px-3 py-2 text-sm focus:border-vega-blue focus:outline-none" placeholder="Requirements" />
-          </div>
-          <div>
-            <label className="mb-1 block text-xs font-semibold text-slate-700">Experience Required</label>
-            <input value={form.experienceRequired || ""} onChange={(e) => updateForm("experienceRequired", e.target.value)} className="w-full rounded-md border border-slate-200 px-3 py-2 text-sm focus:border-vega-blue focus:outline-none" placeholder="e.g. 2-3 years" />
-          </div>
-          <div>
-            <label className="mb-1 block text-xs font-semibold text-slate-700">Slug</label>
-            <input value={form.slug || ""} onChange={(e) => updateForm("slug", e.target.value)} className="w-full rounded-md border border-slate-200 px-3 py-2 text-sm focus:border-vega-blue focus:outline-none" placeholder="job-slug" />
-          </div>
-        </div>
+      <FormDialog open={formOpen} onClose={() => setFormOpen(false)} title="Add Job Listing" onSubmit={handleCreate} loading={isSubmitting}>
+        <JobForm form={form} update={updateForm} />
       </FormDialog>
 
       <DeleteDialog open={!!deleteId} onClose={() => setDeleteId(null)} onConfirm={handleDelete} title="Delete Job" />
