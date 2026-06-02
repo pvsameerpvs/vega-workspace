@@ -10,6 +10,7 @@ import { Edit2, Trash2, ChevronDown, ChevronUp } from "lucide-react";
 
 export function FaqManager() {
   const { items: faqs, loading, create, update, remove } = useFaqs();
+  const safeFaqs = Array.isArray(faqs) ? faqs : [];
   const { toast } = useToast();
   const [formOpen, setFormOpen] = useState(false);
   const [editFaq, setEditFaq] = useState<any>(null);
@@ -32,7 +33,7 @@ export function FaqManager() {
         await update(editFaq.id, form);
         toast({ title: "FAQ updated", description: "Changes saved successfully." });
       } else {
-        await create({ ...form, isActive: true, createdAt: new Date().toISOString() });
+        await create({ ...form, isActive: true });
         toast({ title: "FAQ added", description: "New FAQ added successfully." });
       }
       setFormOpen(false);
@@ -65,11 +66,11 @@ export function FaqManager() {
 
       {loading ? (
         <div className="space-y-3">{Array.from({ length: 4 }).map((_, i) => <div key={i} className="h-16 animate-pulse rounded-lg bg-slate-200" />)}</div>
-      ) : faqs.length === 0 ? (
+      ) : safeFaqs.length === 0 ? (
         <div className="rounded-xl border bg-white py-16 text-center"><p className="text-sm text-slate-400">No FAQs found.</p></div>
       ) : (
         <div className="space-y-3">
-          {faqs.map((f) => (
+          {safeFaqs.map((f) => (
             <div key={f.id} className="rounded-xl border bg-white shadow-sm overflow-hidden">
               <button onClick={() => toggle(f.id)} className="flex w-full items-center justify-between p-4 text-left hover:bg-slate-50">
                 <div>

@@ -15,6 +15,7 @@ export const homeBanners = pgTable("home_banners", {
   ctaSecondaryTextAr: varchar("cta_secondary_text_ar", { length: 100 }),
   ctaSecondaryLink: text("cta_secondary_link"),
   displayOrder: integer("display_order").default(0),
+  slideDuration: integer("slide_duration").default(6000),
   isActive: boolean("is_active").notNull().default(true),
   createdAt: timestamp("created_at", { withTimezone: true }).defaultNow(),
   updatedAt: timestamp("updated_at", { withTimezone: true }).defaultNow(),

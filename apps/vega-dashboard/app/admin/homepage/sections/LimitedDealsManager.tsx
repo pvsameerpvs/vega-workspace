@@ -1,17 +1,27 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useToast } from "@vega/ui";
+import { useHomepage } from "@/hooks/use-homepage";
 import { Tag, Plus, Trash2 } from "lucide-react";
+
+const DEFAULT_DEALS = [
+  { id: 1, title: "Exchange Offer", subtitle: "Up to 70% Off", desc: "Honest deals! Big savings on bulk furniture orders.", cta: "Shop Now", bg: "blue", active: true },
+  { id: 2, title: "Jumbo Offer", subtitle: "10% Off", desc: "Discover a wide range of camp & office furniture.", cta: "Shop Now", bg: "yellow", active: true },
+  { id: 3, title: "Add On Sale", subtitle: "Get 10% Off", desc: "Extra discount when you add accessories to your order.", cta: "Shop Now", bg: "blue", active: true },
+  { id: 4, title: "Wedding Package", subtitle: "Special Deal", desc: "Premium VIP poles, barriers & event furniture.", cta: "Shop Now", bg: "blue", active: true },
+];
 
 export function LimitedDealsManager() {
   const { toast } = useToast();
-  const [deals, setDeals] = useState([
-    { id: 1, title: "Exchange Offer", subtitle: "Up to 70% Off", desc: "Honest deals! Big savings on bulk furniture orders.", cta: "Shop Now", bg: "blue", active: true },
-    { id: 2, title: "Jumbo Offer", subtitle: "10% Off", desc: "Discover a wide range of camp & office furniture.", cta: "Shop Now", bg: "yellow", active: true },
-    { id: 3, title: "Add On Sale", subtitle: "Get 10% Off", desc: "Extra discount when you add accessories to your order.", cta: "Shop Now", bg: "blue", active: true },
-    { id: 4, title: "Wedding Package", subtitle: "Special Deal", desc: "Premium VIP poles, barriers & event furniture.", cta: "Shop Now", bg: "blue", active: true },
-  ]);
+  const { config, saving, saveConfig } = useHomepage();
+  const [deals, setDeals] = useState(DEFAULT_DEALS);
+
+  useEffect(() => {
+    if (config?.limitedDeals) {
+      setDeals(config.limitedDeals);
+    }
+  }, [config?.limitedDeals]);
 
   const updateDeal = (id: number, key: string, value: any) => {
     setDeals((prev) => prev.map((d) => (d.id === id ? { ...d, [key]: value } : d)));
@@ -25,8 +35,13 @@ export function LimitedDealsManager() {
     setDeals((prev) => prev.filter((d) => d.id !== id));
   };
 
-  const handleSave = () => {
-    toast({ title: "Saved", description: "Limited deals updated." });
+  const handleSave = async () => {
+    const ok = await saveConfig({ limitedDeals: deals });
+    if (ok) {
+      toast({ title: "Saved", description: "Limited deals updated." });
+    } else {
+      toast({ title: "Error", description: "Failed to save deals.", variant: "destructive" });
+    }
   };
 
   return (
@@ -40,8 +55,8 @@ export function LimitedDealsManager() {
           <button onClick={addDeal} className="flex items-center gap-1 rounded-md border border-slate-200 px-3 py-1.5 text-xs font-medium text-slate-600 hover:bg-slate-50">
             <Plus className="h-3 w-3" /> Add Deal
           </button>
-          <button onClick={handleSave} className="rounded-md bg-vega-blue px-3 py-1.5 text-xs font-semibold text-white hover:bg-vega-blue-dark">
-            Save
+          <button onClick={handleSave} disabled={saving} className="rounded-md bg-vega-blue px-3 py-1.5 text-xs font-semibold text-white hover:bg-vega-blue-dark disabled:opacity-50">
+            {saving ? "Saving..." : "Save"}
           </button>
         </div>
       </div>

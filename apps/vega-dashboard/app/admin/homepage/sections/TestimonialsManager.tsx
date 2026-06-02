@@ -1,16 +1,26 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useToast } from "@vega/ui";
+import { useHomepage } from "@/hooks/use-homepage";
 import { MessageSquare, Star, Plus, Trash2 } from "lucide-react";
+
+const DEFAULT_REVIEWS = [
+  { id: 1, name: "Ahmed Al-Rashid", rating: 5, text: "Vega supplied 200 bunk beds for our labor camp. Quality was excellent and delivery was on time.", active: true },
+  { id: 2, name: "Sara Khan", rating: 5, text: "Professional team and great product range. We ordered queue barriers for our retail stores.", active: true },
+  { id: 3, name: "Mohammed Faizal", rating: 4, text: "Good service and competitive pricing. The office furniture package was exactly what we needed.", active: true },
+];
 
 export function TestimonialsManager() {
   const { toast } = useToast();
-  const [reviews, setReviews] = useState([
-    { id: 1, name: "Ahmed Al-Rashid", rating: 5, text: "Vega supplied 200 bunk beds for our labor camp. Quality was excellent and delivery was on time.", active: true },
-    { id: 2, name: "Sara Khan", rating: 5, text: "Professional team and great product range. We ordered queue barriers for our retail stores.", active: true },
-    { id: 3, name: "Mohammed Faizal", rating: 4, text: "Good service and competitive pricing. The office furniture package was exactly what we needed.", active: true },
-  ]);
+  const { config, saving, saveConfig } = useHomepage();
+  const [reviews, setReviews] = useState(DEFAULT_REVIEWS);
+
+  useEffect(() => {
+    if (config?.testimonials) {
+      setReviews(config.testimonials);
+    }
+  }, [config?.testimonials]);
 
   const updateReview = (id: number, key: string, value: any) => {
     setReviews((prev) => prev.map((r) => (r.id === id ? { ...r, [key]: value } : r)));
@@ -24,8 +34,13 @@ export function TestimonialsManager() {
     setReviews((prev) => prev.filter((r) => r.id !== id));
   };
 
-  const handleSave = () => {
-    toast({ title: "Saved", description: "Testimonials updated." });
+  const handleSave = async () => {
+    const ok = await saveConfig({ testimonials: reviews });
+    if (ok) {
+      toast({ title: "Saved", description: "Testimonials updated." });
+    } else {
+      toast({ title: "Error", description: "Failed to save testimonials.", variant: "destructive" });
+    }
   };
 
   return (
@@ -39,8 +54,8 @@ export function TestimonialsManager() {
           <button onClick={addReview} className="flex items-center gap-1 rounded-md border border-slate-200 px-3 py-1.5 text-xs font-medium text-slate-600 hover:bg-slate-50">
             <Plus className="h-3 w-3" /> Add Review
           </button>
-          <button onClick={handleSave} className="rounded-md bg-vega-blue px-3 py-1.5 text-xs font-semibold text-white hover:bg-vega-blue-dark">
-            Save
+          <button onClick={handleSave} disabled={saving} className="rounded-md bg-vega-blue px-3 py-1.5 text-xs font-semibold text-white hover:bg-vega-blue-dark disabled:opacity-50">
+            {saving ? "Saving..." : "Save"}
           </button>
         </div>
       </div>

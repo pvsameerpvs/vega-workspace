@@ -5,14 +5,11 @@ import { api } from "@/lib/api";
 
 export function useUpload() {
   const upload = useCallback(async (file: File, folder = "uploads") => {
-    const { uploadUrl, publicUrl } = await api.getPresignedUrl(file.name, folder);
-    const res = await fetch(uploadUrl, {
-      method: "PUT",
-      body: file,
-      headers: { "Content-Type": file.type || "application/octet-stream" },
-    });
-    if (!res.ok) throw new Error("Upload failed");
-    return publicUrl;
+    const result = await api.uploadFile(file, folder);
+    if (!result.publicUrl) {
+      throw new Error("Upload succeeded but no public URL was returned");
+    }
+    return result.publicUrl;
   }, []);
 
   return { upload };

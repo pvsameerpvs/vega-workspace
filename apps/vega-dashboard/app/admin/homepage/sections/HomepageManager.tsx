@@ -1,8 +1,9 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useProducts } from "@/hooks/use-products";
 import { useCategories } from "@/hooks/use-categories";
+import { useHomepage } from "@/hooks/use-homepage";
 import { useToast } from "@vega/ui";
 import { PageHeader } from "@/components/admin/PageHeader";
 import { SectionToggle } from "./SectionToggle";
@@ -32,9 +33,16 @@ const defaultSections = {
 export function HomepageManager() {
   const { items: products, loading: productsLoading } = useProducts();
   const { categories, loading: catsLoading } = useCategories();
+  const { config, saving, saveConfig } = useHomepage();
   const { toast } = useToast();
   const [activeTab, setActiveTab] = useState("sections");
-  const [sections, setSections] = useState(defaultSections);
+  const [sections, setSections] = useState<Record<string, boolean>>(defaultSections);
+
+  useEffect(() => {
+    if (config?.sectionVisibility) {
+      setSections((prev) => ({ ...defaultSections, ...config.sectionVisibility }));
+    }
+  }, [config?.sectionVisibility]);
 
   const tabs = [
     { id: "sections", label: "Section Visibility" },
@@ -47,11 +55,16 @@ export function HomepageManager() {
   ];
 
   const toggleSection = (key: string) => {
-    setSections((prev) => ({ ...prev, [key]: !prev[key as keyof typeof prev] }));
+    setSections((prev) => ({ ...prev, [key]: !prev[key] }));
   };
 
-  const handleSave = () => {
-    toast({ title: "Settings saved", description: "Homepage section visibility updated." });
+  const handleSave = async () => {
+    const ok = await saveConfig({ sectionVisibility: sections });
+    if (ok) {
+      toast({ title: "Settings saved", description: "Homepage section visibility updated." });
+    } else {
+      toast({ title: "Error", description: "Failed to save section visibility.", variant: "destructive" });
+    }
   };
 
   const handleReset = () => {
@@ -95,8 +108,8 @@ export function HomepageManager() {
               <button onClick={handleReset} className="flex items-center gap-2 rounded-md border border-slate-200 px-3 py-2 text-xs font-medium text-slate-600 hover:bg-slate-50">
                 <RotateCcw className="h-3 w-3" /> Reset
               </button>
-              <button onClick={handleSave} className="flex items-center gap-2 rounded-md bg-vega-blue px-3 py-2 text-xs font-semibold text-white hover:bg-vega-blue-dark">
-                <Save className="h-3 w-3" /> Save
+              <button onClick={handleSave} disabled={saving} className="flex items-center gap-2 rounded-md bg-vega-blue px-3 py-2 text-xs font-semibold text-white hover:bg-vega-blue-dark disabled:opacity-50">
+                <Save className="h-3 w-3" /> {saving ? "Saving..." : "Save"}
               </button>
             </div>
           </div>

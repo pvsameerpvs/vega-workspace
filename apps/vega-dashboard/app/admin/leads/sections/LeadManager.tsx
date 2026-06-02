@@ -15,7 +15,8 @@ export function LeadManager() {
   const [detailLead, setDetailLead] = useState<any>(null);
   const [updatingId, setUpdatingId] = useState<number | null>(null);
 
-  const filtered = leads.filter((l) => {
+  const safeLeads = Array.isArray(leads) ? leads : [];
+  const filtered = safeLeads.filter((l) => {
     const q = search.toLowerCase();
     const matchesSearch =
       l.name?.toLowerCase().includes(q) ||

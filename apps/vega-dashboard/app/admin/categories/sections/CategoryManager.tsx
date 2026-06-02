@@ -15,6 +15,7 @@ export function CategoryManager() {
     createSubcategory, updateSubcategory, deleteSubcategory,
   } = useCategories();
   const { toast } = useToast();
+  const safeCategories = Array.isArray(categories) ? categories : [];
 
   const [expanded, setExpanded] = useState<Record<number, boolean>>({});
   const [catFormOpen, setCatFormOpen] = useState(false);
@@ -31,7 +32,11 @@ export function CategoryManager() {
   const updateSubForm = (k: string, v: any) => setSubForm((f: any) => ({ ...f, [k]: v }));
 
   const handleCreateCategory = async () => {
-    await createCategory({ ...catForm, isActive: true, createdAt: new Date().toISOString() });
+    if (!catForm.name || !catForm.slug) {
+      toast({ title: "Error", description: "Name and slug are required.", variant: "destructive" });
+      return;
+    }
+    await createCategory({ ...catForm, isActive: true });
     toast({ title: "Category created", description: `${catForm.name} added successfully.` });
     setCatFormOpen(false);
     setCatForm({});
@@ -54,7 +59,11 @@ export function CategoryManager() {
   };
 
   const handleCreateSubcategory = async (categoryId: number) => {
-    await createSubcategory(categoryId, { ...subForm, isActive: true, createdAt: new Date().toISOString() });
+    if (!subForm.name || !subForm.slug) {
+      toast({ title: "Error", description: "Name and slug are required.", variant: "destructive" });
+      return;
+    }
+    await createSubcategory(categoryId, { ...subForm, isActive: true });
     toast({ title: "Subcategory created", description: `${subForm.name} added.` });
     setSubFormOpen(null);
     setSubForm({});
@@ -91,11 +100,11 @@ export function CategoryManager() {
     <div className="p-8">
       <PageHeader title="Category Manager" subtitle="Manage parent categories and child subcategories." actionLabel="Add Category" onAction={() => { setEditCat(null); setCatForm({}); setCatFormOpen(true); }} />
 
-      {categories.length === 0 ? (
+      {safeCategories.length === 0 ? (
         <div className="rounded-xl border bg-white py-16 text-center"><p className="text-sm text-slate-400">No categories found.</p></div>
       ) : (
         <div className="space-y-4">
-          {categories.map((cat) => (
+          {safeCategories.map((cat) => (
             <CategoryCard
               key={cat.id}
               cat={cat}

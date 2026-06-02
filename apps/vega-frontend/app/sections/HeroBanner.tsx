@@ -16,6 +16,7 @@ interface Banner {
   ctaLink?: string;
   ctaSecondaryText?: string;
   ctaSecondaryLink?: string;
+  slideDuration?: number;
   isActive?: boolean;
 }
 
@@ -34,6 +35,7 @@ export function HeroBanner({ banners }: HeroBannerProps) {
     ctaSecondaryText: b.ctaSecondaryText || "View Products",
     ctaSecondaryLink: b.ctaSecondaryLink || "/products",
     image: b.image,
+    slideDuration: b.slideDuration || 6000,
   }));
 
   if (slides.length === 0) return null;
@@ -48,7 +50,7 @@ export function HeroBanner({ banners }: HeroBannerProps) {
         className="w-full"
       >
         {slides.map((slide) => (
-          <SwiperSlide key={slide.id}>
+          <SwiperSlide key={slide.id} data-swiper-autoplay={slide.slideDuration}>
             <div className="relative w-full aspect-[3/4] md:aspect-[16/6] max-h-[600px] md:max-h-[520px]">
               <img
                 src={slide.image}

@@ -1,7 +1,12 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
-import { api } from "@/lib/api";
+import { useState, useEffect, useCallback, useRef } from "react";
+
+function normalizeList(data: any): any[] {
+  if (Array.isArray(data)) return data;
+  if (data && Array.isArray(data.data)) return data.data;
+  return [];
+}
 
 export interface CrudHook<T> {
   items: T[];
@@ -23,18 +28,21 @@ export function useCrud<T extends { id: number }>(
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
+  const fetcherRef = useRef(fetcher);
+  fetcherRef.current = fetcher;
+
   const fetch = useCallback(async () => {
     setLoading(true);
     try {
-      const data = await fetcher();
-      setItems(data);
+      const data = await fetcherRef.current();
+      setItems(normalizeList(data) as T[]);
       setError(null);
     } catch (e) {
       setError(e instanceof Error ? e.message : "Unknown error");
     } finally {
       setLoading(false);
     }
-  }, [fetcher]);
+  }, []);
 
   useEffect(() => { fetch(); }, [fetch]);
 

@@ -31,18 +31,24 @@ router.get("/", async (req, res) => {
 
 router.post("/", async (req, res) => {
   try {
-    const result = await db.insert(categories).values(req.body).returning();
+    const { name, nameAr, slug, description, descriptionAr, image, banner, seoTitle, seoDescription, displayOrder, isActive } = req.body;
+    if (!name || !slug) {
+      return res.status(400).json({ error: "Name and slug are required" });
+    }
+    const result = await db.insert(categories).values({ name, nameAr, slug, description, descriptionAr, image, banner, seoTitle, seoDescription, displayOrder, isActive }).returning();
     return res.status(201).json(result[0]);
-  } catch (error) {
-    res.status(500).json({ error: "Failed to create category" });
+  } catch (error: any) {
+    console.error("Create category error:", error);
+    res.status(500).json({ error: error.message || "Failed to create category" });
   }
 });
 
 router.put("/:id", async (req, res) => {
   try {
+    const { name, nameAr, slug, description, descriptionAr, image, banner, seoTitle, seoDescription, displayOrder, isActive } = req.body;
     const result = await db
       .update(categories)
-      .set(req.body)
+      .set({ name, nameAr, slug, description, descriptionAr, image, banner, seoTitle, seoDescription, displayOrder, isActive })
       .where(eq(categories.id, Number(req.params.id)))
       .returning();
 
@@ -51,8 +57,9 @@ router.put("/:id", async (req, res) => {
     }
 
     return res.json(result[0]);
-  } catch (error) {
-    res.status(500).json({ error: "Failed to update category" });
+  } catch (error: any) {
+    console.error("Update category error:", error);
+    res.status(500).json({ error: error.message || "Failed to update category" });
   }
 });
 
@@ -60,8 +67,9 @@ router.delete("/:id", async (req, res) => {
   try {
     await db.delete(categories).where(eq(categories.id, Number(req.params.id)));
     return res.json({ success: true });
-  } catch (error) {
-    res.status(500).json({ error: "Failed to delete category" });
+  } catch (error: any) {
+    console.error("Delete category error:", error);
+    res.status(500).json({ error: error.message || "Failed to delete category" });
   }
 });
 
@@ -81,19 +89,25 @@ router.get("/:id/subcategories", async (req, res) => {
 
 router.post("/:id/subcategories", async (req, res) => {
   try {
-    const data = { ...req.body, categoryId: Number(req.params.id) };
+    const { name, nameAr, slug, description, descriptionAr, image, seoTitle, seoDescription, displayOrder, isActive } = req.body;
+    if (!name || !slug) {
+      return res.status(400).json({ error: "Name and slug are required" });
+    }
+    const data = { name, nameAr, slug, description, descriptionAr, image, seoTitle, seoDescription, displayOrder, isActive, categoryId: Number(req.params.id) };
     const result = await db.insert(subcategories).values(data).returning();
     return res.status(201).json(result[0]);
-  } catch (error) {
-    res.status(500).json({ error: "Failed to create subcategory" });
+  } catch (error: any) {
+    console.error("Create subcategory error:", error);
+    res.status(500).json({ error: error.message || "Failed to create subcategory" });
   }
 });
 
 router.put("/subcategories/:id", async (req, res) => {
   try {
+    const { name, nameAr, slug, description, descriptionAr, image, seoTitle, seoDescription, displayOrder, isActive } = req.body;
     const result = await db
       .update(subcategories)
-      .set(req.body)
+      .set({ name, nameAr, slug, description, descriptionAr, image, seoTitle, seoDescription, displayOrder, isActive })
       .where(eq(subcategories.id, Number(req.params.id)))
       .returning();
 
@@ -102,8 +116,9 @@ router.put("/subcategories/:id", async (req, res) => {
     }
 
     return res.json(result[0]);
-  } catch (error) {
-    res.status(500).json({ error: "Failed to update subcategory" });
+  } catch (error: any) {
+    console.error("Update subcategory error:", error);
+    res.status(500).json({ error: error.message || "Failed to update subcategory" });
   }
 });
 

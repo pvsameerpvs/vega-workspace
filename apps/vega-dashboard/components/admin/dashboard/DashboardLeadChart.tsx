@@ -18,14 +18,15 @@ interface DashboardLeadChartProps {
   leads: any[];
 }
 
-export function DashboardLeadChart({ leads }: DashboardLeadChartProps) {
+export function DashboardLeadChart({ leads = [] }: DashboardLeadChartProps) {
+  const safeLeads = Array.isArray(leads) ? leads : [];
   const data = [
-    { status: "New", count: leads.filter((l) => l.status === "new").length },
-    { status: "Contacted", count: leads.filter((l) => l.status === "contacted").length },
-    { status: "Quotation", count: leads.filter((l) => l.status === "quotation_sent").length },
-    { status: "Follow Up", count: leads.filter((l) => l.status === "follow_up_required").length },
-    { status: "Closed", count: leads.filter((l) => l.status === "closed").length },
-    { status: "Lost", count: leads.filter((l) => l.status === "lost").length },
+    { status: "New", count: safeLeads.filter((l) => l.status === "new").length },
+    { status: "Contacted", count: safeLeads.filter((l) => l.status === "contacted").length },
+    { status: "Quotation", count: safeLeads.filter((l) => l.status === "quotation_sent").length },
+    { status: "Follow Up", count: safeLeads.filter((l) => l.status === "follow_up_required").length },
+    { status: "Closed", count: safeLeads.filter((l) => l.status === "closed").length },
+    { status: "Lost", count: safeLeads.filter((l) => l.status === "lost").length },
   ];
 
   return (

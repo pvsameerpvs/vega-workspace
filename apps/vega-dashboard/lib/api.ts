@@ -6,8 +6,11 @@ function getAuthHeaders(): Record<string, string> {
 }
 
 async function fetcher<T>(path: string, options?: RequestInit): Promise<T> {
+  const isFormData = options?.body instanceof FormData;
   const res = await fetch(`${API_BASE}${path}`, {
-    headers: { "Content-Type": "application/json", ...getAuthHeaders() },
+    headers: isFormData
+      ? { ...getAuthHeaders() }
+      : { "Content-Type": "application/json", ...getAuthHeaders() },
     ...options,
   });
   if (!res.ok) {
@@ -82,13 +85,35 @@ export const api = {
   // Settings
   getSettings: () => fetcher<any>("/settings"),
   updateSetting: (key: string, value: string) => fetcher<any>(`/settings/${key}`, { method: "PUT", body: JSON.stringify({ value }) }),
+  getHomepageConfig: () => fetcher<any>("/settings/homepage-config"),
+  updateHomepageConfig: (data: any) => fetcher<any>("/settings/homepage-config", { method: "PUT", body: JSON.stringify(data) }),
   createBanner: (data: any) => fetcher<any>("/settings/banner", { method: "POST", body: JSON.stringify(data) }),
   updateBanner: (id: number, data: any) => fetcher<any>(`/settings/banner/${id}`, { method: "PUT", body: JSON.stringify(data) }),
   deleteBanner: (id: number) => fetcher<any>(`/settings/banner/${id}`, { method: "DELETE" }),
   updateCounter: (id: number, data: any) => fetcher<any>(`/settings/counter/${id}`, { method: "PUT", body: JSON.stringify(data) }),
   updateSeo: (id: number, data: any) => fetcher<any>(`/settings/seo/${id}`, { method: "PUT", body: JSON.stringify(data) }),
 
+  // Homepage
+  getHomepageVideos: () => fetcher<any[]>("/homepage/videos"),
+  createHomepageVideo: (data: any) => fetcher<any>("/homepage/videos", { method: "POST", body: JSON.stringify(data) }),
+  updateHomepageVideo: (id: number, data: any) => fetcher<any>(`/homepage/videos/${id}`, { method: "PUT", body: JSON.stringify(data) }),
+  deleteHomepageVideo: (id: number) => fetcher<any>(`/homepage/videos/${id}`, { method: "DELETE" }),
+  getPopularCategories: () => fetcher<any[]>("/homepage/popular-categories"),
+  createPopularCategory: (data: any) => fetcher<any>("/homepage/popular-categories", { method: "POST", body: JSON.stringify(data) }),
+  updatePopularCategory: (id: number, data: any) => fetcher<any>(`/homepage/popular-categories/${id}`, { method: "PUT", body: JSON.stringify(data) }),
+  deletePopularCategory: (id: number) => fetcher<any>(`/homepage/popular-categories/${id}`, { method: "DELETE" }),
+  getIndustries: () => fetcher<any[]>("/homepage/industries"),
+  createIndustry: (data: any) => fetcher<any>("/homepage/industries", { method: "POST", body: JSON.stringify(data) }),
+  updateIndustry: (id: number, data: any) => fetcher<any>(`/homepage/industries/${id}`, { method: "PUT", body: JSON.stringify(data) }),
+  deleteIndustry: (id: number) => fetcher<any>(`/homepage/industries/${id}`, { method: "DELETE" }),
+
   // Upload
   getPresignedUrl: (fileName: string, folder = "uploads") =>
     fetcher<{ uploadUrl: string; publicUrl: string; key: string }>("/upload/presigned", { method: "POST", body: JSON.stringify({ fileName, folder }) }),
+  uploadFile: (file: File, folder = "uploads") => {
+    const formData = new FormData();
+    formData.append("file", file);
+    formData.append("folder", folder);
+    return fetcher<{ publicUrl: string; key: string }>("/upload/file", { method: "POST", body: formData });
+  },
 };

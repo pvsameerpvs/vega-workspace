@@ -34,7 +34,8 @@ export function ImageUpload({ value, onChange, folder = "uploads", label = "Imag
       setPreview(url);
       onChange(url);
     } catch (e) {
-      toast({ title: "Upload failed", description: "Please try again.", variant: "destructive" });
+      const message = e instanceof Error ? e.message : "Please try again.";
+      toast({ title: "Upload failed", description: message, variant: "destructive" });
     } finally {
       setUploading(false);
     }

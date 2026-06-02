@@ -25,6 +25,8 @@ export function ProductCategoryBlock({
   setSelectedCategoryId,
 }: ProductCategoryBlockProps) {
   const { toast } = useToast();
+  const safeCategories = Array.isArray(categories) ? categories : [];
+  const safeSubcategories = Array.isArray(subcategories) ? subcategories : [];
   const [showInlineCategory, setShowInlineCategory] = useState(false);
   const [inlineCatForm, setInlineCatForm] = useState<any>({});
 
@@ -40,7 +42,6 @@ export function ProductCategoryBlock({
       const created = await api.createCategory({
         ...inlineCatForm,
         isActive: true,
-        createdAt: new Date().toISOString(),
       });
       setSelectedCategoryId(created.id);
       update("categoryId", created.id);
@@ -71,7 +72,7 @@ export function ProductCategoryBlock({
         <p className="text-xs font-bold text-amber-700 uppercase tracking-wider">Category Assignment</p>
       </div>
 
-      {categories.length === 0 && !loadingCats && !showInlineCategory && (
+      {safeCategories.length === 0 && !loadingCats && !showInlineCategory && (
         <div className="flex items-center gap-2 rounded-md bg-white p-2 text-sm text-amber-800">
           <AlertCircle className="h-4 w-4" />
           <span>No categories found. Create one first.</span>
@@ -87,7 +88,7 @@ export function ProductCategoryBlock({
             className="h-10 w-full rounded-md border border-slate-200 px-3 text-sm focus:border-vega-blue focus:outline-none bg-white"
           >
             <option value="">{loadingCats ? "Loading..." : "Select a category..."}</option>
-            {categories.map((cat) => (
+            {safeCategories.map((cat) => (
               <option key={cat.id} value={cat.id}>{cat.name}</option>
             ))}
             <option value="__new__">+ Create New Category...</option>
@@ -102,7 +103,7 @@ export function ProductCategoryBlock({
             className="h-10 w-full rounded-md border border-slate-200 px-3 text-sm focus:border-vega-blue focus:outline-none bg-white disabled:bg-slate-100 disabled:text-slate-400"
           >
             <option value="">{selectedCategoryId ? "Select subcategory..." : "First select category"}</option>
-            {subcategories.map((sub) => (
+            {safeSubcategories.map((sub) => (
               <option key={sub.id} value={sub.id}>{sub.name}</option>
             ))}
           </select>

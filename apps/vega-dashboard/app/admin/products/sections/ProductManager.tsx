@@ -24,7 +24,8 @@ export function ProductManager() {
     api.getCategories().then(setCategories).catch(() => setCategories([]));
   }, []);
 
-  const filtered = products.filter((p) => {
+  const safeProducts = Array.isArray(products) ? products : [];
+  const filtered = safeProducts.filter((p) => {
     const q = search.toLowerCase();
     return (
       p.name?.toLowerCase().includes(q) ||

@@ -28,8 +28,9 @@ export function useLeads() {
   const fetchLeads = useCallback(async () => {
     setLoading(true);
     try {
-      const data = await api.getLeads();
-      setLeads(data);
+      const res = await api.getLeads();
+      const list = Array.isArray(res) ? res : (res as any)?.data ?? [];
+      setLeads(list);
       setError(null);
     } catch (e) {
       setError(e instanceof Error ? e.message : "Unknown error");

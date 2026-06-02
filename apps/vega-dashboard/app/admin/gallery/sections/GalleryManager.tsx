@@ -11,6 +11,7 @@ import { Edit2, Trash2 } from "lucide-react";
 
 export function GalleryManager() {
   const { items, loading, create, update, remove } = useGallery();
+  const safeItems = Array.isArray(items) ? items : [];
   const { toast } = useToast();
   const [formOpen, setFormOpen] = useState(false);
   const [editItem, setEditItem] = useState<any>(null);
@@ -31,7 +32,7 @@ export function GalleryManager() {
         await update(editItem.id, form);
         toast({ title: "Gallery item updated", description: "Changes saved successfully." });
       } else {
-        await create({ ...form, isActive: true, createdAt: new Date().toISOString() });
+        await create({ ...form, isActive: true });
         toast({ title: "Gallery item added", description: "The image has been uploaded." });
       }
       setFormOpen(false);
@@ -64,11 +65,11 @@ export function GalleryManager() {
 
       {loading ? (
         <div className="grid grid-cols-2 gap-4 md:grid-cols-4">{Array.from({ length: 4 }).map((_, i) => <div key={i} className="aspect-square animate-pulse rounded-xl bg-slate-200" />)}</div>
-      ) : items.length === 0 ? (
+      ) : safeItems.length === 0 ? (
         <div className="rounded-xl border bg-white py-16 text-center"><p className="text-sm text-slate-400">No gallery items yet.</p></div>
       ) : (
         <div className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4">
-          {items.map((item) => (
+          {safeItems.map((item) => (
             <div key={item.id} className="group relative overflow-hidden rounded-xl border bg-white shadow-sm">
               <img
                 src={item.image}

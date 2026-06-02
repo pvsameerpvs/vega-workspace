@@ -60,8 +60,9 @@ router.post("/jobs", async (req, res) => {
   try {
     const result = await db.insert(careers).values(req.body).returning();
     return res.status(201).json(result[0]);
-  } catch (error) {
-    res.status(500).json({ error: "Failed to create job" });
+  } catch (error: any) {
+    console.error("Create job error:", error);
+    res.status(500).json({ error: error.message || "Failed to create job" });
   }
 });
 

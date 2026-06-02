@@ -42,14 +42,15 @@ export function useCategories() {
   const fetchCategories = useCallback(async () => {
     setLoading(true);
     try {
-      const data = await api.getCategories();
-      setCategories(data);
+      const res = await api.getCategories();
+      const list = Array.isArray(res) ? res : (res as any)?.data ?? [];
+      setCategories(list);
       const subsMap: Record<number, Subcategory[]> = {};
       await Promise.all(
-        data.map(async (cat: Category) => {
+        list.map(async (cat: Category) => {
           try {
             const subs = await api.getSubcategories(cat.id);
-            subsMap[cat.id] = subs;
+            subsMap[cat.id] = Array.isArray(subs) ? subs : (subs as any)?.data ?? [];
           } catch {
             subsMap[cat.id] = [];
           }

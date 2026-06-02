@@ -141,6 +141,7 @@ export function SettingsManager() {
                     ctaSecondaryLink: "",
                     image: "",
                     displayOrder: (settings?.banners?.length || 0) + 1,
+                    slideDuration: 6000,
                     isActive: true,
                   });
                   toast({ title: "Banner created", description: `Banner #${newBanner.id} added.` });

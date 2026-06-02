@@ -19,6 +19,7 @@ const statusOptions = [
 ];
 
 export function LeadTable({ leads, loading, onStatusChange, onView, updatingId }: LeadTableProps) {
+  const safeLeads = Array.isArray(leads) ? leads : [];
   if (loading) {
     return (
       <div className="space-y-3">
@@ -29,7 +30,7 @@ export function LeadTable({ leads, loading, onStatusChange, onView, updatingId }
     );
   }
 
-  if (leads.length === 0) {
+  if (safeLeads.length === 0) {
     return (
       <div className="rounded-xl border border-slate-200 bg-white py-16 text-center">
         <p className="text-sm text-slate-400">No leads found.</p>
@@ -52,7 +53,7 @@ export function LeadTable({ leads, loading, onStatusChange, onView, updatingId }
           </tr>
         </thead>
         <tbody>
-          {leads.map((l) => (
+          {safeLeads.map((l) => (
             <tr key={l.id} className="border-b border-slate-50 transition-colors hover:bg-slate-50/50">
               <td className="px-4 py-3">
                 <p className="font-medium text-slate-900">{l.name}</p>

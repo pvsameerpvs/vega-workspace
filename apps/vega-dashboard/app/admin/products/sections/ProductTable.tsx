@@ -11,7 +11,9 @@ interface ProductTableProps {
 }
 
 export function ProductTable({ products, loading, onEdit, onDelete, categories = [] }: ProductTableProps) {
-  const categoryMap = Object.fromEntries(categories.map((c) => [c.id, c]));
+  const safeProducts = Array.isArray(products) ? products : [];
+  const safeCategories = Array.isArray(categories) ? categories : [];
+  const categoryMap = Object.fromEntries(safeCategories.map((c) => [c.id, c]));
   const getCategoryName = (catId: number | string) => categoryMap[catId]?.name || catId || "—";
   const getSubcategoryName = (subId: number | string, catId: number | string) => {
     const cat = categoryMap[catId];
@@ -30,7 +32,7 @@ export function ProductTable({ products, loading, onEdit, onDelete, categories =
     );
   }
 
-  if (products.length === 0) {
+  if (safeProducts.length === 0) {
     return (
       <div className="rounded-xl border border-slate-200 bg-white py-16 text-center">
         <p className="text-sm text-slate-400">No products found.</p>
@@ -54,7 +56,7 @@ export function ProductTable({ products, loading, onEdit, onDelete, categories =
           </tr>
         </thead>
         <tbody>
-          {products.map((p) => (
+          {safeProducts.map((p) => (
             <tr key={p.id} className="border-b border-slate-50 transition-colors hover:bg-slate-50/50">
               <td className="px-4 py-3">
                 <img

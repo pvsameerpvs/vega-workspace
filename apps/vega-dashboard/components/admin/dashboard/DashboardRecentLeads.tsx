@@ -7,7 +7,8 @@ interface DashboardRecentLeadsProps {
 }
 
 export function DashboardRecentLeads({ leads }: DashboardRecentLeadsProps) {
-  const recent = leads.slice(0, 5);
+  const safeLeads = Array.isArray(leads) ? leads : [];
+  const recent = safeLeads.slice(0, 5);
 
   return (
     <div className="mt-8 rounded-xl border bg-white p-6 shadow-sm">

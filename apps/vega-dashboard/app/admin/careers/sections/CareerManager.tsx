@@ -12,6 +12,8 @@ import { Briefcase, Users, Trash2 } from "lucide-react";
 
 export function CareerManager() {
   const { jobs, applications, loading, create, remove } = useCareers();
+  const safeJobs = Array.isArray(jobs) ? jobs : [];
+  const safeApplications = Array.isArray(applications) ? applications : [];
   const { toast } = useToast();
   const [activeTab, setActiveTab] = useState("jobs");
   const [formOpen, setFormOpen] = useState(false);
@@ -24,13 +26,13 @@ export function CareerManager() {
 
   const tabs = [
     { id: "jobs", label: "Job Listings", icon: Briefcase },
-    { id: "applications", label: `Applications (${applications.length})`, icon: Users },
+    { id: "applications", label: `Applications (${safeApplications.length})`, icon: Users },
   ];
 
   const handleCreate = async () => {
     setIsSubmitting(true);
     try {
-      await create({ ...form, isActive: true, createdAt: new Date().toISOString(), updatedAt: new Date().toISOString() });
+      await create({ ...form, isActive: true });
       toast({ title: "Job created", description: "New job listing added successfully." });
       setFormOpen(false);
       setForm({});
@@ -70,11 +72,11 @@ export function CareerManager() {
       {loading ? (
         <div className="space-y-3">{Array.from({ length: 4 }).map((_, i) => <div key={i} className="h-16 animate-pulse rounded-lg bg-slate-200" />)}</div>
       ) : activeTab === "jobs" ? (
-        jobs.length === 0 ? (
+        safeJobs.length === 0 ? (
           <div className="rounded-xl border bg-white py-16 text-center"><p className="text-sm text-slate-400">No jobs found.</p></div>
         ) : (
           <div className="space-y-3">
-            {jobs.map((j) => (
+            {safeJobs.map((j) => (
               <div key={j.id} className="rounded-xl border bg-white p-4 shadow-sm">
                 <div className="flex items-start justify-between">
                   <div>
@@ -95,14 +97,14 @@ export function CareerManager() {
           </div>
         )
       ) : (
-        applications.length === 0 ? (
+        safeApplications.length === 0 ? (
           <div className="rounded-xl border bg-white py-16 text-center"><p className="text-sm text-slate-400">No applications yet.</p></div>
         ) : (
           <div className="overflow-x-auto rounded-xl border bg-white shadow-sm">
             <table className="w-full text-sm">
               <thead><tr className="border-b bg-slate-50/50"><th className="px-4 py-3 text-left font-semibold text-slate-500">Name</th><th className="px-4 py-3 text-left font-semibold text-slate-500">Position</th><th className="px-4 py-3 text-left font-semibold text-slate-500">Experience</th><th className="px-4 py-3 text-left font-semibold text-slate-500">Status</th><th className="px-4 py-3 text-left font-semibold text-slate-500">Date</th></tr></thead>
               <tbody>
-                {applications.map((a) => (
+                {safeApplications.map((a) => (
                   <tr key={a.id} className="border-b border-slate-50 hover:bg-slate-50/50">
                     <td className="px-4 py-3"><p className="font-medium text-slate-900">{a.fullName}</p><p className="text-xs text-slate-400">{a.email}</p></td>
                     <td className="px-4 py-3 text-slate-600">{a.position}</td>

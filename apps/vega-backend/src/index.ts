@@ -24,7 +24,20 @@ const app = express();
 const PORT = process.env.PORT || 4000;
 
 app.use(helmet());
-app.use(cors({ origin: process.env.FRONTEND_URL || "http://localhost:3000" }));
+const allowedOrigins = [
+  process.env.FRONTEND_URL || "http://localhost:3000",
+  process.env.DASHBOARD_URL || "http://localhost:3001",
+];
+app.use(cors({
+  origin: (origin, callback) => {
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error(`CORS blocked origin: ${origin}`));
+    }
+  },
+  credentials: true,
+}));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 

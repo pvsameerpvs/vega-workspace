@@ -11,6 +11,7 @@ import { Edit2, Trash2 } from "lucide-react";
 
 export function TeamManager() {
   const { items: members, loading, create, update, remove } = useTeam();
+  const safeMembers = Array.isArray(members) ? members : [];
   const { toast } = useToast();
   const [formOpen, setFormOpen] = useState(false);
   const [editMember, setEditMember] = useState<any>(null);
@@ -31,7 +32,7 @@ export function TeamManager() {
         await update(editMember.id, form);
         toast({ title: "Team member updated", description: "Changes saved successfully." });
       } else {
-        await create({ ...form, isActive: true, createdAt: new Date().toISOString() });
+        await create({ ...form, isActive: true });
         toast({ title: "Team member added", description: "New member added successfully." });
       }
       setFormOpen(false);
@@ -64,11 +65,11 @@ export function TeamManager() {
 
       {loading ? (
         <div className="grid grid-cols-2 gap-4 md:grid-cols-3">{Array.from({ length: 3 }).map((_, i) => <div key={i} className="h-48 animate-pulse rounded-xl bg-slate-200" />)}</div>
-      ) : members.length === 0 ? (
+      ) : safeMembers.length === 0 ? (
         <div className="rounded-xl border bg-white py-16 text-center"><p className="text-sm text-slate-400">No team members found.</p></div>
       ) : (
         <div className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4">
-          {members.map((m) => (
+          {safeMembers.map((m) => (
             <div key={m.id} className="rounded-xl border bg-white p-4 shadow-sm text-center">
               <img
                 src={m.photo || ""}

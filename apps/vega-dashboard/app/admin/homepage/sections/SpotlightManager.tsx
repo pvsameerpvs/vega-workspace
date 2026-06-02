@@ -1,7 +1,8 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useToast } from "@vega/ui";
+import { useHomepage } from "@/hooks/use-homepage";
 import { ImageUpload } from "@/components/admin/ImageUpload";
 import { Star } from "lucide-react";
 
@@ -10,29 +11,51 @@ interface SpotlightManagerProps {
   loading: boolean;
 }
 
+const DEFAULT_ITEMS = [
+  { id: 1, categoryId: "", name: "", image: "", position: "large" },
+  { id: 2, categoryId: "", name: "", image: "", position: "small" },
+  { id: 3, categoryId: "", name: "", image: "", position: "small" },
+  { id: 4, categoryId: "", name: "", image: "", position: "small" },
+  { id: 5, categoryId: "", name: "", image: "", position: "small" },
+];
+
 export function SpotlightManager({ categories, loading }: SpotlightManagerProps) {
   const { toast } = useToast();
-  const [items, setItems] = useState<any[]>([
-    { id: 1, categoryId: "", name: "", image: "", position: "large" },
-    { id: 2, categoryId: "", name: "", image: "", position: "small" },
-    { id: 3, categoryId: "", name: "", image: "", position: "small" },
-    { id: 4, categoryId: "", name: "", image: "", position: "small" },
-    { id: 5, categoryId: "", name: "", image: "", position: "small" },
-  ]);
+  const { config, saving, saveConfig } = useHomepage();
+  const safeCategories = Array.isArray(categories) ? categories : [];
+
+  const [items, setItems] = useState<any[]>(DEFAULT_ITEMS);
+
+  useEffect(() => {
+    if (config?.spotlight) {
+      setItems(config.spotlight);
+    }
+  }, [config?.spotlight]);
 
   const updateItem = (id: number, key: string, value: any) => {
     setItems((prev) => prev.map((item) => (item.id === id ? { ...item, [key]: value } : item)));
   };
 
   const handleCategorySelect = (id: number, categoryId: string) => {
-    const cat = categories.find((c) => c.id === Number(categoryId));
+    const cat = safeCategories.find((c) => c.id === Number(categoryId));
     if (cat) {
-      setItems((prev) => prev.map((item) => (item.id === id ? { ...item, categoryId, name: cat.name, image: cat.image || cat.banner } : item)));
+      setItems((prev) =>
+        prev.map((item) =>
+          item.id === id
+            ? { ...item, categoryId, name: cat.name, image: cat.image || cat.banner || "" }
+            : item
+        )
+      );
     }
   };
 
-  const handleSave = () => {
-    toast({ title: "Saved", description: "Spotlight section configuration updated." });
+  const handleSave = async () => {
+    const ok = await saveConfig({ spotlight: items });
+    if (ok) {
+      toast({ title: "Saved", description: "Spotlight section configuration updated." });
+    } else {
+      toast({ title: "Error", description: "Failed to save spotlight config.", variant: "destructive" });
+    }
   };
 
   return (
@@ -42,8 +65,12 @@ export function SpotlightManager({ categories, loading }: SpotlightManagerProps)
           <Star className="h-4 w-4 text-vega-blue" />
           <p className="text-sm font-bold text-slate-900">In the Spotlight — Category Grid</p>
         </div>
-        <button onClick={handleSave} className="rounded-md bg-vega-blue px-3 py-1.5 text-xs font-semibold text-white hover:bg-vega-blue-dark">
-          Save
+        <button
+          onClick={handleSave}
+          disabled={saving}
+          className="rounded-md bg-vega-blue px-3 py-1.5 text-xs font-semibold text-white hover:bg-vega-blue-dark disabled:opacity-50"
+        >
+          {saving ? "Saving..." : "Save"}
         </button>
       </div>
 
@@ -70,7 +97,7 @@ export function SpotlightManager({ categories, loading }: SpotlightManagerProps)
                         className="w-full rounded-md border border-slate-200 px-2 py-1.5 text-sm focus:border-vega-blue focus:outline-none"
                       >
                         <option value="">Select...</option>
-                        {categories.map((cat) => (
+                        {safeCategories.map((cat) => (
                           <option key={cat.id} value={cat.id}>{cat.name}</option>
                         ))}
                       </select>

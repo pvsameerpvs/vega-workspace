@@ -47,8 +47,10 @@ export function useCareers() {
     setLoading(true);
     try {
       const [j, a] = await Promise.all([api.getCareers(), api.getApplications()]);
-      setJobs(j);
-      setApplications(a);
+      const jobsList = Array.isArray(j) ? j : (j as any)?.data ?? [];
+      const appsList = Array.isArray(a) ? a : (a as any)?.data ?? [];
+      setJobs(jobsList);
+      setApplications(appsList);
       setError(null);
     } catch (e) {
       setError(e instanceof Error ? e.message : "Unknown error");

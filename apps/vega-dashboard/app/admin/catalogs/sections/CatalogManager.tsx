@@ -12,6 +12,7 @@ import { Edit2, Trash2, FileText } from "lucide-react";
 
 export function CatalogManager() {
   const { items: catalogs, loading, create, update, remove } = useCatalogs();
+  const safeCatalogs = Array.isArray(catalogs) ? catalogs : [];
   const { toast } = useToast();
   const [formOpen, setFormOpen] = useState(false);
   const [editCatalog, setEditCatalog] = useState<any>(null);
@@ -32,7 +33,7 @@ export function CatalogManager() {
         await update(editCatalog.id, form);
         toast({ title: "Catalog updated", description: "Changes saved successfully." });
       } else {
-        await create({ ...form, isActive: true, createdAt: new Date().toISOString() });
+        await create({ ...form, isActive: true });
         toast({ title: "Catalog added", description: "New catalog uploaded successfully." });
       }
       setFormOpen(false);
@@ -65,11 +66,11 @@ export function CatalogManager() {
 
       {loading ? (
         <div className="space-y-3">{Array.from({ length: 4 }).map((_, i) => <div key={i} className="h-20 animate-pulse rounded-lg bg-slate-200" />)}</div>
-      ) : catalogs.length === 0 ? (
+      ) : safeCatalogs.length === 0 ? (
         <div className="rounded-xl border bg-white py-16 text-center"><p className="text-sm text-slate-400">No catalogs found.</p></div>
       ) : (
         <div className="space-y-3">
-          {catalogs.map((c) => (
+          {safeCatalogs.map((c) => (
             <div key={c.id} className="flex items-center gap-4 rounded-xl border bg-white p-4 shadow-sm">
               <img
                 src={c.coverImage || ""}

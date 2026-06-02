@@ -1,7 +1,8 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useToast } from "@vega/ui";
+import { useHomepage } from "@/hooks/use-homepage";
 import { Badge } from "@vega/ui";
 import { Star } from "lucide-react";
 
@@ -19,6 +20,7 @@ const sections = [
 
 export function FeaturedProductsManager({ products, loading }: FeaturedProductsManagerProps) {
   const { toast } = useToast();
+  const { config, saving, saveConfig } = useHomepage();
   const [activeSection, setActiveSection] = useState("featured");
   const [selectedProducts, setSelectedProducts] = useState<Record<string, number[]>>({
     featured: [],
@@ -28,7 +30,14 @@ export function FeaturedProductsManager({ products, loading }: FeaturedProductsM
   });
   const [search, setSearch] = useState("");
 
-  const filteredProducts = products.filter((p) =>
+  useEffect(() => {
+    if (config?.featuredProducts) {
+      setSelectedProducts(config.featuredProducts);
+    }
+  }, [config?.featuredProducts]);
+
+  const safeProducts = Array.isArray(products) ? products : [];
+  const filteredProducts = safeProducts.filter((p) =>
     p.name?.toLowerCase().includes(search.toLowerCase()) ||
     p.sku?.toLowerCase().includes(search.toLowerCase())
   );
@@ -42,8 +51,13 @@ export function FeaturedProductsManager({ products, loading }: FeaturedProductsM
     });
   };
 
-  const handleSave = () => {
-    toast({ title: "Saved", description: "Product selections updated for homepage sections." });
+  const handleSave = async () => {
+    const ok = await saveConfig({ featuredProducts: selectedProducts });
+    if (ok) {
+      toast({ title: "Saved", description: "Product selections updated for homepage sections." });
+    } else {
+      toast({ title: "Error", description: "Failed to save featured products.", variant: "destructive" });
+    }
   };
 
   const currentSection = sections.find((s) => s.id === activeSection);
@@ -64,8 +78,8 @@ export function FeaturedProductsManager({ products, loading }: FeaturedProductsM
             </button>
           ))}
         </div>
-        <button onClick={handleSave} className="rounded-md bg-vega-blue px-3 py-1.5 text-xs font-semibold text-white hover:bg-vega-blue-dark">
-          Save Selection
+        <button onClick={handleSave} disabled={saving} className="rounded-md bg-vega-blue px-3 py-1.5 text-xs font-semibold text-white hover:bg-vega-blue-dark disabled:opacity-50">
+          {saving ? "Saving..." : "Save Selection"}
         </button>
       </div>
 
@@ -90,6 +104,10 @@ export function FeaturedProductsManager({ products, loading }: FeaturedProductsM
 
         {loading ? (
           <div className="space-y-2">{Array.from({ length: 4 }).map((_, i) => <div key={i} className="h-12 animate-pulse rounded-lg bg-slate-200" />)}</div>
+        ) : filteredProducts.length === 0 ? (
+          <div className="rounded-lg border border-slate-200 bg-white py-12 text-center">
+            <p className="text-sm text-slate-400">No products found.</p>
+          </div>
         ) : (
           <div className="grid grid-cols-1 gap-2 sm:grid-cols-2 lg:grid-cols-3">
             {filteredProducts.map((p) => {

@@ -21,7 +21,8 @@ export function BlogManager() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
 
-  const filtered = blogs.filter((b) =>
+  const safeBlogs = Array.isArray(blogs) ? blogs : [];
+  const filtered = safeBlogs.filter((b) =>
     b.title?.toLowerCase().includes(search.toLowerCase()) ||
     b.category?.toLowerCase().includes(search.toLowerCase())
   );

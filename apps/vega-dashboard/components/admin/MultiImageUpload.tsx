@@ -12,10 +12,11 @@ interface MultiImageUploadProps {
 }
 
 export function MultiImageUpload({ value = [], onChange, folder = "uploads", label = "Gallery Images" }: MultiImageUploadProps) {
-  const [images, setImages] = useState<string[]>(value);
+  const safeValue = Array.isArray(value) ? value : [];
+  const [images, setImages] = useState<string[]>(safeValue);
 
   useEffect(() => {
-    setImages(value);
+    setImages(Array.isArray(value) ? value : []);
   }, [value]);
 
   const updateImage = (index: number, url: string) => {

@@ -42,8 +42,9 @@ router.post("/", async (req, res) => {
   try {
     const result = await db.insert(gallery).values(req.body).returning();
     return res.status(201).json(result[0]);
-  } catch (error) {
-    res.status(500).json({ error: "Failed to create gallery item" });
+  } catch (error: any) {
+    console.error("Create gallery error:", error);
+    res.status(500).json({ error: error.message || "Failed to create gallery item" });
   }
 });
 

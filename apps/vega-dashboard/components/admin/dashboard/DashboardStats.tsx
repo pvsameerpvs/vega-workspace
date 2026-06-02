@@ -11,13 +11,19 @@ interface StatsGridProps {
 }
 
 export function DashboardStats({ products, leads, blogs, gallery, catalogs, team }: StatsGridProps) {
+  const safeProducts = Array.isArray(products) ? products : [];
+  const safeLeads = Array.isArray(leads) ? leads : [];
+  const safeBlogs = Array.isArray(blogs) ? blogs : [];
+  const safeGallery = Array.isArray(gallery) ? gallery : [];
+  const safeCatalogs = Array.isArray(catalogs) ? catalogs : [];
+  const safeTeam = Array.isArray(team) ? team : [];
   const stats = [
-    { label: "Total Products", value: products.length, icon: Package, color: "blue" as const },
-    { label: "Enquiries", value: leads.length, icon: Mail, color: "yellow" as const },
-    { label: "Blogs", value: blogs.length, icon: FileText, color: "violet" as const },
-    { label: "Gallery", value: gallery.length, icon: Image, color: "rose" as const },
-    { label: "Catalogs", value: catalogs.length, icon: BookOpen, color: "green" as const },
-    { label: "Team", value: team.length, icon: Users, color: "amber" as const },
+    { label: "Total Products", value: safeProducts.length, icon: Package, color: "blue" as const },
+    { label: "Enquiries", value: safeLeads.length, icon: Mail, color: "yellow" as const },
+    { label: "Blogs", value: safeBlogs.length, icon: FileText, color: "violet" as const },
+    { label: "Gallery", value: safeGallery.length, icon: Image, color: "rose" as const },
+    { label: "Catalogs", value: safeCatalogs.length, icon: BookOpen, color: "green" as const },
+    { label: "Team", value: safeTeam.length, icon: Users, color: "amber" as const },
   ];
 
   return (
