@@ -20,6 +20,7 @@ export const categories = pgTable(
   },
   (table) => ({
     slugIdx: index("category_slug_idx").on(table.slug),
+    activeOrderIdx: index("category_active_order_idx").on(table.isActive, table.displayOrder),
   })
 );
 
@@ -46,5 +47,6 @@ export const subcategories = pgTable(
   (table) => ({
     slugIdx: index("subcategory_slug_idx").on(table.slug),
     categoryIdx: index("subcategory_category_idx").on(table.categoryId),
+    activeCategoryOrderIdx: index("subcategory_active_cat_order_idx").on(table.isActive, table.categoryId, table.displayOrder),
   })
 );

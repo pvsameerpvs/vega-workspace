@@ -1,4 +1,4 @@
-import { pgTable, serial, varchar, text, timestamp, index } from "drizzle-orm/pg-core";
+import { pgTable, serial, varchar, text, timestamp, index, uniqueIndex } from "drizzle-orm/pg-core";
 import { languageEnum } from "./enums";
 
 export const seoMeta = pgTable(
@@ -20,6 +20,7 @@ export const seoMeta = pgTable(
   },
   (table) => ({
     pageIdx: index("seo_page_idx").on(table.page),
+    pageLangUnique: uniqueIndex("seo_page_lang_unique").on(table.page, table.language),
   })
 );
 
@@ -35,6 +36,7 @@ export const translations = pgTable(
     updatedAt: timestamp("updated_at", { withTimezone: true }).defaultNow(),
   },
   (table) => ({
-    keyLangIdx: index("translation_key_lang_idx").on(table.key, table.language),
+    keyLangUnique: uniqueIndex("translation_key_lang_unique").on(table.key, table.language),
+    groupKeyIdx: index("translation_group_key_idx").on(table.group, table.key),
   })
 );

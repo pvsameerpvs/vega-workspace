@@ -1,6 +1,5 @@
 import { pgTable, serial, varchar, text, integer, boolean, timestamp, jsonb, index } from "drizzle-orm/pg-core";
-import { categories } from "./categories";
-import { subcategories } from "./categories";
+import { categories, subcategories } from "./categories";
 import { productStatusEnum } from "./enums";
 
 export const products = pgTable(
@@ -11,8 +10,8 @@ export const products = pgTable(
     nameAr: varchar("name_ar", { length: 255 }),
     slug: varchar("slug", { length: 255 }).notNull().unique(),
     sku: varchar("sku", { length: 100 }).notNull().unique(),
-    categoryId: integer("category_id").notNull().references(() => categories.id),
-    subcategoryId: integer("subcategory_id").references(() => subcategories.id),
+    categoryId: integer("category_id").notNull().references(() => categories.id, { onDelete: "restrict" }),
+    subcategoryId: integer("subcategory_id").references(() => subcategories.id, { onDelete: "set null" }),
     shortDescription: text("short_description"),
     shortDescriptionAr: text("short_description_ar"),
     fullDescription: text("full_description"),
@@ -56,5 +55,11 @@ export const products = pgTable(
     categoryIdx: index("product_category_idx").on(table.categoryId),
     subcategoryIdx: index("product_subcategory_idx").on(table.subcategoryId),
     statusIdx: index("product_status_idx").on(table.status),
+    featuredIdx: index("product_featured_idx").on(table.isFeatured),
+    popularIdx: index("product_popular_idx").on(table.isPopular),
+    statusFeaturedIdx: index("product_status_featured_idx").on(table.status, table.isFeatured),
+    statusPopularIdx: index("product_status_popular_idx").on(table.status, table.isPopular),
+    statusCategoryIdx: index("product_status_category_idx").on(table.status, table.categoryId),
+    statusCreatedIdx: index("product_status_created_idx").on(table.status, table.createdAt),
   })
 );

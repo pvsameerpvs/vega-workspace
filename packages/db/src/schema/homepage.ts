@@ -1,4 +1,4 @@
-import { pgTable, serial, varchar, text, integer, boolean, timestamp } from "drizzle-orm/pg-core";
+import { pgTable, serial, varchar, text, integer, boolean, timestamp, index } from "drizzle-orm/pg-core";
 
 export const homeBanners = pgTable("home_banners", {
   id: serial("id").primaryKey(),
@@ -17,7 +17,10 @@ export const homeBanners = pgTable("home_banners", {
   displayOrder: integer("display_order").default(0),
   isActive: boolean("is_active").notNull().default(true),
   createdAt: timestamp("created_at", { withTimezone: true }).defaultNow(),
-});
+  updatedAt: timestamp("updated_at", { withTimezone: true }).defaultNow(),
+}, (table) => ({
+  activeOrderIdx: index("banner_active_order_idx").on(table.isActive, table.displayOrder),
+}));
 
 export const homeVideos = pgTable("home_videos", {
   id: serial("id").primaryKey(),
@@ -28,7 +31,10 @@ export const homeVideos = pgTable("home_videos", {
   displayOrder: integer("display_order").default(0),
   isActive: boolean("is_active").notNull().default(true),
   createdAt: timestamp("created_at", { withTimezone: true }).defaultNow(),
-});
+  updatedAt: timestamp("updated_at", { withTimezone: true }).defaultNow(),
+}, (table) => ({
+  activeOrderIdx: index("video_active_order_idx").on(table.isActive, table.displayOrder),
+}));
 
 export const counters = pgTable("counters", {
   id: serial("id").primaryKey(),
@@ -39,7 +45,10 @@ export const counters = pgTable("counters", {
   displayOrder: integer("display_order").default(0),
   isActive: boolean("is_active").notNull().default(true),
   createdAt: timestamp("created_at", { withTimezone: true }).defaultNow(),
-});
+  updatedAt: timestamp("updated_at", { withTimezone: true }).defaultNow(),
+}, (table) => ({
+  activeOrderIdx: index("counter_active_order_idx").on(table.isActive, table.displayOrder),
+}));
 
 export const popularCategories = pgTable("popular_categories", {
   id: serial("id").primaryKey(),
@@ -50,4 +59,7 @@ export const popularCategories = pgTable("popular_categories", {
   displayOrder: integer("display_order").default(0),
   isActive: boolean("is_active").notNull().default(true),
   createdAt: timestamp("created_at", { withTimezone: true }).defaultNow(),
-});
+  updatedAt: timestamp("updated_at", { withTimezone: true }).defaultNow(),
+}, (table) => ({
+  activeOrderIdx: index("popcat_active_order_idx").on(table.isActive, table.displayOrder),
+}));

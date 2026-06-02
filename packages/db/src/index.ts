@@ -1,8 +1,10 @@
-import { drizzle } from "drizzle-orm/postgres-js";
+import { drizzle, PostgresJsDatabase } from "drizzle-orm/postgres-js";
 import postgres from "postgres";
 import * as schema from "./schema";
 
-let db: ReturnType<typeof drizzle> | null = null;
+export type DB = PostgresJsDatabase<typeof schema>;
+
+let db: DB | null = null;
 
 try {
   const connectionString = process.env.DATABASE_URL;
@@ -15,6 +17,5 @@ try {
 }
 
 export { db };
-export type DB = typeof db;
 export * from "./schema";
 export * from "./mock";

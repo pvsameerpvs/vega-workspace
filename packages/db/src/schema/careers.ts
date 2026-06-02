@@ -1,4 +1,5 @@
 import { pgTable, serial, varchar, text, integer, boolean, timestamp, index } from "drizzle-orm/pg-core";
+import { applicationStatusEnum } from "./enums";
 
 export const careers = pgTable(
   "careers",
@@ -22,6 +23,8 @@ export const careers = pgTable(
   },
   (table) => ({
     slugIdx: index("career_slug_idx").on(table.slug),
+    activeDeptIdx: index("career_active_dept_idx").on(table.isActive, table.department),
+    activeCreatedIdx: index("career_active_created_idx").on(table.isActive, table.createdAt),
   })
 );
 
@@ -29,7 +32,7 @@ export const jobApplications = pgTable(
   "job_applications",
   {
     id: serial("id").primaryKey(),
-    careerId: integer("career_id").references(() => careers.id, { onDelete: "cascade" }),
+    careerId: integer("career_id").notNull().references(() => careers.id, { onDelete: "cascade" }),
     fullName: varchar("full_name", { length: 255 }).notNull(),
     email: varchar("email", { length: 255 }).notNull(),
     phone: varchar("phone", { length: 50 }).notNull(),
@@ -37,11 +40,13 @@ export const jobApplications = pgTable(
     experience: text("experience"),
     cvUrl: text("cv_url"),
     message: text("message"),
-    status: varchar("status", { length: 50 }).notNull().default("new"),
+    status: applicationStatusEnum("status").notNull().default("new"),
     createdAt: timestamp("created_at", { withTimezone: true }).defaultNow(),
+    updatedAt: timestamp("updated_at", { withTimezone: true }).defaultNow(),
   },
   (table) => ({
     careerIdx: index("application_career_idx").on(table.careerId),
     emailIdx: index("application_email_idx").on(table.email),
+    statusCreatedIdx: index("application_status_created_idx").on(table.status, table.createdAt),
   })
 );

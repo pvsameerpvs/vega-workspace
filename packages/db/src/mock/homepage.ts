@@ -117,7 +117,7 @@ export const MOCK_COUNTERS = [
 ];
 
 export const MOCK_POPULAR_CATEGORIES = [
-  { id: 1, name: "Bunk Beds", nameAr: "أسرة بطابقين", image: "/images/products/bunk-bed-heavy-duty.jpgs", link: "/products/camp-furniture", displayOrder: 1, isActive: true, createdAt: new Date("2024-01-01") },
+  { id: 1, name: "Bunk Beds", nameAr: "أسرة بطابقين", image: "/images/products/bunk-bed-heavy-duty.jpg", link: "/products/camp-furniture", displayOrder: 1, isActive: true, createdAt: new Date("2024-01-01") },
   { id: 2, name: "Mattresses", nameAr: "مراتب", image: "/images/products/foam-mattress-4-inch.jpg", link: "/products/camp-furniture", displayOrder: 2, isActive: true, createdAt: new Date("2024-01-01") },
   { id: 3, name: "Office Desks", nameAr: "مكاتب", image: "/images/categories/office-desks.jpg", link: "/products/office-furniture", displayOrder: 3, isActive: true, createdAt: new Date("2024-01-01") },
   { id: 4, name: "Plastic Chairs", nameAr: "كراسي بلاستيكية", image: "/images/categories/plastic-chairs.jpg", link: "/products/plastic-furniture", displayOrder: 4, isActive: true, createdAt: new Date("2024-01-01") },

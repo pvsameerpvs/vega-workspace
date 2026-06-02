@@ -70,7 +70,7 @@ export const MOCK_CATEGORIES = [
     slug: "flags-poles",
     description: "Premium flag poles, custom flags, and VIP poles for government, corporate, and event use across the UAE.",
     descriptionAr: "أعمدة أعلام متميزة، أعلام مخصصة، وأعمدة كبار الشخصيات للاستخدام الحكومي والشركات.",
-    image: "/images/products/custom-flag-uae.jpgs+%26+Poles",
+    image: "/images/products/custom-flag-uae.jpg",
     banner: "/images/banners/flags-poles.jpg",
     seoTitle: "Flag Poles & Custom Flags UAE | Installation Available",
     seoDescription: "Gold anodized aluminum flag poles and custom flags for UAE government and corporate clients.",

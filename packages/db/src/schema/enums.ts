@@ -14,6 +14,12 @@ export const productStatusEnum = pgEnum("product_status", [
   "archived",
 ]);
 
+export const publishStatusEnum = pgEnum("publish_status", [
+  "draft",
+  "published",
+  "archived",
+]);
+
 export const leadStatusEnum = pgEnum("lead_status", [
   "new",
   "contacted",
@@ -21,6 +27,16 @@ export const leadStatusEnum = pgEnum("lead_status", [
   "follow_up_required",
   "closed",
   "lost",
+]);
+
+export const applicationStatusEnum = pgEnum("application_status", [
+  "new",
+  "contacted",
+  "reviewing",
+  "shortlisted",
+  "interviewed",
+  "accepted",
+  "rejected",
 ]);
 
 export const languageEnum = pgEnum("language", ["en", "ar"]);
