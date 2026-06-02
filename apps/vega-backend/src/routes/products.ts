@@ -65,6 +65,12 @@ router.get("/:slug", async (req, res) => {
 
 router.post("/", async (req, res) => {
   try {
+    const { name, slug, sku, categoryId } = req.body;
+    if (!name || !slug || !sku || !categoryId) {
+      return res.status(400).json({
+        error: "Name, slug, SKU, and category are required."
+      });
+    }
     const result = await db.insert(products).values(req.body).returning();
     return res.status(201).json(result[0]);
   } catch (error: any) {
@@ -75,6 +81,12 @@ router.post("/", async (req, res) => {
 
 router.put("/:id", async (req, res) => {
   try {
+    const { name, slug, sku } = req.body;
+    if (name === "" || slug === "" || sku === "") {
+      return res.status(400).json({
+        error: "Name, slug, and SKU cannot be empty."
+      });
+    }
     const result = await db
       .update(products)
       .set(req.body)

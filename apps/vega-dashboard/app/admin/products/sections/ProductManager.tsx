@@ -35,6 +35,22 @@ export function ProductManager() {
   });
 
   const handleSave = async (data: any) => {
+    if (!data.name?.trim()) {
+      toast({ title: "Validation Error", description: "Product name is required.", variant: "destructive" });
+      return;
+    }
+    if (!data.slug?.trim()) {
+      toast({ title: "Validation Error", description: "Product slug is required.", variant: "destructive" });
+      return;
+    }
+    if (!data.sku?.trim()) {
+      toast({ title: "Validation Error", description: "Product SKU is required.", variant: "destructive" });
+      return;
+    }
+    if (!data.categoryId) {
+      toast({ title: "Validation Error", description: "Please select a parent category.", variant: "destructive" });
+      return;
+    }
     setIsSubmitting(true);
     try {
       if (editProduct) {

@@ -30,7 +30,8 @@ export function FormDialog({
     setSubmitting(true);
     try {
       await onSubmit();
-      onClose();
+    } catch (err) {
+      throw err;
     } finally {
       setSubmitting(false);
     }
