@@ -107,6 +107,8 @@ export function mapProductToFrontend(p: any) {
     wholesaleDiscountNote: p.wholesaleDiscountNote || "",
     price: p.price || null,
     showPrice: !!p.showPrice,
+    isFeatured: !!p.isFeatured,
+    isPopular: !!p.isPopular,
   };
 }
 
