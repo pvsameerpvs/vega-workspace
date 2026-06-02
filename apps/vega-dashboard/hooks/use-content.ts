@@ -29,12 +29,18 @@ export function useBlog() {
     return created;
   };
 
+  const update = async (id: number, data: any) => {
+    const updated = await api.updateBlog(id, data);
+    setBlogs((prev) => prev.map((b) => (b.id === id ? { ...b, ...updated } : b)));
+    return updated;
+  };
+
   const remove = async (id: number) => {
     await api.deleteBlog(id);
     setBlogs((prev) => prev.filter((b) => b.id !== id));
   };
 
-  return { blogs, loading, error, refresh: fetchBlogs, create, remove };
+  return { blogs, loading, error, refresh: fetchBlogs, create, update, remove };
 }
 
 export function useGallery() {
@@ -63,12 +69,18 @@ export function useGallery() {
     return created;
   };
 
+  const update = async (id: number, data: any) => {
+    const updated = await api.updateGallery(id, data);
+    setItems((prev) => prev.map((g) => (g.id === id ? { ...g, ...updated } : g)));
+    return updated;
+  };
+
   const remove = async (id: number) => {
     await api.deleteGallery(id);
     setItems((prev) => prev.filter((g) => g.id !== id));
   };
 
-  return { items, loading, error, refresh: fetchGallery, create, remove };
+  return { items, loading, error, refresh: fetchGallery, create, update, remove };
 }
 
 export function useCatalogs() {
@@ -97,12 +109,18 @@ export function useCatalogs() {
     return created;
   };
 
+  const update = async (id: number, data: any) => {
+    const updated = await api.updateCatalog(id, data);
+    setCatalogs((prev) => prev.map((c) => (c.id === id ? { ...c, ...updated } : c)));
+    return updated;
+  };
+
   const remove = async (id: number) => {
     await api.deleteCatalog(id);
     setCatalogs((prev) => prev.filter((c) => c.id !== id));
   };
 
-  return { catalogs, loading, error, refresh: fetchCatalogs, create, remove };
+  return { catalogs, loading, error, refresh: fetchCatalogs, create, update, remove };
 }
 
 export function useTeam() {
@@ -131,12 +149,18 @@ export function useTeam() {
     return created;
   };
 
+  const update = async (id: number, data: any) => {
+    const updated = await api.updateTeam(id, data);
+    setMembers((prev) => prev.map((m) => (m.id === id ? { ...m, ...updated } : m)));
+    return updated;
+  };
+
   const remove = async (id: number) => {
     await api.deleteTeam(id);
     setMembers((prev) => prev.filter((m) => m.id !== id));
   };
 
-  return { members, loading, error, refresh: fetchTeam, create, remove };
+  return { members, loading, error, refresh: fetchTeam, create, update, remove };
 }
 
 export function useFaqs() {
@@ -165,12 +189,18 @@ export function useFaqs() {
     return created;
   };
 
+  const update = async (id: number, data: any) => {
+    const updated = await api.updateFaq(id, data);
+    setFaqs((prev) => prev.map((f) => (f.id === id ? { ...f, ...updated } : f)));
+    return updated;
+  };
+
   const remove = async (id: number) => {
     await api.deleteFaq(id);
     setFaqs((prev) => prev.filter((f) => f.id !== id));
   };
 
-  return { faqs, loading, error, refresh: fetchFaqs, create, remove };
+  return { faqs, loading, error, refresh: fetchFaqs, create, update, remove };
 }
 
 export function useCareers() {

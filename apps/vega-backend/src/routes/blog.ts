@@ -45,6 +45,20 @@ router.post("/", async (req, res) => {
   }
 });
 
+router.put("/:id", async (req, res) => {
+  try {
+    if (db) {
+      const result = await db.update(blogs).set(req.body).where(eq(blogs.id, Number(req.params.id))).returning();
+      return res.json(result[0]);
+    }
+    const found = MOCK_BLOGS.find((b) => b.id === Number(req.params.id));
+    if (!found) return res.status(404).json({ error: "Blog not found" });
+    res.json({ ...found, ...req.body });
+  } catch (error) {
+    res.status(500).json({ error: "Failed to update blog" });
+  }
+});
+
 router.delete("/:id", async (req, res) => {
   try {
     if (db) {

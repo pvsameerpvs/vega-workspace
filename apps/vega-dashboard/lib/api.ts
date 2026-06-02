@@ -39,26 +39,31 @@ export const api = {
   getBlogs: () => fetcher<any[]>("/blog"),
   getBlog: (slug: string) => fetcher<any>(`/blog/${slug}`),
   createBlog: (data: any) => fetcher<any>("/blog", { method: "POST", body: JSON.stringify(data) }),
+  updateBlog: (id: number, data: any) => fetcher<any>(`/blog/${id}`, { method: "PUT", body: JSON.stringify(data) }),
   deleteBlog: (id: number) => fetcher<any>(`/blog/${id}`, { method: "DELETE" }),
 
   // Gallery
   getGallery: () => fetcher<any[]>("/gallery"),
   createGallery: (data: any) => fetcher<any>("/gallery", { method: "POST", body: JSON.stringify(data) }),
+  updateGallery: (id: number, data: any) => fetcher<any>(`/gallery/${id}`, { method: "PUT", body: JSON.stringify(data) }),
   deleteGallery: (id: number) => fetcher<any>(`/gallery/${id}`, { method: "DELETE" }),
 
   // Catalogs
   getCatalogs: () => fetcher<any[]>("/catalogs"),
   createCatalog: (data: any) => fetcher<any>("/catalogs", { method: "POST", body: JSON.stringify(data) }),
+  updateCatalog: (id: number, data: any) => fetcher<any>(`/catalogs/${id}`, { method: "PUT", body: JSON.stringify(data) }),
   deleteCatalog: (id: number) => fetcher<any>(`/catalogs/${id}`, { method: "DELETE" }),
 
   // Team
   getTeam: () => fetcher<any[]>("/team"),
   createTeam: (data: any) => fetcher<any>("/team", { method: "POST", body: JSON.stringify(data) }),
+  updateTeam: (id: number, data: any) => fetcher<any>(`/team/${id}`, { method: "PUT", body: JSON.stringify(data) }),
   deleteTeam: (id: number) => fetcher<any>(`/team/${id}`, { method: "DELETE" }),
 
   // FAQs
   getFaqs: () => fetcher<any[]>("/faqs"),
   createFaq: (data: any) => fetcher<any>("/faqs", { method: "POST", body: JSON.stringify(data) }),
+  updateFaq: (id: number, data: any) => fetcher<any>(`/faqs/${id}`, { method: "PUT", body: JSON.stringify(data) }),
   deleteFaq: (id: number) => fetcher<any>(`/faqs/${id}`, { method: "DELETE" }),
 
   // Careers

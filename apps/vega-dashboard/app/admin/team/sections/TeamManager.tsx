@@ -7,21 +7,40 @@ import { PageHeader } from "@/components/admin/PageHeader";
 import { ImageUpload } from "@/components/admin/ImageUpload";
 import { FormDialog } from "@/components/admin/FormDialog";
 import { DeleteDialog } from "@/components/admin/DeleteDialog";
-import { Trash2 } from "lucide-react";
+import { Edit2, Trash2 } from "lucide-react";
 
 export function TeamManager() {
-  const { members, loading, create, remove } = useTeam();
+  const { members, loading, create, update, remove } = useTeam();
   const { toast } = useToast();
   const [formOpen, setFormOpen] = useState(false);
+  const [editMember, setEditMember] = useState<any>(null);
   const [deleteId, setDeleteId] = useState<number | null>(null);
   const [form, setForm] = useState<any>({});
 
   const updateForm = (k: string, v: any) => setForm((f: any) => ({ ...f, [k]: v }));
 
-  const handleCreate = async () => {
-    await create({ ...form, isActive: true, createdAt: new Date().toISOString() });
-    toast({ title: "Team member added", description: "New member added successfully." });
+  const openCreate = () => {
+    setEditMember(null);
+    setForm({});
+    setFormOpen(true);
+  };
+
+  const openEdit = (member: any) => {
+    setEditMember(member);
+    setForm({ ...member });
+    setFormOpen(true);
+  };
+
+  const handleSubmit = async () => {
+    if (editMember) {
+      await update(editMember.id, form);
+      toast({ title: "Team member updated", description: "Changes saved successfully." });
+    } else {
+      await create({ ...form, isActive: true, createdAt: new Date().toISOString() });
+      toast({ title: "Team member added", description: "New member added successfully." });
+    }
     setFormOpen(false);
+    setEditMember(null);
     setForm({});
   };
 
@@ -35,7 +54,7 @@ export function TeamManager() {
 
   return (
     <div className="p-8">
-      <PageHeader title="Team Manager" subtitle="Manage team member profiles and photos." actionLabel="Add Member" onAction={() => setFormOpen(true)} />
+      <PageHeader title="Team Manager" subtitle="Manage team member profiles and photos." actionLabel="Add Member" onAction={openCreate} />
 
       {loading ? (
         <div className="grid grid-cols-2 gap-4 md:grid-cols-3">{Array.from({ length: 3 }).map((_, i) => <div key={i} className="h-48 animate-pulse rounded-xl bg-slate-200" />)}</div>
@@ -49,15 +68,20 @@ export function TeamManager() {
               <p className="mt-3 font-medium text-slate-900">{m.name}</p>
               <p className="text-xs text-slate-500">{m.designation}</p>
               <p className="text-xs text-slate-400">{m.department}</p>
-              <button onClick={() => setDeleteId(m.id)} className="mt-3 rounded-md p-1.5 text-slate-400 hover:bg-red-50 hover:text-red-500 mx-auto">
-                <Trash2 className="h-4 w-4" />
-              </button>
+              <div className="mt-3 flex justify-center gap-2">
+                <button onClick={() => openEdit(m)} className="rounded-md p-1.5 text-slate-400 hover:bg-slate-100 hover:text-vega-blue">
+                  <Edit2 className="h-4 w-4" />
+                </button>
+                <button onClick={() => setDeleteId(m.id)} className="rounded-md p-1.5 text-slate-400 hover:bg-red-50 hover:text-red-500">
+                  <Trash2 className="h-4 w-4" />
+                </button>
+              </div>
             </div>
           ))}
         </div>
       )}
 
-      <FormDialog open={formOpen} onClose={() => setFormOpen(false)} title="Add Team Member" onSubmit={handleCreate}>
+      <FormDialog open={formOpen} onClose={() => { setFormOpen(false); setEditMember(null); setForm({}); }} title={editMember ? "Edit Team Member" : "Add Team Member"} onSubmit={handleSubmit}>
         <div className="space-y-4">
           <div>
             <label className="mb-1 block text-xs font-semibold text-slate-700">Name</label>
@@ -87,7 +111,7 @@ export function TeamManager() {
             <label className="mb-1 block text-xs font-semibold text-slate-700">Display Order</label>
             <input type="number" value={form.displayOrder || 0} onChange={(e) => updateForm("displayOrder", Number(e.target.value))} className="w-full rounded-md border border-slate-200 px-3 py-2 text-sm focus:border-vega-blue focus:outline-none" />
           </div>
-          <ImageUpload folder="team" onChange={(url) => updateForm("photo", url)} label="Photo" />
+          <ImageUpload folder="team" value={form.photo} onChange={(url) => updateForm("photo", url)} label="Photo" />
         </div>
       </FormDialog>
 

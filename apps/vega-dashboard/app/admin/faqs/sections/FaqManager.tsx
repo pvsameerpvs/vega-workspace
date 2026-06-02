@@ -6,12 +6,13 @@ import { useToast } from "@vega/ui";
 import { PageHeader } from "@/components/admin/PageHeader";
 import { FormDialog } from "@/components/admin/FormDialog";
 import { DeleteDialog } from "@/components/admin/DeleteDialog";
-import { Trash2, ChevronDown, ChevronUp } from "lucide-react";
+import { Edit2, Trash2, ChevronDown, ChevronUp } from "lucide-react";
 
 export function FaqManager() {
-  const { faqs, loading, create, remove } = useFaqs();
+  const { faqs, loading, create, update, remove } = useFaqs();
   const { toast } = useToast();
   const [formOpen, setFormOpen] = useState(false);
+  const [editFaq, setEditFaq] = useState<any>(null);
   const [deleteId, setDeleteId] = useState<number | null>(null);
   const [expanded, setExpanded] = useState<Record<number, boolean>>({});
   const [form, setForm] = useState<any>({});
@@ -19,10 +20,28 @@ export function FaqManager() {
   const toggle = (id: number) => setExpanded((prev) => ({ ...prev, [id]: !prev[id] }));
   const updateForm = (k: string, v: any) => setForm((f: any) => ({ ...f, [k]: v }));
 
-  const handleCreate = async () => {
-    await create({ ...form, isActive: true, createdAt: new Date().toISOString() });
-    toast({ title: "FAQ added", description: "New FAQ added successfully." });
+  const openCreate = () => {
+    setEditFaq(null);
+    setForm({});
+    setFormOpen(true);
+  };
+
+  const openEdit = (faq: any) => {
+    setEditFaq(faq);
+    setForm({ ...faq });
+    setFormOpen(true);
+  };
+
+  const handleSubmit = async () => {
+    if (editFaq) {
+      await update(editFaq.id, form);
+      toast({ title: "FAQ updated", description: "Changes saved successfully." });
+    } else {
+      await create({ ...form, isActive: true, createdAt: new Date().toISOString() });
+      toast({ title: "FAQ added", description: "New FAQ added successfully." });
+    }
     setFormOpen(false);
+    setEditFaq(null);
     setForm({});
   };
 
@@ -36,7 +55,7 @@ export function FaqManager() {
 
   return (
     <div className="p-8">
-      <PageHeader title="FAQ Manager" subtitle="Add, edit, and reorder FAQ entries." actionLabel="Add FAQ" onAction={() => setFormOpen(true)} />
+      <PageHeader title="FAQ Manager" subtitle="Add, edit, and reorder FAQ entries." actionLabel="Add FAQ" onAction={openCreate} />
 
       {loading ? (
         <div className="space-y-3">{Array.from({ length: 4 }).map((_, i) => <div key={i} className="h-16 animate-pulse rounded-lg bg-slate-200" />)}</div>
@@ -52,6 +71,9 @@ export function FaqManager() {
                   <p className="text-xs text-slate-400">{f.category} &middot; Order: {f.displayOrder}</p>
                 </div>
                 <div className="flex items-center gap-2">
+                  <button onClick={(e) => { e.stopPropagation(); openEdit(f); }} className="rounded-md p-1.5 text-slate-400 hover:bg-slate-100 hover:text-vega-blue">
+                    <Edit2 className="h-4 w-4" />
+                  </button>
                   <button onClick={(e) => { e.stopPropagation(); setDeleteId(f.id); }} className="rounded-md p-1.5 text-slate-400 hover:bg-red-50 hover:text-red-500">
                     <Trash2 className="h-4 w-4" />
                   </button>
@@ -69,7 +91,7 @@ export function FaqManager() {
         </div>
       )}
 
-      <FormDialog open={formOpen} onClose={() => setFormOpen(false)} title="Add FAQ" onSubmit={handleCreate}>
+      <FormDialog open={formOpen} onClose={() => { setFormOpen(false); setEditFaq(null); setForm({}); }} title={editFaq ? "Edit FAQ" : "Add FAQ"} onSubmit={handleSubmit}>
         <div className="space-y-4">
           <div>
             <label className="mb-1 block text-xs font-semibold text-slate-700">Question</label>
