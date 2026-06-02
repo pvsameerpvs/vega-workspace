@@ -103,7 +103,7 @@ export function FeaturedProductsManager({ products, loading }: FeaturedProductsM
                   }`}
                 >
                   <img
-                    src={p.mainImage || p.image || "/images/placeholder.jpg"}
+                    src={p.mainImage || p.image || ""}
                     alt={p.name}
                     draggable={false}
                     onContextMenu={(e) => e.preventDefault()}

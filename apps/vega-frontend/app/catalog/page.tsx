@@ -1,6 +1,6 @@
 import { Metadata } from "next";
 import { BookOpen } from "lucide-react";
-import { CATALOGS } from "@/lib/data";
+import { getCatalogs } from "@/lib/api";
 import Link from "next/link";
 import { CatalogGrid } from "./sections/CatalogGrid";
 import { CatalogCTA } from "./sections/CatalogCTA";
@@ -10,8 +10,9 @@ export const metadata: Metadata = {
   description: "Download our product catalogs in PDF format. Browse our complete range of furniture, barriers, and industrial supplies.",
 };
 
-export default function CatalogPage() {
-  const categories = Array.from(new Set(CATALOGS.map((c) => c.category)));
+export default async function CatalogPage() {
+  const catalogs = await getCatalogs();
+  const categories = Array.from(new Set(catalogs.map((c: any) => c.category)));
 
   return (
     <main className="pt-36 pb-32">
@@ -55,7 +56,7 @@ export default function CatalogPage() {
 
       {/* Catalog Grid */}
       <div className="mx-auto max-w-7xl px-6">
-        <CatalogGrid />
+        <CatalogGrid catalogs={catalogs} />
       </div>
 
       {/* Bottom CTA */}

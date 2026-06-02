@@ -1,11 +1,14 @@
 import { Download, FileText, Eye } from "lucide-react";
 import { ProtectedImage } from "@/components/ProtectedImage";
-import { CATALOGS } from "@/lib/data";
 
-export function CatalogGrid() {
+interface CatalogGridProps {
+  catalogs: any[];
+}
+
+export function CatalogGrid({ catalogs }: CatalogGridProps) {
   return (
     <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
-      {CATALOGS.map((cat, i) => (
+      {catalogs.map((cat, i) => (
         <div
           key={cat.name}
           id={cat.category?.toLowerCase().replace(/\s+/g, "-")}

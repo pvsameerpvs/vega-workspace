@@ -71,7 +71,7 @@ export function TeamManager() {
           {members.map((m) => (
             <div key={m.id} className="rounded-xl border bg-white p-4 shadow-sm text-center">
               <img
-                src={m.photo || "/images/placeholder.jpg"}
+                src={m.photo || ""}
                 alt={m.name}
                 draggable={false}
                 onContextMenu={(e) => e.preventDefault()}

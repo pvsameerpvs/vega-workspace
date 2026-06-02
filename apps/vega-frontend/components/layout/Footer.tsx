@@ -1,8 +1,10 @@
 import Link from "next/link";
 import { Mail, Phone, MapPin } from "lucide-react";
-import { PRODUCT_CATEGORIES } from "@/lib/data";
+interface FooterProps {
+  categories?: { id: string; name: string; slug: string }[];
+}
 
-export function Footer() {
+export function Footer({ categories = [] }: FooterProps) {
   const year = new Date().getFullYear();
 
   return (
@@ -25,7 +27,7 @@ export function Footer() {
           <div>
             <h4 className="text-sm font-semibold text-white mb-4">Products</h4>
             <ul className="space-y-2">
-              {PRODUCT_CATEGORIES.slice(0, 5).map((cat) => (
+              {categories.slice(0, 5).map((cat) => (
                 <li key={cat.id}>
                   <Link href={`/products/${cat.slug}`} className="text-sm hover:text-[#FFD400] transition-colors">
                     {cat.name}

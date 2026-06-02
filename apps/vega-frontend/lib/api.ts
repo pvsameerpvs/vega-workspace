@@ -86,7 +86,7 @@ export function mapProductToFrontend(p: any) {
     category: p.categoryName || p.category || "",
     subcategory: p.subcategoryName || p.subcategory || "",
     description: p.shortDescription || p.fullDescription || p.description || "",
-    image: p.mainImage || p.image || "/images/placeholder.jpg",
+    image: p.mainImage || p.image || "",
     images: Array.isArray(p.gallery) ? p.gallery : p.images || [],
     color: p.color || "",
     dimensions: p.dimensions || "",
@@ -110,7 +110,7 @@ export function mapCategoryToFrontend(c: any) {
     id: c.slug || String(c.id),
     name: c.name || "",
     slug: c.slug || "",
-    image: c.image || c.banner || "/images/placeholder.jpg",
+    image: c.image || c.banner || "",
     subcategories: Array.isArray(c.subcategories) ? c.subcategories.map((s: any) => s.name || s) : [],
   };
 }
@@ -133,7 +133,7 @@ export function mapGalleryToFrontend(g: any) {
   if (!g) return null;
   return {
     name: g.title || g.name || "",
-    image: g.image || g.url || "/images/placeholder.jpg",
+    image: g.image || g.url || "",
     category: g.category || "",
   };
 }
@@ -160,7 +160,7 @@ export function mapTeamToFrontend(t: any) {
     name: t.name || "",
     designation: t.designation || t.role || "",
     department: t.department || "",
-    photo: t.photo || t.image || "/images/placeholder.jpg",
+    photo: t.photo || t.image || "",
     bio: t.bio || t.description || "",
     email: t.email || "",
     linkedIn: t.linkedIn || "",
@@ -181,7 +181,7 @@ export function mapCatalogToFrontend(c: any) {
   return {
     name: c.title || c.name || "",
     description: c.description || "",
-    coverImage: c.coverImage || c.image || "/images/placeholder.jpg",
+    coverImage: c.coverImage || c.image || "",
     pdfFile: c.pdfFile || c.pdf || "",
     category: c.category || "",
   };

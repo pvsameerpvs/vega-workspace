@@ -3,12 +3,17 @@
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation } from "swiper/modules";
 import { ChevronLeft, ChevronRight } from "lucide-react";
-import { PRODUCTS } from "@/lib/data";
 import { ProductCard } from "@/components/product/ProductCard";
+import { Product } from "@/lib/types";
 import "swiper/css";
 
-export function RecentViewed() {
-  const items = PRODUCTS.slice(20, 28);
+interface RecentViewedProps {
+  products?: Product[];
+}
+
+export function RecentViewed({ products = [] }: RecentViewedProps) {
+  if (products.length === 0) return null;
+
   return (
     <section className="py-12 bg-white">
       <div className="mx-auto max-w-7xl px-4">
@@ -30,7 +35,7 @@ export function RecentViewed() {
           slidesPerView={2}
           breakpoints={{ 640: { slidesPerView: 3 }, 1024: { slidesPerView: 4 } }}
         >
-          {items.map((p) => (
+          {products.map((p) => (
             <SwiperSlide key={p.id}>
               <ProductCard product={p} />
             </SwiperSlide>

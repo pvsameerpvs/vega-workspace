@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Inter, Poppins, Cairo } from "next/font/google";
 import "./globals.css";
 import { Navbar, Footer } from "@/components/layout";
+import { getCategories } from "@/lib/api";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
 const poppins = Poppins({
@@ -35,19 +36,21 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
   params: { locale = "en" },
 }: {
   children: React.ReactNode;
   params: { locale?: string };
 }) {
+  const categories = await getCategories();
+
   return (
     <html lang={locale} dir={locale === "ar" ? "rtl" : "ltr"}>
       <body className={`${inter.variable} ${poppins.variable} ${cairo.variable} font-sans antialiased pt-28`}>
-        <Navbar />
+        <Navbar categories={categories || []} />
         {children}
-        <Footer />
+        <Footer categories={categories || []} />
       </body>
     </html>
   );

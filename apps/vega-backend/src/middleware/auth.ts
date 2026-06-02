@@ -1,7 +1,5 @@
 import { Request, Response, NextFunction } from "express";
 import jwt from "jsonwebtoken";
-import { db, users } from "@vega/db";
-import { eq } from "drizzle-orm";
 
 export interface AuthRequest extends Request {
   user?: {

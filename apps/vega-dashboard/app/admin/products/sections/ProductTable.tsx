@@ -58,7 +58,7 @@ export function ProductTable({ products, loading, onEdit, onDelete, categories =
             <tr key={p.id} className="border-b border-slate-50 transition-colors hover:bg-slate-50/50">
               <td className="px-4 py-3">
                 <img
-                  src={p.mainImage || p.image || "/images/placeholder.jpg"}
+                  src={p.mainImage || p.image || ""}
                   alt={p.name}
                   draggable={false}
                   onContextMenu={(e) => e.preventDefault()}

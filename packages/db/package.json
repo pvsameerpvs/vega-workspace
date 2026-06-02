@@ -12,6 +12,7 @@
     "type-check": "tsc --noEmit"
   },
   "dependencies": {
+    "dotenv": "^16.4.0",
     "drizzle-orm": "^0.30.0",
     "postgres": "^3.4.0"
   },

@@ -51,7 +51,7 @@ export function CategoryCard({
     <div className="rounded-xl border bg-white shadow-sm overflow-hidden">
       <div className="flex items-center gap-4 p-4">
         <img
-          src={cat.image || "/images/placeholder.jpg"}
+          src={cat.image || ""}
           alt={cat.name}
           draggable={false}
           onContextMenu={(e) => e.preventDefault()}
@@ -88,7 +88,7 @@ export function CategoryCard({
               {subs.map((sub) => (
                 <div key={sub.id} className="flex items-center gap-3 rounded-lg border bg-white p-3 shadow-sm">
                   <img
-                    src={sub.image || "/images/placeholder.jpg"}
+                    src={sub.image || ""}
                     alt={sub.name}
                     draggable={false}
                     onContextMenu={(e) => e.preventDefault()}

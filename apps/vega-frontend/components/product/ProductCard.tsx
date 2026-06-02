@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { Eye } from "lucide-react";
 import { WhatsAppIcon } from "@/components/icons/WhatsAppIcon";
-import { Product } from "@/lib/data/types";
+import { Product } from "@/lib/types";
 
 interface ProductCardProps {
   product: Product;

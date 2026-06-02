@@ -2,7 +2,7 @@ import { Metadata } from "next";
 import Link from "next/link";
 import { ArrowLeft, Calendar, User, ArrowRight } from "lucide-react";
 import { ProtectedImage } from "@/components/ProtectedImage";
-import { BLOGS } from "@/lib/data";
+import { getBlogPosts } from "@/lib/api";
 import { WhatsAppIcon } from "@/components/icons/WhatsAppIcon";
 import { BlogSidebar } from "./sections/BlogSidebar";
 
@@ -11,22 +11,24 @@ export async function generateMetadata({
 }: {
   params: { slug: string };
 }): Promise<Metadata> {
-  const blog = BLOGS.find((b) => b.slug === params.slug);
+  const blogs = await getBlogPosts();
+  const blog = blogs.find((b: any) => b.slug === params.slug);
   return {
     title: `${blog?.title || params.slug.replace(/-/g, " ")} | Vega Blog`,
     description: blog?.excerpt || "Read the full article on Vega blog.",
   };
 }
 
-export default function BlogPostPage({ params }: { params: { slug: string } }) {
-  const blog = BLOGS.find((b) => b.slug === params.slug);
+export default async function BlogPostPage({ params }: { params: { slug: string } }) {
+  const blogs = await getBlogPosts();
+  const blog = blogs.find((b: any) => b.slug === params.slug);
   const title = blog?.title || params.slug.replace(/-/g, " ");
   const content =
     blog?.content ||
     "Full blog content will be added soon. Stay tuned for detailed insights and updates from the Vega team.";
-  const date = blog?.date || "June 2025";
+  const date = blog?.publishDate ? new Date(blog.publishDate).toLocaleDateString() : blog?.createdAt ? new Date(blog.createdAt).toLocaleDateString() : "June 2025";
   const author = blog?.author || "Vega Team";
-  const image = blog?.featuredImage || `/images/blog/placeholder.jpg`;
+  const image = blog?.featuredImage || "";
   const category = blog?.category || "General";
 
   return (

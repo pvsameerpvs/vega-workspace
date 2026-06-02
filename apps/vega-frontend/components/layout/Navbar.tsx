@@ -5,9 +5,11 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { ChevronDown, Menu, X, Search, Phone, Mail, Star } from "lucide-react";
 import { WhatsAppIcon } from "@/components/icons/WhatsAppIcon";
-import { PRODUCT_CATEGORIES } from "@/lib/data";
+interface NavbarProps {
+  categories?: { id: string; name: string; slug: string; subcategories?: string[] }[];
+}
 
-export function Navbar() {
+export function Navbar({ categories = [] }: NavbarProps) {
   const [mega, setMega] = useState<string | null>(null);
   const [mobile, setMobile] = useState(false);
   const [scrolled, setScrolled] = useState(false);
@@ -81,12 +83,12 @@ export function Navbar() {
                 <div className="absolute left-1/2 top-full -translate-x-1/2 pt-3">
                   <div className="w-[720px] rounded-2xl bg-white p-6 shadow-elevated border border-slate-100 animate-scale-in origin-top">
                     <div className="grid grid-cols-4 gap-5">
-                      {PRODUCT_CATEGORIES.map((cat) => (
+                      {categories.map((cat) => (
                         <div key={cat.id}>
                           <Link href={`/products/${cat.slug}`} className="block text-sm font-bold text-[#1F3A93] mb-2 hover:text-[#162d70] transition-colors">{cat.name}</Link>
                           <ul className="space-y-1">
-                            {cat.subcategories.slice(0, 4).map((sub) => (
-                              <li key={sub}><span className="text-xs text-slate-400">{sub}</span></li>
+                            {(cat.subcategories || []).slice(0, 4).map((sub, idx) => (
+                              <li key={idx}><span className="text-xs text-slate-400">{sub}</span></li>
                             ))}
                           </ul>
                         </div>
@@ -118,7 +120,7 @@ export function Navbar() {
             <Link href="/" className="block py-3 text-sm font-bold text-white" onClick={() => setMobile(false)}>Home</Link>
             <div className="py-3 border-t border-white/10">
               <span className="text-xs font-bold text-white/40 uppercase mb-2 block">Products</span>
-              {PRODUCT_CATEGORIES.map((cat) => (
+              {categories.map((cat) => (
                 <Link key={cat.id} href={`/products/${cat.slug}`} className="block py-2 text-sm text-white/70" onClick={() => setMobile(false)}>{cat.name}</Link>
               ))}
             </div>

@@ -3,7 +3,6 @@
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay, Pagination } from "swiper/modules";
 import Link from "next/link";
-import { HERO_SLIDES } from "@/lib/data";
 import { ArrowRight } from "lucide-react";
 import "swiper/css";
 import "swiper/css/pagination";
@@ -26,18 +25,18 @@ interface HeroBannerProps {
 
 export function HeroBanner({ banners }: HeroBannerProps) {
   const activeBanners = banners?.filter((b) => b.isActive && b.image) || [];
-  const slides = activeBanners.length > 0
-    ? activeBanners.map((b) => ({
-        id: String(b.id),
-        title: b.title || "",
-        subtitle: b.subtitle || "",
-        ctaText: b.ctaText || "Request a Quote",
-        ctaLink: b.ctaLink || "/contact-us",
-        ctaSecondaryText: b.ctaSecondaryText || "View Products",
-        ctaSecondaryLink: b.ctaSecondaryLink || "/products",
-        image: b.image,
-      }))
-    : HERO_SLIDES;
+  const slides = activeBanners.map((b) => ({
+    id: String(b.id),
+    title: b.title || "",
+    subtitle: b.subtitle || "",
+    ctaText: b.ctaText || "Request a Quote",
+    ctaLink: b.ctaLink || "/contact-us",
+    ctaSecondaryText: b.ctaSecondaryText || "View Products",
+    ctaSecondaryLink: b.ctaSecondaryLink || "/products",
+    image: b.image,
+  }));
+
+  if (slides.length === 0) return null;
 
   return (
     <section className="relative overflow-hidden">

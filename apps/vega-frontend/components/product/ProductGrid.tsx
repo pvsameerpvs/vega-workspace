@@ -1,6 +1,6 @@
 "use client";
 
-import { Product } from "@/lib/data";
+import { Product } from "@/lib/types";
 import { getWhatsAppLink } from "@/lib/whatsapp";
 import Link from "next/link";
 import { ArrowUpRight, Eye } from "lucide-react";

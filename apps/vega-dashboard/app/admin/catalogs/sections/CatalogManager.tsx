@@ -72,7 +72,7 @@ export function CatalogManager() {
           {catalogs.map((c) => (
             <div key={c.id} className="flex items-center gap-4 rounded-xl border bg-white p-4 shadow-sm">
               <img
-                src={c.coverImage || "/images/placeholder.jpg"}
+                src={c.coverImage || ""}
                 alt={c.title}
                 draggable={false}
                 onContextMenu={(e) => e.preventDefault()}

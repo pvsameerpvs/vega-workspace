@@ -1,18 +1,19 @@
 import Link from "next/link";
-import { BLOGS } from "@/lib/data";
+import { getBlogPosts } from "@/lib/api";
 
 interface BlogSidebarProps {
   currentSlug: string;
   category: string;
 }
 
-export function BlogSidebar({ currentSlug, category }: BlogSidebarProps) {
-  const related = BLOGS.filter(
-    (b) => b.category === category && b.slug !== currentSlug
+export async function BlogSidebar({ currentSlug, category }: BlogSidebarProps) {
+  const blogs = await getBlogPosts();
+  const related = blogs.filter(
+    (b: any) => b.category === category && b.slug !== currentSlug
   ).slice(0, 3);
 
   const categories = Array.from(
-    new Set(BLOGS.map((b) => b.category).filter(Boolean))
+    new Set(blogs.map((b: any) => b.category).filter(Boolean))
   );
 
   return (
@@ -45,7 +46,7 @@ export function BlogSidebar({ currentSlug, category }: BlogSidebarProps) {
                     {post.title}
                   </h4>
                   <span className="text-xs text-slate-400 mt-1 block">
-                    {post.date}
+                    {post.publishDate ? new Date(post.publishDate).toLocaleDateString() : post.createdAt ? new Date(post.createdAt).toLocaleDateString() : ""}
                   </span>
                 </div>
               </Link>

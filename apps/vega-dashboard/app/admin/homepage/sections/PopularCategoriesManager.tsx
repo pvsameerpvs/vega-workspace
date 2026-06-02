@@ -49,7 +49,7 @@ export function PopularCategoriesManager({ categories, loading }: PopularCategor
               <div key={cat.id} className="flex items-center gap-3 rounded-lg border border-slate-200 p-2">
                 <input type="checkbox" className="h-4 w-4" defaultChecked={index < 8} />
                 <img
-                  src={cat.image || "/images/placeholder.jpg"}
+                  src={cat.image || ""}
                   alt={cat.name}
                   draggable={false}
                   onContextMenu={(e) => e.preventDefault()}

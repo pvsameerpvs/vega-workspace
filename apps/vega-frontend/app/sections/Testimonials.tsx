@@ -3,7 +3,6 @@
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation } from "swiper/modules";
 import { ChevronLeft, ChevronRight, Star, Quote } from "lucide-react";
-import { GOOGLE_REVIEWS } from "@/lib/data";
 import "swiper/css";
 
 function getInitials(name: string) {
@@ -26,7 +25,19 @@ const AVATAR_COLORS = [
   "bg-teal-600 text-white",
 ];
 
-export function Testimonials() {
+interface Testimonial {
+  name: string;
+  rating: number;
+  text: string;
+}
+
+interface TestimonialsProps {
+  reviews?: Testimonial[];
+}
+
+export function Testimonials({ reviews = [] }: TestimonialsProps) {
+  if (reviews.length === 0) return null;
+
   return (
     <section className="py-16 bg-slate-50">
       <div className="mx-auto max-w-7xl px-4">
@@ -76,7 +87,7 @@ export function Testimonials() {
             1280: { slidesPerView: 4 },
           }}
         >
-          {GOOGLE_REVIEWS.map((review, i) => (
+          {reviews.map((review, i) => (
             <SwiperSlide key={i}>
               <div className="bg-white rounded-xl border border-slate-100 p-5 h-full flex flex-col shadow-sm hover:shadow-md transition-shadow">
                 {/* Header */}
