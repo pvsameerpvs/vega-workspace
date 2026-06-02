@@ -11,7 +11,7 @@ export const metadata: Metadata = {
 
 export default async function AboutUsPage() {
   const [team, counters] = await Promise.all([getTeam(), getCounters()]);
-  const mappedTeam = team.map(mapTeamToFrontend).filter(Boolean);
+  const mappedTeam = (team || []).map(mapTeamToFrontend).filter(Boolean) as any[];
   const mappedCounters = counters.filter(Boolean);
 
   const stats = mappedCounters.length > 0

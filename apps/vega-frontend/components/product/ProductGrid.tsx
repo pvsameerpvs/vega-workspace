@@ -107,7 +107,7 @@ export function ProductGrid({ products }: ProductGridProps) {
               <div className="mb-4 h-px bg-slate-100" />
 
               {/* Action Buttons */}
-              <div className="flex items-center gap-3">
+              <div className="flex flex-col sm:flex-row items-stretch gap-3">
                 <Link
                   href={`/products/${product.slug}`}
                   className="flex-1 inline-flex items-center justify-center gap-1.5 rounded-full border border-slate-200 px-4 py-2.5 text-xs font-bold text-vega-blue transition-all duration-300 hover:border-vega-blue hover:bg-vega-blue hover:text-white hover:shadow-md font-heading"

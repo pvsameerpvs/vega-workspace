@@ -4,7 +4,7 @@ import { getCategories, mapCategoryToFrontend } from "@/lib/api";
 
 export async function PopularCategories() {
   const categories = await getCategories();
-  const mapped = categories.map(mapCategoryToFrontend).filter(Boolean);
+  const mapped = (categories || []).map(mapCategoryToFrontend).filter(Boolean) as any[];
 
   return (
     <section className="py-12 bg-white">

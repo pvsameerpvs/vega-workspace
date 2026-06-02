@@ -13,7 +13,7 @@ export function BestSellers() {
 
   useEffect(() => {
     getProducts().then((data) => {
-      const mapped = data.map(mapProductToFrontend).filter(Boolean);
+      const mapped = (data || []).map(mapProductToFrontend).filter(Boolean) as any[];
       setItems(mapped.filter((p: any) => p.isPopular).slice(0, 8));
     });
   }, []);

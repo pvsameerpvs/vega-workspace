@@ -12,7 +12,7 @@ export const metadata: Metadata = {
 
 export default async function CareersPage() {
   const jobs = await getCareers();
-  const mapped = jobs.map(mapCareerToFrontend).filter(Boolean);
+  const mapped = (jobs || []).map(mapCareerToFrontend).filter(Boolean) as any[];
 
   return (
     <main className="pt-36 pb-32">

@@ -9,7 +9,7 @@ export const metadata: Metadata = {
 
 export default async function GalleryPage() {
   const items = await getGallery();
-  const mapped = items.map(mapGalleryToFrontend).filter(Boolean);
+  const mapped = (items || []).map(mapGalleryToFrontend).filter(Boolean) as any[];
 
   return (
     <main className="pt-36 pb-32">

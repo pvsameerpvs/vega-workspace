@@ -14,7 +14,7 @@ export function FeaturedProducts() {
 
   useEffect(() => {
     getProducts().then((data) => {
-      const mapped = data.map(mapProductToFrontend).filter(Boolean);
+      const mapped = (data || []).map(mapProductToFrontend).filter(Boolean) as any[];
       setProducts(mapped.filter((p: any) => p.isFeatured).slice(0, 8));
     });
   }, []);

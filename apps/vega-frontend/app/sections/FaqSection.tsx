@@ -10,7 +10,7 @@ export function FaqSection() {
 
   useEffect(() => {
     getFaqs().then((data) => {
-      const mapped = data.map(mapFaqToFrontend).filter(Boolean);
+      const mapped = (data || []).map(mapFaqToFrontend).filter(Boolean) as any[];
       setFaqs(mapped);
     });
   }, []);

@@ -10,7 +10,7 @@ export const metadata: Metadata = {
 
 export default async function BlogPage() {
   const blogs = await getBlogPosts();
-  const mapped = blogs.map(mapBlogToFrontend).filter(Boolean);
+  const mapped = (blogs || []).map(mapBlogToFrontend).filter(Boolean) as any[];
 
   const featured = mapped[0];
   const remaining = mapped.slice(1);

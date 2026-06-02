@@ -19,7 +19,7 @@ export async function generateMetadata({
   params: { slug: string };
 }): Promise<Metadata> {
   const all = await getProducts();
-  const p = all.find((x: any) => x.slug === params.slug);
+  const p = (all || []).find((x: any) => x.slug === params.slug);
   if (p) {
     return {
       title: `${p.name} | Vega UAE`,
@@ -42,8 +42,8 @@ export default async function ProductOrCategoryPage({
     getCategories(),
   ]);
 
-  const mappedProducts = products.map(mapProductToFrontend).filter(Boolean);
-  const mappedCategories = categories.map(mapCategoryToFrontend).filter(Boolean);
+  const mappedProducts = (products || []).map(mapProductToFrontend).filter(Boolean) as any[];
+  const mappedCategories = (categories || []).map(mapCategoryToFrontend).filter(Boolean) as any[];
 
   const category = mappedCategories.find((c) => c.slug === params.slug);
   const product = mappedProducts.find((p) => p.slug === params.slug);

@@ -35,11 +35,11 @@ export function ProductCard({ product, tag, tagColor = "bg-[#1F3A93]" }: Product
         <Link href={`/products/${product.slug}`} className="block text-sm font-semibold text-slate-900 hover:text-[#1F3A93] line-clamp-2 mb-2">
           {product.name}
         </Link>
-        <div className="flex items-center gap-2 mt-2">
-          <Link href={`/products/${product.slug}`} className="flex-1 inline-flex items-center justify-center gap-1 rounded bg-[#1F3A93] px-3 py-2 text-[11px] font-semibold text-white hover:bg-[#162d70] transition-all">
+        <div className="flex flex-col sm:flex-row items-stretch gap-2 mt-2">
+          <Link href={`/products/${product.slug}`} className="flex-1 inline-flex items-center justify-center gap-1.5 rounded bg-[#1F3A93] px-3 py-2 text-[11px] font-semibold text-white hover:bg-[#162d70] transition-all">
             <Eye className="h-3 w-3" /> View Details
           </Link>
-          <a href={`https://wa.me/971567351095?text=${encodeURIComponent(`Hi Vega, I'm interested in ${product.name} (${product.sku}) - ${product.category}`)}`} target="_blank" rel="noreferrer" className="inline-flex items-center justify-center gap-1 rounded bg-[#FFD400] px-3 py-2 text-[11px] font-bold text-[#1F3A93] hover:bg-[#e6bf00] transition-all">
+          <a href={`https://wa.me/971567351095?text=${encodeURIComponent(`Hi Vega, I'm interested in ${product.name} (${product.sku}) - ${product.category}`)}`} target="_blank" rel="noreferrer" className="flex-1 inline-flex items-center justify-center gap-1.5 rounded bg-[#FFD400] px-3 py-2 text-[11px] font-bold text-[#1F3A93] hover:bg-[#e6bf00] transition-all">
             <WhatsAppIcon className="h-3 w-3" /> Enquire
           </a>
         </div>

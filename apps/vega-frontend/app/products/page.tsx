@@ -19,8 +19,8 @@ export default async function ProductsPage() {
     getCategories(),
   ]);
 
-  const mappedProducts = products.map(mapProductToFrontend).filter(Boolean);
-  const mappedCategories = categories.map(mapCategoryToFrontend).filter(Boolean);
+  const mappedProducts = (products || []).map(mapProductToFrontend).filter(Boolean) as any[];
+  const mappedCategories = (categories || []).map(mapCategoryToFrontend).filter(Boolean) as any[];
 
   return (
     <main className="pt-36 pb-32">
