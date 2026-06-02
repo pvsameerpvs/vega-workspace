@@ -3,7 +3,8 @@
 import { Product } from "@/lib/data";
 import { getWhatsAppLink } from "@/lib/whatsapp";
 import Link from "next/link";
-import { ArrowUpRight, Eye, MessageCircle } from "lucide-react";
+import { ArrowUpRight, Eye } from "lucide-react";
+import { WhatsAppIcon } from "@/components/icons/WhatsAppIcon";
 
 interface ProductGridProps {
   products: Product[];
@@ -77,7 +78,7 @@ export function ProductGrid({ products }: ProductGridProps) {
                   }}
                   className="inline-flex items-center gap-1.5 rounded-full bg-vega-yellow px-4 py-2 text-xs font-bold text-vega-blue shadow-lg transition-all duration-300 hover:bg-white hover:scale-105"
                 >
-                  <MessageCircle className="h-3.5 w-3.5" /> Enquire
+                  <WhatsAppIcon className="h-3.5 w-3.5" /> Enquire
                 </button>
               </div>
             </Link>

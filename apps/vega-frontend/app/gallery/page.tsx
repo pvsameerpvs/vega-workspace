@@ -1,6 +1,6 @@
 import { Metadata } from "next";
-import { ProtectedImage } from "@/components/ProtectedImage";
 import { getGallery, mapGalleryToFrontend } from "@/lib/api";
+import { GalleryGrid } from "./sections/GalleryGrid";
 
 export const metadata: Metadata = {
   title: "Gallery | Vega UAE",
@@ -14,28 +14,21 @@ export default async function GalleryPage() {
   return (
     <main className="pt-36 pb-32">
       <div className="mx-auto max-w-7xl px-6">
-        <div className="mb-20">
-          <span className="mb-6 block text-sm text-slate-400">Portfolio</span>
-          <h1 className="section-heading text-4xl md:text-5xl">Gallery</h1>
-          <p className="mt-6 text-lg text-slate-500 max-w-2xl leading-relaxed">
-            Explore our product gallery, warehouse, fleet, and team photos.
-          </p>
+        {/* Hero */}
+        <div className="mb-6 flex items-center gap-3">
+          <div className="h-px w-8 bg-[#FFD400]" />
+          <span className="text-xs font-bold uppercase tracking-[0.2em] text-[#FFD400]">
+            Portfolio
+          </span>
         </div>
+        <h1 className="section-heading text-4xl md:text-5xl mb-6">
+          Gallery
+        </h1>
+        <p className="text-lg text-slate-500 max-w-2xl leading-relaxed mb-20">
+          A visual showcase of our products, warehouse operations, delivery fleet, and installations across the UAE.
+        </p>
 
-        <div className="grid grid-cols-2 gap-6 md:grid-cols-4">
-          {mapped.map((item, i) => (
-            <div key={item.name + i} className="group animate-fade-in-up" style={{ animationDelay: `${i * 0.03}s` }}>
-              <div className="aspect-square overflow-hidden rounded-3xl bg-slate-100 mb-3">
-                <ProtectedImage
-                  src={item.image}
-                  alt={item.name}
-                  className="h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
-                />
-              </div>
-              <span className="text-base font-semibold text-slate-900">{item.name}</span>
-            </div>
-          ))}
-        </div>
+        <GalleryGrid items={mapped} />
       </div>
     </main>
   );

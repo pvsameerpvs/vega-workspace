@@ -3,7 +3,8 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { ChevronDown, Menu, X, Search, Phone, Mail, MessageCircle, Star } from "lucide-react";
+import { ChevronDown, Menu, X, Search, Phone, Mail, Star } from "lucide-react";
+import { WhatsAppIcon } from "@/components/icons/WhatsAppIcon";
 import { PRODUCT_CATEGORIES } from "@/lib/data";
 
 export function Navbar() {
@@ -30,7 +31,7 @@ export function Navbar() {
           <div className="flex items-center gap-4">
             <a href="tel:+971567351095" className="flex items-center gap-1 hover:text-white transition-colors"><Phone className="h-3 w-3" /> +971 56 735 1095</a>
             <a href="mailto:Sales@thevegauae.com" className="hidden sm:flex items-center gap-1 hover:text-white transition-colors"><Mail className="h-3 w-3" /> Sales@thevegauae.com</a>
-            <a href="https://wa.me/971567351095" target="_blank" rel="noreferrer" className="hidden md:flex items-center gap-1 hover:text-white transition-colors"><MessageCircle className="h-3 w-3" /> WhatsApp</a>
+            <a href="https://wa.me/971567351095" target="_blank" rel="noreferrer" className="hidden md:flex items-center gap-1 hover:text-white transition-colors"><WhatsAppIcon className="h-3 w-3 text-[#FFD400]" /> WhatsApp</a>
           </div>
           <div className="flex items-center gap-3">
             <div className="flex items-center gap-1.5">

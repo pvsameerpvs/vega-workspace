@@ -1,7 +1,8 @@
 "use client";
 
 import Link from "next/link";
-import { Eye, MessageCircle } from "lucide-react";
+import { Eye } from "lucide-react";
+import { WhatsAppIcon } from "@/components/icons/WhatsAppIcon";
 import { Product } from "@/lib/data/types";
 
 interface ProductCardProps {
@@ -39,7 +40,7 @@ export function ProductCard({ product, tag, tagColor = "bg-[#1F3A93]" }: Product
             <Eye className="h-3 w-3" /> View Details
           </Link>
           <a href={`https://wa.me/971567351095?text=${encodeURIComponent(`Hi Vega, I'm interested in ${product.name} (${product.sku}) - ${product.category}`)}`} target="_blank" rel="noreferrer" className="inline-flex items-center justify-center gap-1 rounded bg-[#FFD400] px-3 py-2 text-[11px] font-bold text-[#1F3A93] hover:bg-[#e6bf00] transition-all">
-            <MessageCircle className="h-3 w-3" /> Enquire
+            <WhatsAppIcon className="h-3 w-3" /> Enquire
           </a>
         </div>
       </div>

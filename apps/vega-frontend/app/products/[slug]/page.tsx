@@ -11,6 +11,7 @@ import { ProtectedImage } from "@/components/ProtectedImage";
 import { getWhatsAppLink } from "@/lib/whatsapp";
 import Link from "next/link";
 import { ArrowLeft, Check, Truck, Package, BadgePercent, MapPin, ArrowRight } from "lucide-react";
+import { WhatsAppIcon } from "@/components/icons/WhatsAppIcon";
 
 export async function generateMetadata({
   params,
@@ -193,7 +194,7 @@ export default async function ProductOrCategoryPage({
                 Download Catalog <ArrowRight className="h-4 w-4" />
               </Link>
               <Link href={getWhatsAppLink(product!)} target="_blank" className="pill-btn-yellow text-sm group">
-                Enquire on WhatsApp <ArrowRight className="ml-2 h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5" />
+                Enquire on WhatsApp <WhatsAppIcon className="ml-2 h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5" />
               </Link>
             </div>
           </div>

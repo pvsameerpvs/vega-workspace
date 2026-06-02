@@ -1,48 +1,66 @@
 import { Metadata } from "next";
-import { Download, FileText } from "lucide-react";
-import { ProtectedImage } from "@/components/ProtectedImage";
+import { BookOpen } from "lucide-react";
 import { CATALOGS } from "@/lib/data";
+import Link from "next/link";
+import { CatalogGrid } from "./sections/CatalogGrid";
+import { CatalogCTA } from "./sections/CatalogCTA";
 
 export const metadata: Metadata = {
   title: "Catalogs | Vega UAE",
-  description: "Download our product catalogs in PDF format.",
+  description: "Download our product catalogs in PDF format. Browse our complete range of furniture, barriers, and industrial supplies.",
 };
 
 export default function CatalogPage() {
+  const categories = Array.from(new Set(CATALOGS.map((c) => c.category)));
+
   return (
     <main className="pt-36 pb-32">
-      <div className="mx-auto max-w-7xl px-6">
-        {/* Header */}
-        <div className="mb-20 text-center">
-          <span className="mb-6 block text-sm text-slate-400">Downloads</span>
-          <h1 className="section-heading text-4xl md:text-5xl">Product Catalogs</h1>
-          <p className="mt-6 text-lg text-slate-500 max-w-2xl mx-auto leading-relaxed">
-            Download our product catalogs in PDF format. Browse our complete range of furniture, barriers, and industrial supplies.
-          </p>
+      {/* Hero */}
+      <div className="mx-auto max-w-7xl px-6 mb-20">
+        <div className="mb-6 flex items-center gap-3">
+          <div className="h-px w-8 bg-[#FFD400]" />
+          <span className="text-xs font-bold uppercase tracking-[0.2em] text-[#FFD400]">
+            Downloads
+          </span>
         </div>
+        <h1 className="section-heading text-4xl md:text-5xl mb-6">
+          Product Catalogs
+        </h1>
+        <p className="text-lg text-slate-500 max-w-2xl leading-relaxed">
+          Browse and download our complete product catalogs. Detailed specifications,
+          dimensions, and pricing for every product line.
+        </p>
+      </div>
 
-        {/* Catalog Grid */}
-        <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-4">
-          {CATALOGS.map((cat, i) => (
-            <div key={cat.name} className="animate-fade-in-up" style={{ animationDelay: `${i * 0.05}s` }}>
-              <div className="mb-5 aspect-[3/4] overflow-hidden rounded-3xl bg-slate-100">
-                <ProtectedImage
-                  src={cat.coverImage || `https://placehold.co/400x540/e5e7eb/1f2937?text=${encodeURIComponent(cat.name)}`}
-                  alt={cat.name}
-                  className="h-full w-full object-cover transition-transform duration-700 hover:scale-105"
-                />
-              </div>
-              <div className="flex items-center gap-2 mb-2 text-xs text-slate-400">
-                <FileText className="h-3.5 w-3.5" /> PDF
-              </div>
-              <h3 className="text-lg font-semibold text-slate-900 mb-1">{cat.name}</h3>
-              <p className="text-sm text-slate-500 mb-5 leading-relaxed">{cat.description}</p>
-              <button className="pill-btn-yellow w-full text-sm">
-                <Download className="h-4 w-4 inline mr-2" /> Download PDF
-              </button>
-            </div>
+      {/* Category Chips */}
+      <div className="mx-auto max-w-7xl px-6 mb-12">
+        <div className="flex flex-wrap gap-3">
+          <Link
+            href="#all"
+            className="inline-flex items-center gap-2 rounded-full bg-[#1F3A93] px-5 py-2.5 text-sm font-bold text-white transition-all hover:bg-[#162d70]"
+          >
+            <BookOpen className="h-4 w-4" /> All Catalogs
+          </Link>
+          {categories.map((cat) => (
+            <Link
+              key={cat}
+              href={`#${cat?.toLowerCase().replace(/\s+/g, "-")}`}
+              className="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white px-5 py-2.5 text-sm font-semibold text-slate-500 transition-all hover:border-[#FFD400] hover:text-[#1F3A93]"
+            >
+              {cat}
+            </Link>
           ))}
         </div>
+      </div>
+
+      {/* Catalog Grid */}
+      <div className="mx-auto max-w-7xl px-6">
+        <CatalogGrid />
+      </div>
+
+      {/* Bottom CTA */}
+      <div className="mx-auto max-w-7xl px-6 mt-24">
+        <CatalogCTA />
       </div>
     </main>
   );
