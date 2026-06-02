@@ -63,15 +63,21 @@ router.get("/:slug", async (req, res) => {
   }
 });
 
+function cleanProductBody(body: any) {
+  const { id, createdAt, updatedAt, ...rest } = body;
+  return rest;
+}
+
 router.post("/", async (req, res) => {
   try {
-    const { name, slug, sku, categoryId } = req.body;
+    const data = cleanProductBody(req.body);
+    const { name, slug, sku, categoryId } = data;
     if (!name || !slug || !sku || !categoryId) {
       return res.status(400).json({
         error: "Name, slug, SKU, and category are required."
       });
     }
-    const result = await db.insert(products).values(req.body).returning();
+    const result = await db.insert(products).values(data).returning();
     return res.status(201).json(result[0]);
   } catch (error: any) {
     console.error("Create product error:", error);
@@ -81,7 +87,8 @@ router.post("/", async (req, res) => {
 
 router.put("/:id", async (req, res) => {
   try {
-    const { name, slug, sku } = req.body;
+    const data = cleanProductBody(req.body);
+    const { name, slug, sku } = data;
     if (name === "" || slug === "" || sku === "") {
       return res.status(400).json({
         error: "Name, slug, and SKU cannot be empty."
@@ -89,7 +96,7 @@ router.put("/:id", async (req, res) => {
     }
     const result = await db
       .update(products)
-      .set(req.body)
+      .set(data)
       .where(eq(products.id, Number(req.params.id)))
       .returning();
 
@@ -98,8 +105,9 @@ router.put("/:id", async (req, res) => {
     }
 
     return res.json(result[0]);
-  } catch (error) {
-    res.status(500).json({ error: "Failed to update product" });
+  } catch (error: any) {
+    console.error("Update product error:", error);
+    res.status(500).json({ error: error.message || "Failed to update product" });
   }
 });
 
