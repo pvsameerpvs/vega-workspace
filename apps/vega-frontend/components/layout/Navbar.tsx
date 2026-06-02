@@ -53,9 +53,14 @@ export function Navbar() {
       {/* Main Nav */}
       <div className={`border-b transition-all duration-300 ${scrolled ? "bg-[#1F3A93]/95 backdrop-blur-md border-white/10 shadow-lg" : "bg-[#1F3A93] border-white/10"}`}>
         <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3">
-          <Link href="/" className="flex items-center gap-2">
-            <span className="text-xl font-bold tracking-tight text-white">VEGA</span>
-            <Star className="h-4 w-4 fill-[#FFD400] text-[#FFD400]" />
+          <Link href="/" className="flex items-center">
+            <img
+              src="/images/logo/logo.jpeg"
+              alt="Vega Logo"
+              className="h-14 w-auto rounded-md object-contain"
+              draggable={false}
+              onContextMenu={(e) => e.preventDefault()}
+            />
           </Link>
 
           {/* Search */}

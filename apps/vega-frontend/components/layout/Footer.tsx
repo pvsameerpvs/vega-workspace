@@ -1,5 +1,7 @@
+"use client";
+
 import Link from "next/link";
-import { Mail, Phone, MapPin, CreditCard, Banknote, FileText, CheckCircle, Star, Truck, RefreshCw, Shield, Headphones } from "lucide-react";
+import { Mail, Phone, MapPin, CreditCard, Banknote, FileText, CheckCircle, Truck, RefreshCw, Shield, Headphones } from "lucide-react";
 import { PRODUCT_CATEGORIES } from "@/lib/data";
 
 export function Footer() {
@@ -22,10 +24,13 @@ export function Footer() {
       <div className="mx-auto max-w-7xl px-4 py-12">
         <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-5">
           <div className="lg:col-span-1">
-            <div className="flex items-center gap-2 mb-4">
-              <span className="text-xl font-bold text-white">VEGA</span>
-              <Star className="h-4 w-4 fill-[#FFD400] text-[#FFD400]" />
-            </div>
+            <img
+              src="/images/logo/logo.jpeg"
+              alt="Vega Logo"
+              className="h-20 w-auto rounded-md object-contain mb-4"
+              draggable={false}
+              onContextMenu={(e) => e.preventDefault()}
+            />
             <p className="text-xs leading-relaxed text-white/40 mb-4">Reliable furniture, barriers, and camp supply solutions for businesses across the UAE since 2009.</p>
             <div className="flex gap-2 flex-wrap">
               {["Facebook", "Instagram", "LinkedIn", "WhatsApp"].map((s) => (
