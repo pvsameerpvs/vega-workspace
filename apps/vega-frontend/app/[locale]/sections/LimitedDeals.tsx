@@ -48,7 +48,7 @@ export function LimitedDeals({ locale = "en" }: LimitedDealsProps) {
           {deals.map((d) => (
             <div key={d.title} className={`relative rounded-xl p-5 ${d.bg} ${d.bg.includes("FFD400") ? "text-[#1F3A93]" : "text-white"}`}>
               <div className="text-xs font-bold uppercase tracking-wider opacity-70 mb-1">{isAR ? "عرض محدود" : "Limited Deal"}</div>
-              <h3 className="text-lg font-bold mb-1">{d.title}</h3>
+              <h3 className={`text-lg font-bold mb-1 ${d.bg.includes("FFD400") ? "text-[#1F3A93]" : "text-white"}`}>{d.title}</h3>
               <p className="text-xs font-bold mb-2">{d.subtitle}</p>
               <p className="text-[10px] opacity-70 mb-4 leading-relaxed">{d.desc}</p>
               <Link href={l("/contact-us")} className={`inline-flex items-center gap-1 text-xs font-bold ${d.bg.includes("FFD400") ? "text-[#1F3A93]" : "text-white"}`}>

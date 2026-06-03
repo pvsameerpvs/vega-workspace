@@ -13,3 +13,4 @@ export { RecentViewed } from "./RecentViewed";
 export { Testimonials } from "./Testimonials";
 export { SeoContent } from "./SeoContent";
 export { FaqSection } from "./FaqSection";
+export { ContactFormSection } from "./ContactFormSection";

@@ -47,5 +47,11 @@ export function useLeads() {
     return updated;
   };
 
-  return { leads, loading, error, refresh: fetchLeads, updateStatus };
+  const createLead = async (data: Omit<Lead, "id">) => {
+    const created = await api.createLead(data);
+    setLeads((prev) => [created, ...prev]);
+    return created;
+  };
+
+  return { leads, loading, error, refresh: fetchLeads, updateStatus, createLead };
 }

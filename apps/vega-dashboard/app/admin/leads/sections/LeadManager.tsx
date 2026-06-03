@@ -6,14 +6,18 @@ import { useToast } from "@vega/ui";
 import { PageHeader } from "@/components/admin/PageHeader";
 import { LeadTable } from "./LeadTable";
 import { LeadDetail } from "./LeadDetail";
+import { LeadCreateDialog } from "./LeadCreateDialog";
+import { Plus } from "lucide-react";
 
 export function LeadManager() {
-  const { leads, loading, updateStatus } = useLeads();
+  const { leads, loading, updateStatus, createLead } = useLeads();
   const { toast } = useToast();
   const [search, setSearch] = useState("");
   const [statusFilter, setStatusFilter] = useState("");
   const [detailLead, setDetailLead] = useState<any>(null);
   const [updatingId, setUpdatingId] = useState<number | null>(null);
+  const [createOpen, setCreateOpen] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const safeLeads = Array.isArray(leads) ? leads : [];
   const filtered = safeLeads.filter((l) => {
@@ -39,6 +43,19 @@ export function LeadManager() {
     }
   };
 
+  const handleCreate = async (data: any) => {
+    setIsSubmitting(true);
+    try {
+      await createLead(data);
+      toast({ title: "Lead created", description: "New lead added successfully." });
+      setCreateOpen(false);
+    } catch (e) {
+      toast({ title: "Error", description: e instanceof Error ? e.message : "Failed to create lead.", variant: "destructive" });
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
   return (
     <div className="p-8">
       <PageHeader
@@ -46,7 +63,7 @@ export function LeadManager() {
         subtitle="View and manage all website enquiries. Update statuses and track progress."
       />
 
-      <div className="mb-4 flex flex-wrap gap-3">
+      <div className="mb-4 flex flex-wrap items-center gap-3">
         <input
           type="text"
           placeholder="Search by name, company, product, email..."
@@ -67,6 +84,13 @@ export function LeadManager() {
           <option value="closed">Closed</option>
           <option value="lost">Lost</option>
         </select>
+        <button
+          onClick={() => setCreateOpen(true)}
+          className="ml-auto inline-flex items-center gap-2 rounded-lg bg-[#1F3A93] px-4 py-2.5 text-sm font-semibold text-white hover:bg-[#1F3A93]/90 transition-colors"
+        >
+          <Plus className="h-4 w-4" />
+          Add Lead
+        </button>
       </div>
 
       <LeadTable
@@ -78,6 +102,13 @@ export function LeadManager() {
       />
 
       <LeadDetail lead={detailLead} onClose={() => setDetailLead(null)} />
+
+      <LeadCreateDialog
+        open={createOpen}
+        onClose={() => setCreateOpen(false)}
+        onSubmit={handleCreate}
+        loading={isSubmitting}
+      />
     </div>
   );
 }

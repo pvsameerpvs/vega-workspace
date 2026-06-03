@@ -12,6 +12,7 @@ import {
   LimitedDeals,
   RecentViewed,
   Testimonials,
+  ContactFormSection,
   SeoContent,
   FaqSection,
 } from "./sections";
@@ -38,6 +39,7 @@ export default async function HomePage({ params: { locale } }: { params: { local
       <LimitedDeals locale={locale} />
       <RecentViewed locale={locale} />
       <Testimonials locale={locale} />
+      <ContactFormSection locale={locale} />
       <SeoContent locale={locale} />
       <FaqSection locale={locale} />
     </main>
