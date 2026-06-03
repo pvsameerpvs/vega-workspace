@@ -1,4 +1,4 @@
-import { db, homeVideos, popularCategories, industries } from "@vega/db";
+import { db, homeVideos, popularCategories, industries, spotlightItems } from "@vega/db";
 import { eq, asc } from "drizzle-orm";
 
 export async function getAllVideos() {
@@ -70,5 +70,35 @@ export async function updateIndustry(id: number, data: any) {
 
 export async function deleteIndustry(id: number) {
   await db.delete(industries).where(eq(industries.id, id));
+  return { success: true };
+}
+
+// Spotlight Items
+export async function getAllSpotlightItems() {
+  try {
+    return await db.select().from(spotlightItems).orderBy(asc(spotlightItems.displayOrder));
+  } catch (error: any) {
+    console.error("[spotlight] Table not found or query failed:", error.message);
+    return [];
+  }
+}
+
+export async function createSpotlightItem(data: any) {
+  const result = await db.insert(spotlightItems).values(data).returning();
+  return result[0];
+}
+
+export async function updateSpotlightItem(id: number, data: any) {
+  const result = await db
+    .update(spotlightItems)
+    .set(data)
+    .where(eq(spotlightItems.id, id))
+    .returning();
+  if (!result.length) throw new Error("Spotlight item not found");
+  return result[0];
+}
+
+export async function deleteSpotlightItem(id: number) {
+  await db.delete(spotlightItems).where(eq(spotlightItems.id, id));
   return { success: true };
 }

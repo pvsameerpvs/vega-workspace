@@ -131,7 +131,7 @@ export function HomepageManager() {
       )}
 
       {activeTab === "featured" && <FeaturedProductsManager products={products} loading={productsLoading} />}
-      {activeTab === "spotlight" && <SpotlightManager categories={categories} loading={catsLoading} />}
+      {activeTab === "spotlight" && <SpotlightManager />}
       {activeTab === "deals" && <LimitedDealsManager />}
       {activeTab === "popular" && <PopularCategoriesManager categories={categories} loading={catsLoading} />}
       {activeTab === "reviews" && <TestimonialsManager />}

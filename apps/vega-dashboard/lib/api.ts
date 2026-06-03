@@ -108,6 +108,12 @@ export const api = {
   updateIndustry: (id: number, data: any) => fetcher<any>(`/homepage/industries/${id}`, { method: "PUT", body: JSON.stringify(data) }),
   deleteIndustry: (id: number) => fetcher<any>(`/homepage/industries/${id}`, { method: "DELETE" }),
 
+  // Spotlight
+  getSpotlightItems: () => fetcher<any[]>("/homepage/spotlight"),
+  createSpotlightItem: (data: any) => fetcher<any>("/homepage/spotlight", { method: "POST", body: JSON.stringify(data) }),
+  updateSpotlightItem: (id: number, data: any) => fetcher<any>(`/homepage/spotlight/${id}`, { method: "PUT", body: JSON.stringify(data) }),
+  deleteSpotlightItem: (id: number) => fetcher<any>(`/homepage/spotlight/${id}`, { method: "DELETE" }),
+
   // Upload
   getPresignedUrl: (fileName: string, folder = "uploads") =>
     fetcher<{ uploadUrl: string; publicUrl: string; key: string }>("/upload/presigned", { method: "POST", body: JSON.stringify({ fileName, folder }) }),

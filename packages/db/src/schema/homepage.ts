@@ -64,3 +64,21 @@ export const popularCategories = pgTable("popular_categories", {
 }, (table) => ({
   activeOrderIdx: index("popcat_active_order_idx").on(table.isActive, table.displayOrder),
 }));
+
+export const spotlightItems = pgTable("spotlight_items", {
+  id: serial("id").primaryKey(),
+  title: varchar("title", { length: 255 }),
+  titleAr: varchar("title_ar", { length: 255 }),
+  subtitle: varchar("subtitle", { length: 255 }),
+  subtitleAr: varchar("subtitle_ar", { length: 255 }),
+  image: text("image"),
+  link: text("link"),
+  linkType: varchar("link_type", { length: 20 }).default("category"),
+  displayOrder: integer("display_order").default(0),
+  isActive: boolean("is_active").notNull().default(true),
+  createdAt: timestamp("created_at", { withTimezone: true }).defaultNow(),
+  updatedAt: timestamp("updated_at", { withTimezone: true }).defaultNow(),
+}, (table) => ({
+  activeOrderIdx: index("spotlight_active_order_idx").on(table.isActive, table.displayOrder),
+  linkTypeIdx: index("spotlight_link_type_idx").on(table.linkType, table.isActive),
+}));

@@ -1,15 +1,19 @@
 const API_BASE = process.env.NEXT_PUBLIC_API_URL || "http://localhost:4000/api";
 
-async function fetcher<T>(path: string, options?: RequestInit): Promise<T | null> {
+async function fetcher<T>(path: string, options?: RequestInit & { next?: any }): Promise<T | null> {
   try {
     const res = await fetch(`${API_BASE}${path}`, {
-      headers: { "Content-Type": "application/json" },
       ...options,
-      next: { revalidate: 60 },
+      headers: { "Content-Type": "application/json", ...(options?.headers || {}) },
+      next: { revalidate: 60, ...(options?.next || {}) },
     });
-    if (!res.ok) return null;
+    if (!res.ok) {
+      console.error(`[API Error] ${res.status} ${path}`);
+      return null;
+    }
     return res.json() as Promise<T>;
-  } catch {
+  } catch (e) {
+    console.error(`[API Error] ${path}`, e);
     return null;
   }
 }
@@ -65,6 +69,10 @@ export async function getTeam() {
 
 export async function getCatalogs() {
   return fetcherList<any>("/catalogs");
+}
+
+export async function getSpotlightItems() {
+  return fetcherList<any>("/homepage/spotlight", { next: { revalidate: 0 } });
 }
 
 export async function submitLead(data: any) {

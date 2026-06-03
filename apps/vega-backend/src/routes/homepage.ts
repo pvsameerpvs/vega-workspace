@@ -3,6 +3,7 @@ import {
   getAllVideos, createVideo, updateVideo, deleteVideo,
   getAllPopularCategories, createPopularCategory, updatePopularCategory, deletePopularCategory,
   getAllIndustries, createIndustry, updateIndustry, deleteIndustry,
+  getAllSpotlightItems, createSpotlightItem, updateSpotlightItem, deleteSpotlightItem,
 } from "../services/homepage";
 
 const router = Router();
@@ -115,6 +116,43 @@ router.delete("/industries/:id", async (req, res) => {
     res.json(data);
   } catch (error: any) {
     res.status(500).json({ error: error.message || "Failed to delete industry" });
+  }
+});
+
+// Spotlight Items
+router.get("/spotlight", async (_req, res) => {
+  try {
+    const data = await getAllSpotlightItems();
+    res.json(data);
+  } catch (error: any) {
+    res.status(500).json({ error: error.message || "Failed to fetch spotlight items" });
+  }
+});
+
+router.post("/spotlight", async (req, res) => {
+  try {
+    const data = await createSpotlightItem(req.body);
+    res.status(201).json(data);
+  } catch (error: any) {
+    res.status(500).json({ error: error.message || "Failed to create spotlight item" });
+  }
+});
+
+router.put("/spotlight/:id", async (req, res) => {
+  try {
+    const data = await updateSpotlightItem(Number(req.params.id), req.body);
+    res.json(data);
+  } catch (error: any) {
+    res.status(error.message?.includes("not found") ? 404 : 500).json({ error: error.message || "Failed to update spotlight item" });
+  }
+});
+
+router.delete("/spotlight/:id", async (req, res) => {
+  try {
+    const data = await deleteSpotlightItem(Number(req.params.id));
+    res.json(data);
+  } catch (error: any) {
+    res.status(500).json({ error: error.message || "Failed to delete spotlight item" });
   }
 });
 
