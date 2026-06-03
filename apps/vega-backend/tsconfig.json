@@ -2,6 +2,7 @@
   "extends": "../../packages/config/tsconfig.json",
   "compilerOptions": {
     "outDir": "./dist",
+    "noEmit": false,
     "baseUrl": ".",
     "paths": {
       "@vega/db": ["../../packages/db/src"],

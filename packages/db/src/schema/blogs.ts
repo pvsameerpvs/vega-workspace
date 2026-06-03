@@ -1,4 +1,4 @@
-import { pgTable, serial, varchar, text, integer, boolean, timestamp, index } from "drizzle-orm/pg-core";
+import { pgTable, serial, varchar, text, timestamp, index } from "drizzle-orm/pg-core";
 import { publishStatusEnum, languageEnum } from "./enums";
 
 export const blogs = pgTable(

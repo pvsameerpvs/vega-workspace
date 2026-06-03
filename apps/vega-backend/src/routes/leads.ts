@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { db, leads } from "@vega/db";
-import { eq, desc, like, and, or } from "drizzle-orm";
+import { eq, desc, like, and, or, count } from "drizzle-orm";
 import {
   getPaginationParams,
   paginateResponse,
@@ -28,20 +28,22 @@ router.get("/", async (req, res) => {
 
     if (status) conditions.push(eq(leads.status, status as any));
 
-    if (conditions.length === 0) {
-      const all = await db
-        .select()
-        .from(leads)
-        .orderBy(desc(leads.createdAt));
-      return res.json(paginateResponse(all, page, limit));
-    }
+    const whereClause = conditions.length > 0 ? and(...conditions) : undefined;
+
+    const [countResult] = await db
+      .select({ total: count() })
+      .from(leads)
+      .where(whereClause);
 
     const all = await db
       .select()
       .from(leads)
-      .where(and(...conditions))
-      .orderBy(desc(leads.createdAt));
-    return res.json(paginateResponse(all, page, limit));
+      .where(whereClause)
+      .orderBy(desc(leads.createdAt))
+      .limit(limit)
+      .offset((page - 1) * limit);
+
+    return res.json(paginateResponse(all, page, limit, countResult.total));
   } catch (error) {
     res.status(500).json({ error: "Failed to fetch leads" });
   }

@@ -69,5 +69,5 @@ app.use(notFoundHandler);
 app.use(errorHandler);
 
 app.listen(PORT, () => {
-  console.log(`Vega API server running on port ${PORT}`);
+  // Server is running
 });

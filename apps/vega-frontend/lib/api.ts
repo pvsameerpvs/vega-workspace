@@ -6,6 +6,7 @@ async function fetcher<T>(path: string, options?: RequestInit & { next?: any }):
       ...options,
       headers: { "Content-Type": "application/json", ...(options?.headers || {}) },
       next: { revalidate: 60, ...(options?.next || {}) },
+      signal: AbortSignal.timeout(8000),
     });
     if (!res.ok) {
       console.error(`[API Error] ${res.status} ${path}`);

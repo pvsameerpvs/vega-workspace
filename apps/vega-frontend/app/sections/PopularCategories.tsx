@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { ProtectedImage } from "@/components/ui/ProtectedImage";
+import { ProtectedImage } from "@/components/ProtectedImage";
 import { getCategories, mapCategoryToFrontend } from "@/lib/api";
 
 export async function PopularCategories() {

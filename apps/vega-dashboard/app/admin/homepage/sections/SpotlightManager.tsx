@@ -8,7 +8,7 @@ import { useToast } from "@vega/ui";
 import { ImageUpload } from "@/components/admin/ImageUpload";
 import { FormDialog } from "@/components/admin/FormDialog";
 import { DeleteDialog } from "@/components/admin/DeleteDialog";
-import { Star, Plus, Pencil, Trash2, ArrowUp, ArrowDown, Eye, EyeOff, ArrowRight } from "lucide-react";
+import { Star, Plus, Pencil, Trash2, ArrowUp, ArrowDown, Eye, EyeOff } from "lucide-react";
 
 export function SpotlightManager() {
   const { toast } = useToast();
@@ -166,7 +166,7 @@ export function SpotlightManager() {
           <div className="rounded-lg border border-dashed border-slate-200 py-12 text-center">
             <Star className="mx-auto mb-3 h-8 w-8 text-slate-300" />
             <p className="text-sm text-slate-400">No spotlight items yet.</p>
-            <p className="text-xs text-slate-400 mt-1">Click "Add Item" to create your first spotlight card.</p>
+            <p className="text-xs text-slate-400 mt-1">Click &quot;Add Item&quot; to create your first spotlight card.</p>
           </div>
         ) : (
           <div className="space-y-3">

@@ -22,19 +22,16 @@ export function getPaginationParams(req: Request): PaginationParams {
   return { page, limit, search, sortBy, sortOrder, status, category };
 }
 
-export function paginateResponse<T>(items: T[], page: number, limit: number) {
-  const total = items.length;
-  const start = (page - 1) * limit;
-  const end = start + limit;
-  const data = items.slice(start, end);
-  const totalPages = Math.ceil(total / limit);
+export function paginateResponse<T>(items: T[], page: number, limit: number, total?: number) {
+  const actualTotal = total ?? items.length;
+  const totalPages = Math.ceil(actualTotal / limit);
 
   return {
-    data,
+    data: items,
     meta: {
       page,
       limit,
-      total,
+      total: actualTotal,
       totalPages,
       hasNext: page < totalPages,
       hasPrev: page > 1,

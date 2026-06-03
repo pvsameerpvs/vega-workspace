@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useCallback } from "react";
+import { useState } from "react";
 import { useToast } from "@vega/ui";
 import { slugify } from "@vega/utils";
 import { api } from "@/lib/api";

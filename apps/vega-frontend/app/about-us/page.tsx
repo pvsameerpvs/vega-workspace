@@ -72,7 +72,7 @@ export default async function AboutUsPage() {
             <span className="mb-6 block text-sm text-slate-400">Our People</span>
             <h2 className="section-heading text-4xl md:text-5xl">Meet the Team</h2>
             <p className="mt-6 text-lg text-slate-500 max-w-2xl mx-auto leading-relaxed">
-              The dedicated professionals behind Vega's success.
+              The dedicated professionals behind Vega&apos;s success.
             </p>
           </div>
           <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-3">

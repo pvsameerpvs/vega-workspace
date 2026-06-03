@@ -7,10 +7,11 @@ interface ProtectedImageProps extends ImgHTMLAttributes<HTMLImageElement> {
   alt: string;
 }
 
-export function ProtectedImage({ className, ...props }: ProtectedImageProps) {
+export function ProtectedImage({ className, alt, ...props }: ProtectedImageProps) {
   return (
     <img
       {...props}
+      alt={alt}
       className={className}
       draggable={false}
       onContextMenu={(e) => e.preventDefault()}

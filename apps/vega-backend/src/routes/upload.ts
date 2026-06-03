@@ -56,7 +56,6 @@ router.post("/file", upload.single("file"), async (req, res) => {
 
     await s3Client.send(command);
     const publicUrl = bucketUrl ? `${bucketUrl}/${key}` : "";
-    console.log("[upload] success:", publicUrl);
     res.json({ publicUrl, key });
   } catch (error) {
     console.error("[upload] error:", error);

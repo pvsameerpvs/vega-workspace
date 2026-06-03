@@ -1,4 +1,4 @@
-import { MapPin, Clock, Briefcase, DollarSign, GraduationCap, ArrowRight } from "lucide-react";
+import { MapPin, Briefcase, DollarSign, GraduationCap, ArrowRight } from "lucide-react";
 import Link from "next/link";
 
 interface CareerItem {

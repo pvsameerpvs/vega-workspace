@@ -14,8 +14,7 @@ interface PopularCategoriesManagerProps {
 export function PopularCategoriesManager({ categories, loading: catsLoading }: PopularCategoriesManagerProps) {
   const { toast } = useToast();
   const { items: popularCategories, loading: popularLoading, create, update, remove } = usePopularCategories();
-  const { config, saving, saveConfig } = useHomepage();
-  const safeCategories = Array.isArray(categories) ? categories : [];
+  const { saving, saveConfig } = useHomepage();
   const [newCat, setNewCat] = useState({ name: "", nameAr: "", image: "", link: "" });
 
   const handleAdd = async () => {

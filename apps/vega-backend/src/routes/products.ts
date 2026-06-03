@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { db, products, categories, subcategories } from "@vega/db";
-import { eq, desc, like, and } from "drizzle-orm";
+import { eq, desc, like, and, count } from "drizzle-orm";
 import { slugify } from "@vega/utils";
 import {
   getPaginationParams,
@@ -23,12 +23,19 @@ router.get("/", async (req, res) => {
     if (status) conditions.push(eq(products.status, status as any));
     if (category) conditions.push(eq(products.categoryId, Number(category)));
 
+    const whereClause = conditions.length > 0 ? and(...conditions) : undefined;
+
     const order =
       sortBy === "createdAt"
         ? sortOrder === "asc"
           ? products.createdAt
           : desc(products.createdAt)
         : desc(products.createdAt);
+
+    const [countResult] = await db
+      .select({ total: count() })
+      .from(products)
+      .where(whereClause);
 
     const all = await db
       .select({
@@ -39,8 +46,10 @@ router.get("/", async (req, res) => {
       .from(products)
       .leftJoin(categories, eq(products.categoryId, categories.id))
       .leftJoin(subcategories, eq(products.subcategoryId, subcategories.id))
-      .where(conditions.length > 0 ? and(...conditions) : undefined)
-      .orderBy(order);
+      .where(whereClause)
+      .orderBy(order)
+      .limit(limit)
+      .offset((page - 1) * limit);
 
     const mapped = all.map((row) => ({
       ...row.product,
@@ -48,7 +57,7 @@ router.get("/", async (req, res) => {
       subcategoryName: row.subcategoryName,
     }));
 
-    return res.json(paginateResponse(mapped, page, limit));
+    return res.json(paginateResponse(mapped, page, limit, countResult.total));
   } catch (error) {
     res.status(500).json({ error: "Failed to fetch products" });
   }
