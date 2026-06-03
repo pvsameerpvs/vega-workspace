@@ -24,7 +24,16 @@ router.get("/", async (req, res) => {
       ? all.filter((c) => c.name.toLowerCase().includes(search.toLowerCase()))
       : all;
 
-    return res.json(paginateResponse(filtered, page, limit));
+    const allSubcategories = await db.select().from(subcategories);
+
+    const withSubs = filtered.map((cat) => ({
+      ...cat,
+      subcategories: allSubcategories
+        .filter((s) => s.categoryId === cat.id)
+        .map((s) => s.name),
+    }));
+
+    return res.json(paginateResponse(withSubs, page, limit));
   } catch (error) {
     res.status(500).json({ error: "Failed to fetch categories" });
   }

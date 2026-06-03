@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { Inter, Poppins, Cairo } from "next/font/google";
 import "./globals.css";
 import { Navbar, Footer } from "@/components/layout";
-import { getCategories } from "@/lib/api";
+import { getCategories, getProducts, mapCategoryToFrontend, mapProductToFrontend } from "@/lib/api";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
 const poppins = Poppins({
@@ -43,14 +43,21 @@ export default async function RootLayout({
   children: React.ReactNode;
   params: { locale?: string };
 }) {
-  const categories = await getCategories();
+  const [categories, products] = await Promise.all([
+    getCategories(),
+    getProducts(),
+  ]);
+
+  const mappedCategories = (categories || []).map(mapCategoryToFrontend).filter(Boolean) as any[];
+  const mappedProducts = (products || []).map(mapProductToFrontend).filter(Boolean) as any[];
+  const featuredProducts = mappedProducts.filter((p: any) => p.isFeatured || p.isPopular).slice(0, 6);
 
   return (
     <html lang={locale} dir={locale === "ar" ? "rtl" : "ltr"}>
       <body className={`${inter.variable} ${poppins.variable} ${cairo.variable} font-sans antialiased pt-28`}>
-        <Navbar categories={categories || []} />
+        <Navbar categories={mappedCategories || []} products={featuredProducts || []} />
         {children}
-        <Footer categories={categories || []} />
+        <Footer categories={mappedCategories || []} />
       </body>
     </html>
   );

@@ -91,6 +91,7 @@ export function mapProductToFrontend(p: any) {
     name: p.name || "",
     slug: p.slug || "",
     sku: p.sku || "",
+    categoryId: p.categoryId || null,
     category: p.categoryName || p.category || "",
     subcategory: p.subcategoryName || p.subcategory || "",
     description: p.shortDescription || p.fullDescription || p.description || "",
@@ -123,7 +124,7 @@ export function mapProductToFrontend(p: any) {
 export function mapCategoryToFrontend(c: any) {
   if (!c) return null;
   return {
-    id: c.slug || String(c.id),
+    id: String(c.id || c.slug),
     name: c.name || "",
     slug: c.slug || "",
     image: c.image || c.banner || "",

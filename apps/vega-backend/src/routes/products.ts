@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { db, products } from "@vega/db";
+import { db, products, categories, subcategories } from "@vega/db";
 import { eq, desc, like, and } from "drizzle-orm";
 import { slugify } from "@vega/utils";
 import {
@@ -30,17 +30,25 @@ router.get("/", async (req, res) => {
           : desc(products.createdAt)
         : desc(products.createdAt);
 
-    if (conditions.length === 0) {
-      const all = await db.select().from(products).orderBy(order);
-      return res.json(paginateResponse(all, page, limit));
-    }
-
     const all = await db
-      .select()
+      .select({
+        product: products,
+        categoryName: categories.name,
+        subcategoryName: subcategories.name,
+      })
       .from(products)
-      .where(and(...conditions))
+      .leftJoin(categories, eq(products.categoryId, categories.id))
+      .leftJoin(subcategories, eq(products.subcategoryId, subcategories.id))
+      .where(conditions.length > 0 ? and(...conditions) : undefined)
       .orderBy(order);
-    return res.json(paginateResponse(all, page, limit));
+
+    const mapped = all.map((row) => ({
+      ...row.product,
+      categoryName: row.categoryName,
+      subcategoryName: row.subcategoryName,
+    }));
+
+    return res.json(paginateResponse(mapped, page, limit));
   } catch (error) {
     res.status(500).json({ error: "Failed to fetch products" });
   }
@@ -49,8 +57,14 @@ router.get("/", async (req, res) => {
 router.get("/:slug", async (req, res) => {
   try {
     const result = await db
-      .select()
+      .select({
+        product: products,
+        categoryName: categories.name,
+        subcategoryName: subcategories.name,
+      })
       .from(products)
+      .leftJoin(categories, eq(products.categoryId, categories.id))
+      .leftJoin(subcategories, eq(products.subcategoryId, subcategories.id))
       .where(eq(products.slug, req.params.slug))
       .limit(1);
 
@@ -58,7 +72,13 @@ router.get("/:slug", async (req, res) => {
       return res.status(404).json({ error: "Product not found" });
     }
 
-    return res.json(result[0]);
+    const mapped = {
+      ...result[0].product,
+      categoryName: result[0].categoryName,
+      subcategoryName: result[0].subcategoryName,
+    };
+
+    return res.json(mapped);
   } catch (error) {
     res.status(500).json({ error: "Failed to fetch product" });
   }

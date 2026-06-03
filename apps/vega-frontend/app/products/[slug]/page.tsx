@@ -53,8 +53,12 @@ export default async function ProductOrCategoryPage({
   }
 
   if (category) {
+    const categorySlug = category.slug.toLowerCase();
     const categoryProducts = mappedProducts.filter(
-      (p) => p.category.toLowerCase().replace(/\s+/g, "-") === category.slug.toLowerCase()
+      (p) =>
+        p.category.toLowerCase().replace(/\s+/g, "-") === categorySlug ||
+        p.category.toLowerCase() === category.name.toLowerCase() ||
+        p.subcategory.toLowerCase().replace(/\s+/g, "-") === categorySlug
     );
     return (
       <main className="pt-36 pb-32">

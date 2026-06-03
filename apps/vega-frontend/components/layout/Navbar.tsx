@@ -1,15 +1,17 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { ChevronDown, Menu, X, Search, Phone, Mail, Star } from "lucide-react";
+import { ChevronDown, Menu, X, Search, Phone, Mail, ArrowRight } from "lucide-react";
 import { WhatsAppIcon } from "@/components/icons/WhatsAppIcon";
+
 interface NavbarProps {
   categories?: { id: string; name: string; slug: string; subcategories?: string[] }[];
+  products?: { id: string; name: string; slug: string; image: string; category: string }[];
 }
 
-export function Navbar({ categories = [] }: NavbarProps) {
+export function Navbar({ categories = [], products = [] }: NavbarProps) {
   const [mega, setMega] = useState<string | null>(null);
   const [mobile, setMobile] = useState(false);
   const [scrolled, setScrolled] = useState(false);
@@ -24,6 +26,19 @@ export function Navbar({ categories = [] }: NavbarProps) {
   }, []);
 
   const topHidden = isHome && scrolled;
+
+  const productsByCategory = useMemo(() => {
+    const map: Record<string, typeof products> = {};
+    for (const cat of categories) {
+      map[cat.slug] = products
+        .filter((p) =>
+          p.category.toLowerCase().replace(/\s+/g, "-") === cat.slug.toLowerCase() ||
+          p.category.toLowerCase() === cat.name.toLowerCase()
+        )
+        .slice(0, 3);
+    }
+    return map;
+  }, [categories, products]);
 
   return (
     <header className="fixed top-0 left-0 right-0 z-50">
@@ -81,16 +96,36 @@ export function Navbar({ categories = [] }: NavbarProps) {
               </button>
               {mega === "products" && (
                 <div className="absolute left-1/2 top-full -translate-x-1/2 pt-3">
-                  <div className="w-[720px] rounded-2xl bg-white p-6 shadow-elevated border border-slate-100 animate-scale-in origin-top">
-                    <div className="grid grid-cols-4 gap-5">
+                  <div className="w-[800px] rounded-2xl bg-white p-6 shadow-elevated border border-slate-100 animate-scale-in origin-top">
+                    <div className="grid grid-cols-4 gap-6">
                       {categories.map((cat) => (
                         <div key={cat.id}>
                           <Link href={`/products/${cat.slug}`} className="block text-sm font-bold text-[#1F3A93] mb-2 hover:text-[#162d70] transition-colors">{cat.name}</Link>
-                          <ul className="space-y-1">
+                          <ul className="space-y-1 mb-3">
                             {(cat.subcategories || []).slice(0, 4).map((sub, idx) => (
-                              <li key={idx}><span className="text-xs text-slate-400">{sub}</span></li>
+                              <li key={idx}>
+                                <Link href={`/products/${cat.slug}`} className="text-xs text-slate-400 hover:text-[#1F3A93] transition-colors">
+                                  {sub}
+                                </Link>
+                              </li>
                             ))}
                           </ul>
+                          {/* Show products in this category */}
+                          {(productsByCategory[cat.slug] || []).length > 0 && (
+                            <div className="space-y-2 pt-2 border-t border-slate-100">
+                              {(productsByCategory[cat.slug] || []).map((prod) => (
+                                <Link key={prod.id} href={`/products/${prod.slug}`} className="flex items-center gap-2 group">
+                                  <div className="h-8 w-8 rounded-lg bg-slate-100 overflow-hidden shrink-0">
+                                    <img src={prod.image} alt={prod.name} className="h-full w-full object-cover" draggable={false} onContextMenu={(e) => e.preventDefault()} />
+                                  </div>
+                                  <span className="text-[10px] text-slate-500 group-hover:text-[#1F3A93] transition-colors line-clamp-1">{prod.name}</span>
+                                </Link>
+                              ))}
+                            </div>
+                          )}
+                          <Link href={`/products/${cat.slug}`} className="inline-flex items-center gap-1 text-[10px] font-semibold text-[#FFD400] hover:text-[#1F3A93] transition-colors mt-2">
+                            View All <ArrowRight className="h-3 w-3" />
+                          </Link>
                         </div>
                       ))}
                     </div>
@@ -121,7 +156,16 @@ export function Navbar({ categories = [] }: NavbarProps) {
             <div className="py-3 border-t border-white/10">
               <span className="text-xs font-bold text-white/40 uppercase mb-2 block">Products</span>
               {categories.map((cat) => (
-                <Link key={cat.id} href={`/products/${cat.slug}`} className="block py-2 text-sm text-white/70" onClick={() => setMobile(false)}>{cat.name}</Link>
+                <div key={cat.id}>
+                  <Link href={`/products/${cat.slug}`} className="block py-2 text-sm font-semibold text-white" onClick={() => setMobile(false)}>{cat.name}</Link>
+                  {(cat.subcategories || []).length > 0 && (
+                    <div className="pl-3 space-y-1 mb-2">
+                      {cat.subcategories!.map((sub, idx) => (
+                        <Link key={idx} href={`/products/${cat.slug}`} className="block py-1 text-xs text-white/50" onClick={() => setMobile(false)}>{sub}</Link>
+                      ))}
+                    </div>
+                  )}
+                </div>
               ))}
             </div>
             {["About Us", "Careers", "Blog", "Gallery", "Catalog", "Contact Us"].map((item) => (
