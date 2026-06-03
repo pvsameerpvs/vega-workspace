@@ -4,7 +4,8 @@ const nextConfig = {
   images: {
     unoptimized: true,
   },
-  transpilePackages: ["@vega/ui", "@vega/db", "@vega/utils"],
+  output: "standalone",
+  transpilePackages: ["@vega/ui", "@vega/utils"],
 };
 
 export default nextConfig;

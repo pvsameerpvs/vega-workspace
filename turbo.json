@@ -4,7 +4,9 @@
   "globalDependencies": ["**/.env.*local"],
   "globalEnv": [
     "NODE_ENV",
+    "PORT",
     "NEXT_PUBLIC_APP_URL",
+    "NEXT_PUBLIC_API_URL",
     "DATABASE_URL",
     "SUPABASE_URL",
     "SUPABASE_ANON_KEY",
@@ -17,7 +19,9 @@
     "RESEND_API_KEY",
     "WHATSAPP_NUMBER",
     "JWT_SECRET",
-    "ADMIN_SECRET"
+    "ADMIN_SECRET",
+    "FRONTEND_URL",
+    "DASHBOARD_URL"
   ],
   "tasks": {
     "build": {

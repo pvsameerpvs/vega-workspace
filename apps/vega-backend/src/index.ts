@@ -25,13 +25,24 @@ const app = express();
 const PORT = process.env.PORT || 4000;
 
 app.use(helmet());
+
 const allowedOrigins = [
   process.env.FRONTEND_URL || "http://localhost:3000",
   process.env.DASHBOARD_URL || "http://localhost:3001",
-];
+].filter(Boolean);
+
+// Allow Railway preview URLs (*.up.railway.app) and custom domains
+const isAllowedOrigin = (origin: string | undefined) => {
+  if (!origin) return true;
+  if (allowedOrigins.includes(origin)) return true;
+  if (origin.endsWith(".up.railway.app")) return true;
+  if (process.env.NODE_ENV === "development") return true;
+  return false;
+};
+
 app.use(cors({
   origin: (origin, callback) => {
-    if (!origin || allowedOrigins.includes(origin)) {
+    if (isAllowedOrigin(origin)) {
       callback(null, true);
     } else {
       callback(new Error(`CORS blocked origin: ${origin}`));
@@ -70,6 +81,20 @@ app.use(notFoundHandler);
 // Global error handler
 app.use(errorHandler);
 
-app.listen(PORT, () => {
-  // Server is running
+const server = app.listen(PORT, () => {
+  console.log(`[Vega API] Server running on port ${PORT}`);
+  console.log(`[Vega API] Environment: ${process.env.NODE_ENV || "development"}`);
+  console.log(`[Vega API] Health check: http://localhost:${PORT}/api/health`);
 });
+
+// Graceful shutdown
+const shutdown = (signal: string) => {
+  console.log(`[Vega API] ${signal} received. Shutting down gracefully...`);
+  server.close(() => {
+    console.log("[Vega API] Server closed.");
+    process.exit(0);
+  });
+};
+
+process.on("SIGTERM", () => shutdown("SIGTERM"));
+process.on("SIGINT", () => shutdown("SIGINT"));
