@@ -3,7 +3,9 @@ import { pgTable, serial, varchar, text, integer, boolean, timestamp, index } fr
 export const teamMembers = pgTable("team_members", {
   id: serial("id").primaryKey(),
   name: varchar("name", { length: 255 }).notNull(),
+  nameAr: varchar("name_ar", { length: 255 }),
   designation: varchar("designation", { length: 255 }),
+  designationAr: varchar("designation_ar", { length: 255 }),
   department: varchar("department", { length: 100 }),
   photo: text("photo"),
   bio: text("bio"),

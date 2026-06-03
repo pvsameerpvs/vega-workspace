@@ -9,6 +9,7 @@ import {
   ProductImagesTab,
   ProductSeoTab,
 } from "@/components/admin/products";
+import { AdminLanguageToggle } from "@/components/admin/LanguageToggle";
 
 interface ProductFormProps {
   open: boolean;
@@ -21,6 +22,7 @@ interface ProductFormProps {
 export function ProductForm({ open, onClose, onSubmit, product, loading = false }: ProductFormProps) {
   const [form, setForm] = useState<any>({});
   const [activeTab, setActiveTab] = useState("basic");
+  const [lang, setLang] = useState<"en" | "ar">("ar");
   const [categories, setCategories] = useState<any[]>([]);
   const [subcategories, setSubcategories] = useState<any[]>([]);
   const [selectedCategoryId, setSelectedCategoryId] = useState<number | "">("");
@@ -80,6 +82,10 @@ export function ProductForm({ open, onClose, onSubmit, product, loading = false 
 
   return (
     <FormDialog open={open} onClose={onClose} title={product ? "Edit Product" : "Add Product"} onSubmit={() => onSubmit(form)} loading={loading}>
+      <div className="flex items-center justify-between mb-2">
+        <span className="text-xs font-semibold text-slate-500">Content Language</span>
+        <AdminLanguageToggle value={lang} onChange={setLang} />
+      </div>
       <div className="flex gap-1 rounded-lg bg-slate-100 p-1">
         {tabs.map((t) => (
           <button
@@ -103,11 +109,12 @@ export function ProductForm({ open, onClose, onSubmit, product, loading = false 
           loadingCats={loadingCats}
           selectedCategoryId={selectedCategoryId}
           setSelectedCategoryId={setSelectedCategoryId}
+          lang={lang}
         />
       )}
-      {activeTab === "details" && <ProductDetailsTab form={form} update={update} />}
+      {activeTab === "details" && <ProductDetailsTab form={form} update={update} lang={lang} />}
       {activeTab === "images" && <ProductImagesTab form={form} update={update} />}
-      {activeTab === "seo" && <ProductSeoTab form={form} update={update} />}
+      {activeTab === "seo" && <ProductSeoTab form={form} update={update} lang={lang} />}
     </FormDialog>
   );
 }

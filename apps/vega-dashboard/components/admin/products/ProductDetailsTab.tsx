@@ -5,27 +5,32 @@ import { Input } from "@vega/ui";
 interface ProductDetailsTabProps {
   form: any;
   update: (key: string, value: any) => void;
+  lang?: "en" | "ar";
 }
 
-export function ProductDetailsTab({ form, update }: ProductDetailsTabProps) {
+export function ProductDetailsTab({ form, update, lang = "ar" }: ProductDetailsTabProps) {
+  const isAR = lang === "ar";
+
   return (
     <div className="space-y-4">
-      {/* Descriptions */}
-      <div>
+      {/* Short Description */}
+      <div className={isAR ? "order-2" : "order-1"}>
         <label className="mb-1 block text-xs font-semibold text-slate-700">Short Description</label>
         <textarea value={form.shortDescription || ""} onChange={(e) => update("shortDescription", e.target.value)} rows={3} className="w-full rounded-md border border-slate-200 px-3 py-2 text-sm focus:border-vega-blue focus:outline-none" />
       </div>
-      <div>
+      <div className={isAR ? "order-1" : "order-2"}>
         <label className="mb-1 block text-xs font-semibold text-slate-700">Short Description (Arabic)</label>
-        <textarea value={form.shortDescriptionAr || ""} onChange={(e) => update("shortDescriptionAr", e.target.value)} rows={3} className="w-full rounded-md border border-slate-200 px-3 py-2 text-sm focus:border-vega-blue focus:outline-none" />
+        <textarea value={form.shortDescriptionAr || ""} onChange={(e) => update("shortDescriptionAr", e.target.value)} rows={3} className="w-full rounded-md border border-slate-200 px-3 py-2 text-sm focus:border-vega-blue focus:outline-none" dir="rtl" lang="ar" />
       </div>
-      <div>
+
+      {/* Full Description */}
+      <div className={isAR ? "order-2" : "order-1"}>
         <label className="mb-1 block text-xs font-semibold text-slate-700">Full Description</label>
         <textarea value={form.fullDescription || ""} onChange={(e) => update("fullDescription", e.target.value)} rows={6} className="w-full rounded-md border border-slate-200 px-3 py-2 text-sm focus:border-vega-blue focus:outline-none" placeholder="Detailed product description..." />
       </div>
-      <div>
+      <div className={isAR ? "order-1" : "order-2"}>
         <label className="mb-1 block text-xs font-semibold text-slate-700">Full Description (Arabic)</label>
-        <textarea value={form.fullDescriptionAr || ""} onChange={(e) => update("fullDescriptionAr", e.target.value)} rows={6} className="w-full rounded-md border border-slate-200 px-3 py-2 text-sm focus:border-vega-blue focus:outline-none" placeholder="وصف المنتج التفصيلي..." />
+        <textarea value={form.fullDescriptionAr || ""} onChange={(e) => update("fullDescriptionAr", e.target.value)} rows={6} className="w-full rounded-md border border-slate-200 px-3 py-2 text-sm focus:border-vega-blue focus:outline-none" placeholder="وصف المنتج التفصيلي..." dir="rtl" lang="ar" />
       </div>
 
       {/* Physical Specs */}
@@ -59,13 +64,13 @@ export function ProductDetailsTab({ form, update }: ProductDetailsTabProps) {
       </div>
 
       {/* Features */}
-      <div>
+      <div className={isAR ? "order-2" : "order-1"}>
         <label className="mb-1 block text-xs font-semibold text-slate-700">Features</label>
         <textarea value={form.features || ""} onChange={(e) => update("features", e.target.value)} rows={3} className="w-full rounded-md border border-slate-200 px-3 py-2 text-sm focus:border-vega-blue focus:outline-none" placeholder="e.g. High Density Foam, Black Faux Leather, 1.2 mm Metal Chrome Base" />
       </div>
-      <div>
+      <div className={isAR ? "order-1" : "order-2"}>
         <label className="mb-1 block text-xs font-semibold text-slate-700">Features (Arabic)</label>
-        <textarea value={form.featuresAr || ""} onChange={(e) => update("featuresAr", e.target.value)} rows={3} className="w-full rounded-md border border-slate-200 px-3 py-2 text-sm focus:border-vega-blue focus:outline-none" />
+        <textarea value={form.featuresAr || ""} onChange={(e) => update("featuresAr", e.target.value)} rows={3} className="w-full rounded-md border border-slate-200 px-3 py-2 text-sm focus:border-vega-blue focus:outline-none" dir="rtl" lang="ar" />
       </div>
 
       {/* Extra Info */}

@@ -12,6 +12,7 @@ interface ProductBasicTabProps {
   loadingCats: boolean;
   selectedCategoryId: number | "";
   setSelectedCategoryId: (id: number | "") => void;
+  lang?: "en" | "ar";
 }
 
 export function ProductBasicTab({
@@ -22,7 +23,11 @@ export function ProductBasicTab({
   loadingCats,
   selectedCategoryId,
   setSelectedCategoryId,
+  lang = "ar",
 }: ProductBasicTabProps) {
+  const isAR = lang === "ar";
+  const textDir = isAR ? "rtl" : "ltr";
+
   return (
     <div className="space-y-4">
       <ProductCategoryBlock
@@ -36,7 +41,7 @@ export function ProductBasicTab({
       />
 
       <div className="grid grid-cols-2 gap-4">
-        <div>
+        <div className={isAR ? "order-2" : "order-1"}>
           <label className="mb-1 block text-xs font-semibold text-slate-700">Name</label>
           <Input value={form.name || ""} onChange={(e) => {
             const name = e.target.value;
@@ -44,9 +49,15 @@ export function ProductBasicTab({
             update("slug", slugify(name));
           }} placeholder="Product name" />
         </div>
-        <div>
+        <div className={isAR ? "order-1" : "order-2"}>
           <label className="mb-1 block text-xs font-semibold text-slate-700">Name (Arabic)</label>
-          <Input value={form.nameAr || ""} onChange={(e) => update("nameAr", e.target.value)} placeholder="اسم المنتج" />
+          <Input
+            value={form.nameAr || ""}
+            onChange={(e) => update("nameAr", e.target.value)}
+            placeholder="اسم المنتج"
+            dir="rtl"
+            lang="ar"
+          />
         </div>
       </div>
       <div className="grid grid-cols-2 gap-4">

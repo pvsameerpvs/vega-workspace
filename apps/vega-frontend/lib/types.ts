@@ -1,39 +1,61 @@
 export interface Product {
   id: string;
   name: string;
+  nameAr?: string;
   slug: string;
   sku: string;
   category: string;
+  categoryAr?: string;
   subcategory: string;
+  subcategoryAr?: string;
   description: string;
+  shortDescription?: string;
+  shortDescriptionAr?: string;
+  fullDescription?: string;
+  fullDescriptionAr?: string;
   image: string;
   images: string[];
   color: string;
   dimensions: string;
   weight: string;
   design: string;
+  material?: string;
   fittingType: string;
   features: string[];
+  featuresAr?: string;
   warranty: string;
+  brand?: string;
+  country?: string;
   deliveryInfo: string;
   installation: string;
   bulkAvailable: boolean;
-  wholesaleNote: string;
+  bulkQuantityNote?: string;
+  wholesaleNote?: string;
+  wholesaleDiscountNote?: string;
+  price?: number | null;
+  showPrice?: boolean;
+  isFeatured?: boolean;
+  isPopular?: boolean;
 }
 
 export interface ProductCategory {
   id: string;
   name: string;
+  nameAr?: string;
   slug: string;
   image: string;
   subcategories: string[];
+  subcategoriesAr?: string[];
 }
 
 export interface BlogPost {
   slug: string;
   title: string;
+  titleAr?: string;
   excerpt: string;
+  excerptAr?: string;
   content?: string;
+  contentAr?: string;
   featuredImage?: string;
   date: string;
   author?: string;
@@ -48,30 +70,38 @@ export interface Career {
   location: string;
   type: string;
   description: string;
+  descriptionAr?: string;
   requirements?: string;
+  requirementsAr?: string;
   experience?: string;
   salaryRange?: string;
 }
 
 export interface TeamMember {
   name: string;
+  nameAr?: string;
   designation: string;
+  designationAr?: string;
   department: string;
   photo: string;
   bio: string;
+  bioAr?: string;
   email?: string;
   linkedIn?: string;
 }
 
 export interface GalleryItem {
   name: string;
+  nameAr?: string;
   image: string;
   category?: string;
 }
 
 export interface CatalogItem {
   name: string;
+  nameAr?: string;
   description: string;
+  descriptionAr?: string;
   coverImage?: string;
   pdfFile?: string;
   category?: string;
@@ -79,7 +109,9 @@ export interface CatalogItem {
 
 export interface FaqItem {
   q: string;
+  qAr?: string;
   a: string;
+  aAr?: string;
   category?: string;
 }
 
@@ -92,10 +124,14 @@ export interface ReviewItem {
 export interface HeroSlide {
   id: string;
   title: string;
+  titleAr?: string;
   subtitle: string;
+  subtitleAr?: string;
   ctaText: string;
+  ctaTextAr?: string;
   ctaLink: string;
   ctaSecondaryText: string;
+  ctaSecondaryTextAr?: string;
   ctaSecondaryLink: string;
   image: string;
 }
@@ -103,11 +139,13 @@ export interface HeroSlide {
 export interface PopularRange {
   id: string;
   name: string;
+  nameAr?: string;
   slug: string;
   image: string;
 }
 
 export interface IndustryItem {
   name: string;
+  nameAr?: string;
   icon?: string;
 }

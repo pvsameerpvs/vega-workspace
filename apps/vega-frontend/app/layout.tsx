@@ -38,10 +38,8 @@ export const metadata: Metadata = {
 
 export default async function RootLayout({
   children,
-  params: { locale = "en" },
 }: {
   children: React.ReactNode;
-  params: { locale?: string };
 }) {
   const [categories, products] = await Promise.all([
     getCategories(),
@@ -53,7 +51,26 @@ export default async function RootLayout({
   const featuredProducts = mappedProducts.filter((p: any) => p.isFeatured || p.isPopular).slice(0, 6);
 
   return (
-    <html lang={locale} dir={locale === "ar" ? "rtl" : "ltr"}>
+    <html suppressHydrationWarning>
+      <head>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              (function() {
+                var path = window.location.pathname;
+                var locale = path.split('/')[1];
+                if (locale === 'ar') {
+                  document.documentElement.dir = 'rtl';
+                  document.documentElement.lang = 'ar';
+                } else {
+                  document.documentElement.dir = 'ltr';
+                  document.documentElement.lang = 'en';
+                }
+              })();
+            `,
+          }}
+        />
+      </head>
       <body className={`${inter.variable} ${poppins.variable} ${cairo.variable} font-sans antialiased pt-28`}>
         <Navbar categories={mappedCategories || []} products={featuredProducts || []} />
         {children}

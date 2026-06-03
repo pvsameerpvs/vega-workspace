@@ -90,12 +90,19 @@ export function mapProductToFrontend(p: any) {
   return {
     id: String(p.id),
     name: p.name || "",
+    nameAr: p.nameAr || "",
     slug: p.slug || "",
     sku: p.sku || "",
     categoryId: p.categoryId || null,
     category: p.categoryName || p.category || "",
+    categoryAr: p.categoryNameAr || p.categoryAr || "",
     subcategory: p.subcategoryName || p.subcategory || "",
+    subcategoryAr: p.subcategoryNameAr || p.subcategoryAr || "",
     description: p.shortDescription || p.fullDescription || p.description || "",
+    shortDescription: p.shortDescription || "",
+    shortDescriptionAr: p.shortDescriptionAr || "",
+    fullDescription: p.fullDescription || "",
+    fullDescriptionAr: p.fullDescriptionAr || "",
     image: p.mainImage || p.image || "",
     images: Array.isArray(p.gallery) ? p.gallery : p.images || [],
     color: p.color || "",
@@ -127,9 +134,11 @@ export function mapCategoryToFrontend(c: any) {
   return {
     id: String(c.id || c.slug),
     name: c.name || "",
+    nameAr: c.nameAr || "",
     slug: c.slug || "",
     image: c.image || c.banner || "",
     subcategories: Array.isArray(c.subcategories) ? c.subcategories.map((s: any) => s.name || s) : [],
+    subcategoriesAr: Array.isArray(c.subcategoriesAr) ? c.subcategoriesAr : [],
   };
 }
 
@@ -138,8 +147,11 @@ export function mapBlogToFrontend(b: any) {
   return {
     slug: b.slug || String(b.id),
     title: b.title || "",
+    titleAr: b.titleAr || "",
     excerpt: b.excerpt || b.description || "",
+    excerptAr: b.excerptAr || "",
     content: b.content || "",
+    contentAr: b.contentAr || "",
     featuredImage: b.featuredImage || b.image || "",
     date: b.publishDate ? new Date(b.publishDate).toLocaleDateString() : b.createdAt ? new Date(b.createdAt).toLocaleDateString() : "",
     author: b.author || "Vega Team",
@@ -151,6 +163,7 @@ export function mapGalleryToFrontend(g: any) {
   if (!g) return null;
   return {
     name: g.title || g.name || "",
+    nameAr: g.nameAr || g.titleAr || "",
     image: g.image || g.url || "",
     category: g.category || "",
   };
@@ -166,7 +179,9 @@ export function mapCareerToFrontend(c: any) {
     location: c.location || "",
     type: c.jobType || c.type || "",
     description: c.description || "",
+    descriptionAr: c.descriptionAr || "",
     requirements: c.requirements || "",
+    requirementsAr: c.requirementsAr || "",
     experience: c.experienceRequired || c.experience || "",
     salaryRange: c.salaryRange || "",
   };
@@ -176,10 +191,13 @@ export function mapTeamToFrontend(t: any) {
   if (!t) return null;
   return {
     name: t.name || "",
+    nameAr: t.nameAr || "",
     designation: t.designation || t.role || "",
+    designationAr: t.designationAr || "",
     department: t.department || "",
     photo: t.photo || t.image || "",
     bio: t.bio || t.description || "",
+    bioAr: t.bioAr || "",
     email: t.email || "",
     linkedIn: t.linkedIn || "",
   };
@@ -189,7 +207,9 @@ export function mapFaqToFrontend(f: any) {
   if (!f) return null;
   return {
     q: f.question || f.q || "",
+    qAr: f.questionAr || f.qAr || "",
     a: f.answer || f.a || "",
+    aAr: f.answerAr || f.aAr || "",
     category: f.category || "",
   };
 }
@@ -198,7 +218,9 @@ export function mapCatalogToFrontend(c: any) {
   if (!c) return null;
   return {
     name: c.title || c.name || "",
+    nameAr: c.nameAr || c.titleAr || "",
     description: c.description || "",
+    descriptionAr: c.descriptionAr || "",
     coverImage: c.coverImage || c.image || "",
     pdfFile: c.pdfFile || c.pdf || "",
     category: c.category || "",
