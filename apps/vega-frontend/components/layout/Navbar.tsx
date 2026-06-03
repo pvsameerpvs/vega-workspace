@@ -93,7 +93,7 @@ export function Navbar({ categories = [], products = [] }: NavbarProps) {
       <div className={`border-b transition-all duration-300 ${scrolled ? "bg-[#1F3A93]/95 backdrop-blur-md border-white/10 shadow-lg" : "bg-[#1F3A93] border-white/10"}`}>
         <div className={`mx-auto flex max-w-7xl items-center px-4 py-3 ${isAR ? "flex-row-reverse" : ""}`}>
           <Link href={l("/")} className="flex items-center shrink-0">
-            <img src="/images/logo/logo.jpeg" alt="Vega Logo" className="h-14 w-auto rounded-md object-contain" draggable={false} onContextMenu={(e) => e.preventDefault()} />
+            <img src="/images/logo/logo.jpeg" alt="Vega Logo" className="h-16 w-auto rounded-md object-contain" draggable={false} onContextMenu={(e) => e.preventDefault()} />
           </Link>
 
           <div className="hidden lg:flex flex-1 mx-8 max-w-md">
