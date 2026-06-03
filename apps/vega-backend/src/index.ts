@@ -17,6 +17,7 @@ import settingsRoutes from "./routes/settings";
 import uploadRoutes from "./routes/upload";
 import homepageRoutes from "./routes/homepage";
 import translationRoutes from "./routes/translations";
+import searchRoutes from "./routes/search";
 
 import { errorHandler, notFoundHandler } from "./middleware/error";
 
@@ -56,6 +57,7 @@ app.use("/api/settings", settingsRoutes);
 app.use("/api/upload", uploadRoutes);
 app.use("/api/homepage", homepageRoutes);
 app.use("/api/translations", translationRoutes);
+app.use("/api/search", searchRoutes);
 
 // Health check
 app.get("/api/health", (_req, res) => {
