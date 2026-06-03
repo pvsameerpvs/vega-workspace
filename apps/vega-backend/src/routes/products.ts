@@ -1,6 +1,7 @@
 import { Router } from "express";
 import { db, products } from "@vega/db";
 import { eq, desc, like, and } from "drizzle-orm";
+import { slugify } from "@vega/utils";
 import {
   getPaginationParams,
   paginateResponse,
@@ -68,9 +69,16 @@ function cleanProductBody(body: any) {
   return rest;
 }
 
+function ensureProductSlug(data: any): any {
+  if (!data.slug || String(data.slug).trim() === "") {
+    data.slug = slugify(data.name || "product");
+  }
+  return data;
+}
+
 router.post("/", async (req, res) => {
   try {
-    const data = cleanProductBody(req.body);
+    const data = ensureProductSlug(cleanProductBody(req.body));
     const { name, slug, sku, categoryId } = data;
     if (!name || !slug || !sku || !categoryId) {
       return res.status(400).json({
@@ -87,7 +95,7 @@ router.post("/", async (req, res) => {
 
 router.put("/:id", async (req, res) => {
   try {
-    const data = cleanProductBody(req.body);
+    const data = ensureProductSlug(cleanProductBody(req.body));
     const { name, slug, sku } = data;
     if (name === "" || slug === "" || sku === "") {
       return res.status(400).json({

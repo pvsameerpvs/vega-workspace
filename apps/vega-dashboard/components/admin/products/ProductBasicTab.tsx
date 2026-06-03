@@ -1,6 +1,7 @@
 "use client";
 
 import { Input } from "@vega/ui";
+import { slugify } from "@vega/utils";
 import { ProductCategoryBlock } from "./ProductCategoryBlock";
 
 interface ProductBasicTabProps {
@@ -37,7 +38,11 @@ export function ProductBasicTab({
       <div className="grid grid-cols-2 gap-4">
         <div>
           <label className="mb-1 block text-xs font-semibold text-slate-700">Name</label>
-          <Input value={form.name || ""} onChange={(e) => update("name", e.target.value)} placeholder="Product name" />
+          <Input value={form.name || ""} onChange={(e) => {
+            const name = e.target.value;
+            update("name", name);
+            update("slug", slugify(name));
+          }} placeholder="Product name" />
         </div>
         <div>
           <label className="mb-1 block text-xs font-semibold text-slate-700">Name (Arabic)</label>

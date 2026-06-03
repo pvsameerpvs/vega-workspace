@@ -1,6 +1,7 @@
 import { Router } from "express";
 import { db, categories, subcategories } from "@vega/db";
 import { eq, asc } from "drizzle-orm";
+import { slugify } from "@vega/utils";
 import {
   getPaginationParams,
   paginateResponse,
@@ -29,9 +30,17 @@ router.get("/", async (req, res) => {
   }
 });
 
+function ensureCategorySlug(body: any): any {
+  if (!body.slug || String(body.slug).trim() === "") {
+    body.slug = slugify(body.name || "category");
+  }
+  return body;
+}
+
 router.post("/", async (req, res) => {
   try {
-    const { name, nameAr, slug, description, descriptionAr, image, banner, seoTitle, seoDescription, displayOrder, isActive } = req.body;
+    const body = ensureCategorySlug(req.body);
+    const { name, nameAr, slug, description, descriptionAr, image, banner, seoTitle, seoDescription, displayOrder, isActive } = body;
     if (!name || !slug) {
       return res.status(400).json({ error: "Name and slug are required" });
     }
@@ -45,7 +54,8 @@ router.post("/", async (req, res) => {
 
 router.put("/:id", async (req, res) => {
   try {
-    const { name, nameAr, slug, description, descriptionAr, image, banner, seoTitle, seoDescription, displayOrder, isActive } = req.body;
+    const body = ensureCategorySlug(req.body);
+    const { name, nameAr, slug, description, descriptionAr, image, banner, seoTitle, seoDescription, displayOrder, isActive } = body;
     const result = await db
       .update(categories)
       .set({ name, nameAr, slug, description, descriptionAr, image, banner, seoTitle, seoDescription, displayOrder, isActive })
@@ -89,7 +99,8 @@ router.get("/:id/subcategories", async (req, res) => {
 
 router.post("/:id/subcategories", async (req, res) => {
   try {
-    const { name, nameAr, slug, description, descriptionAr, image, seoTitle, seoDescription, displayOrder, isActive } = req.body;
+    const body = ensureCategorySlug(req.body);
+    const { name, nameAr, slug, description, descriptionAr, image, seoTitle, seoDescription, displayOrder, isActive } = body;
     if (!name || !slug) {
       return res.status(400).json({ error: "Name and slug are required" });
     }
@@ -104,7 +115,8 @@ router.post("/:id/subcategories", async (req, res) => {
 
 router.put("/subcategories/:id", async (req, res) => {
   try {
-    const { name, nameAr, slug, description, descriptionAr, image, seoTitle, seoDescription, displayOrder, isActive } = req.body;
+    const body = ensureCategorySlug(req.body);
+    const { name, nameAr, slug, description, descriptionAr, image, seoTitle, seoDescription, displayOrder, isActive } = body;
     const result = await db
       .update(subcategories)
       .set({ name, nameAr, slug, description, descriptionAr, image, seoTitle, seoDescription, displayOrder, isActive })

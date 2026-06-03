@@ -1,4 +1,5 @@
 import { Metadata } from "next";
+import { notFound } from "next/navigation";
 import Link from "next/link";
 import { ArrowLeft, Calendar, User, ArrowRight } from "lucide-react";
 import { ProtectedImage } from "@/components/ProtectedImage";
@@ -22,6 +23,9 @@ export async function generateMetadata({
 export default async function BlogPostPage({ params }: { params: { slug: string } }) {
   const blogs = await getBlogPosts();
   const blog = blogs.find((b: any) => b.slug === params.slug);
+  if (!blog) {
+    notFound();
+  }
   const title = blog?.title || params.slug.replace(/-/g, " ");
   const content =
     blog?.content ||

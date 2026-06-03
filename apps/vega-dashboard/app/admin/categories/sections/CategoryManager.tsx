@@ -32,8 +32,8 @@ export function CategoryManager() {
   const updateSubForm = (k: string, v: any) => setSubForm((f: any) => ({ ...f, [k]: v }));
 
   const handleCreateCategory = async () => {
-    if (!catForm.name || !catForm.slug) {
-      toast({ title: "Error", description: "Name and slug are required.", variant: "destructive" });
+    if (!catForm.name) {
+      toast({ title: "Error", description: "Category name is required.", variant: "destructive" });
       return;
     }
     await createCategory({ ...catForm, isActive: true });
@@ -59,8 +59,8 @@ export function CategoryManager() {
   };
 
   const handleCreateSubcategory = async (categoryId: number) => {
-    if (!subForm.name || !subForm.slug) {
-      toast({ title: "Error", description: "Name and slug are required.", variant: "destructive" });
+    if (!subForm.name) {
+      toast({ title: "Error", description: "Subcategory name is required.", variant: "destructive" });
       return;
     }
     await createSubcategory(categoryId, { ...subForm, isActive: true });

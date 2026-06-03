@@ -1,6 +1,7 @@
 import { Router } from "express";
 import { db, blogs } from "@vega/db";
 import { eq, desc, like, and, or } from "drizzle-orm";
+import { slugify } from "@vega/utils";
 import {
   getPaginationParams,
   paginateResponse,
@@ -66,9 +67,20 @@ router.get("/:slug", async (req, res) => {
   }
 });
 
+function ensureBlogSlug(body: any): any {
+  if (!body.slug || String(body.slug).trim() === "") {
+    body.slug = slugify(body.title || "blog-post");
+  }
+  return body;
+}
+
 router.post("/", async (req, res) => {
   try {
-    const result = await db.insert(blogs).values(req.body).returning();
+    const body = ensureBlogSlug(req.body);
+    if (!body.title || !body.slug) {
+      return res.status(400).json({ error: "Title and slug are required" });
+    }
+    const result = await db.insert(blogs).values(body).returning();
     return res.status(201).json(result[0]);
   } catch (error: any) {
     console.error("Create blog error:", error);
@@ -78,9 +90,10 @@ router.post("/", async (req, res) => {
 
 router.put("/:id", async (req, res) => {
   try {
+    const body = ensureBlogSlug(req.body);
     const result = await db
       .update(blogs)
-      .set(req.body)
+      .set(body)
       .where(eq(blogs.id, Number(req.params.id)))
       .returning();
 

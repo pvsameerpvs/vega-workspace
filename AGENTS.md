@@ -137,9 +137,14 @@ src/
 - Arabic (`ar`) requires `dir="rtl"`.
 - All content tables have `nameAr`, `descriptionAr`, `contentAr` fields.
 
-### 9. Git
-- **Never auto-push.** All commits and pushes must be manual.
-- Do not run `git push` unless explicitly requested by the user.
+### 9. Git — NEVER AUTO-STAGE, NEVER AUTO-COMMIT, NEVER AUTO-PUSH
+- **Never auto-stage.** Do not run `git add` unless explicitly requested by the user.
+- **Never auto-commit.** Do not run `git commit` unless explicitly requested by the user.
+- **Never auto-push.** Do not run `git push` unless explicitly requested by the user.
+- Never run `git add`, `git commit`, or `git push` automatically after any action.
+- Never push to `main` or any branch without a direct user request.
+- Never use `git push --force` or `git push -f`.
+- Always ask the user for confirmation before any git operation.
 
 ### 10. Environment
 - Copy `.env.example` to `.env` and fill credentials before running.
@@ -205,4 +210,4 @@ pnpm db:studio
 
 ---
 
-**Last updated:** 2026-06-01
+**Last updated:** 2026-06-02

@@ -1,5 +1,7 @@
 "use client";
 
+import { slugify } from "@vega/utils";
+
 interface JobFormProps {
   form: any;
   update: (k: string, v: any) => void;
@@ -11,7 +13,11 @@ export function JobForm({ form, update }: JobFormProps) {
       <div className="grid grid-cols-2 gap-3">
         <div>
           <label className="mb-1 block text-xs font-semibold text-slate-700">Title</label>
-          <input value={form.title || ""} onChange={(e) => update("title", e.target.value)} className="w-full rounded-md border border-slate-200 px-3 py-2 text-sm focus:border-vega-blue focus:outline-none" placeholder="Job title" />
+          <input value={form.title || ""} onChange={(e) => {
+            const title = e.target.value;
+            update("title", title);
+            update("slug", slugify(title));
+          }} className="w-full rounded-md border border-slate-200 px-3 py-2 text-sm focus:border-vega-blue focus:outline-none" placeholder="Job title" />
         </div>
         <div>
           <label className="mb-1 block text-xs font-semibold text-slate-700">Title (Arabic)</label>

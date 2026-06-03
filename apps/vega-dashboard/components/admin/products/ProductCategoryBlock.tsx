@@ -2,6 +2,7 @@
 
 import { useState, useCallback } from "react";
 import { useToast } from "@vega/ui";
+import { slugify } from "@vega/utils";
 import { api } from "@/lib/api";
 import { FolderTree, AlertCircle, Plus } from "lucide-react";
 
@@ -34,8 +35,8 @@ export function ProductCategoryBlock({
     setInlineCatForm((f: any) => ({ ...f, [key]: value }));
 
   const handleCreateInlineCategory = async () => {
-    if (!inlineCatForm.name || !inlineCatForm.slug) {
-      toast({ title: "Error", description: "Name and slug are required.", variant: "destructive" });
+    if (!inlineCatForm.name) {
+      toast({ title: "Error", description: "Category name is required.", variant: "destructive" });
       return;
     }
     try {
@@ -116,7 +117,11 @@ export function ProductCategoryBlock({
           <div className="grid grid-cols-2 gap-2">
             <input
               value={inlineCatForm.name || ""}
-              onChange={(e) => updateInlineCat("name", e.target.value)}
+              onChange={(e) => {
+                const name = e.target.value;
+                updateInlineCat("name", name);
+                updateInlineCat("slug", slugify(name));
+              }}
               placeholder="Category name"
               className="rounded-md border border-slate-200 px-3 py-2 text-sm focus:border-vega-blue focus:outline-none"
             />

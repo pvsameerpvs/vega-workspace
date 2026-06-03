@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useBlog } from "@/hooks/use-blog";
 import { useToast } from "@vega/ui";
+import { slugify } from "@vega/utils";
 import { PageHeader } from "@/components/admin/PageHeader";
 import { StatusBadge } from "@/components/admin/StatusBadge";
 import { ImageUpload } from "@/components/admin/ImageUpload";
@@ -109,7 +110,11 @@ export function BlogManager() {
           <div className="grid grid-cols-2 gap-3">
             <div>
               <label className="mb-1 block text-xs font-semibold text-slate-700">Title</label>
-              <input value={form.title || ""} onChange={(e) => updateForm("title", e.target.value)} className="w-full rounded-md border border-slate-200 px-3 py-2 text-sm focus:border-vega-blue focus:outline-none" placeholder="Post title" />
+              <input value={form.title || ""} onChange={(e) => {
+                const title = e.target.value;
+                updateForm("title", title);
+                updateForm("slug", slugify(title));
+              }} className="w-full rounded-md border border-slate-200 px-3 py-2 text-sm focus:border-vega-blue focus:outline-none" placeholder="Post title" />
             </div>
             <div>
               <label className="mb-1 block text-xs font-semibold text-slate-700">Title (Arabic)</label>

@@ -1,6 +1,7 @@
 import { Router } from "express";
 import { db, careers, jobApplications } from "@vega/db";
 import { eq, desc, like } from "drizzle-orm";
+import { slugify } from "@vega/utils";
 import {
   getPaginationParams,
   paginateResponse,
@@ -56,9 +57,20 @@ router.get("/applications", async (req, res) => {
   }
 });
 
+function ensureCareerSlug(body: any): any {
+  if (!body.slug || String(body.slug).trim() === "") {
+    body.slug = slugify(body.title || "job");
+  }
+  return body;
+}
+
 router.post("/jobs", async (req, res) => {
   try {
-    const result = await db.insert(careers).values(req.body).returning();
+    const body = ensureCareerSlug(req.body);
+    if (!body.title || !body.slug) {
+      return res.status(400).json({ error: "Title and slug are required" });
+    }
+    const result = await db.insert(careers).values(body).returning();
     return res.status(201).json(result[0]);
   } catch (error: any) {
     console.error("Create job error:", error);
@@ -68,9 +80,10 @@ router.post("/jobs", async (req, res) => {
 
 router.put("/jobs/:id", async (req, res) => {
   try {
+    const body = ensureCareerSlug(req.body);
     const result = await db
       .update(careers)
-      .set(req.body)
+      .set(body)
       .where(eq(careers.id, Number(req.params.id)))
       .returning();
 

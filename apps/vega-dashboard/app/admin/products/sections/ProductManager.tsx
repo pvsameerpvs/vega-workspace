@@ -39,10 +39,6 @@ export function ProductManager() {
       toast({ title: "Validation Error", description: "Product name is required.", variant: "destructive" });
       return;
     }
-    if (!data.slug?.trim()) {
-      toast({ title: "Validation Error", description: "Product slug is required.", variant: "destructive" });
-      return;
-    }
     if (!data.sku?.trim()) {
       toast({ title: "Validation Error", description: "Product SKU is required.", variant: "destructive" });
       return;

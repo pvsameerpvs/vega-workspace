@@ -1,5 +1,6 @@
 "use client";
 
+import { slugify } from "@vega/utils";
 import { Plus } from "lucide-react";
 
 interface SubcategoryFormProps {
@@ -20,7 +21,11 @@ export function SubcategoryForm({ catName, subForm, editSub, updateSubForm, onSa
       <div className="grid grid-cols-2 gap-3">
         <div>
           <label className="text-xs font-semibold text-slate-700">Name</label>
-          <input value={subForm.name || ""} onChange={(e) => updateSubForm("name", e.target.value)} className="w-full rounded-md border border-slate-200 px-3 py-2 text-sm focus:border-vega-blue focus:outline-none" placeholder="Subcategory name" />
+          <input value={subForm.name || ""} onChange={(e) => {
+            const name = e.target.value;
+            updateSubForm("name", name);
+            updateSubForm("slug", slugify(name));
+          }} className="w-full rounded-md border border-slate-200 px-3 py-2 text-sm focus:border-vega-blue focus:outline-none" placeholder="Subcategory name" />
         </div>
         <div>
           <label className="text-xs font-semibold text-slate-700">Name (Arabic)</label>
