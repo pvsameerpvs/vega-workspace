@@ -31,14 +31,14 @@ export function TrustBar({ locale = "en" }: TrustBarProps) {
               key={f.label}
               className="flex flex-col items-center gap-4 min-w-[160px] text-center"
             >
-              <div className="relative h-20 w-20 lg:h-24 lg:w-24 shrink-0">
+              <div className="relative h-28 w-28 lg:h-32 lg:w-32 shrink-0 rounded-full bg-slate-50 border border-slate-100">
                 <Image
                   src={f.image}
                   alt={f.label}
                   fill
-                  className="object-contain"
+                  className="object-contain p-3"
                   draggable={false}
-                  sizes="96px"
+                  sizes="128px"
                 />
               </div>
               <div className="text-base font-semibold text-slate-900">{f.label}</div>
