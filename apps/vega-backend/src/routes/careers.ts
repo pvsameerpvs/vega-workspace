@@ -2,6 +2,8 @@ import { Router } from "express";
 import { db, careers, jobApplications } from "@vega/db";
 import { eq, desc, like } from "drizzle-orm";
 import { slugify } from "@vega/utils";
+import { authenticate } from "../middleware/auth";
+import { cleanBody } from "../lib/utils";
 import {
   getPaginationParams,
   paginateResponse,
@@ -34,7 +36,7 @@ router.get("/jobs", async (req, res) => {
   }
 });
 
-router.get("/applications", async (req, res) => {
+router.get("/applications", authenticate, async (req, res) => {
   try {
     const { page, limit, search } = getPaginationParams(req);
 
@@ -64,9 +66,9 @@ function ensureCareerSlug(body: any): any {
   return body;
 }
 
-router.post("/jobs", async (req, res) => {
+router.post("/jobs", authenticate, async (req, res) => {
   try {
-    const body = ensureCareerSlug(req.body);
+    const body = ensureCareerSlug(cleanBody(req.body));
     if (!body.title || !body.slug) {
       return res.status(400).json({ error: "Title and slug are required" });
     }
@@ -78,9 +80,9 @@ router.post("/jobs", async (req, res) => {
   }
 });
 
-router.put("/jobs/:id", async (req, res) => {
+router.put("/jobs/:id", authenticate, async (req, res) => {
   try {
-    const body = ensureCareerSlug(req.body);
+    const body = ensureCareerSlug(cleanBody(req.body));
     const result = await db
       .update(careers)
       .set(body)
@@ -97,7 +99,7 @@ router.put("/jobs/:id", async (req, res) => {
   }
 });
 
-router.delete("/jobs/:id", async (req, res) => {
+router.delete("/jobs/:id", authenticate, async (req, res) => {
   try {
     await db.delete(careers).where(eq(careers.id, Number(req.params.id)));
     return res.json({ success: true });
@@ -110,7 +112,7 @@ router.post("/applications", async (req, res) => {
   try {
     const result = await db
       .insert(jobApplications)
-      .values(req.body)
+      .values(cleanBody(req.body))
       .returning();
     return res.status(201).json(result[0]);
   } catch (error) {

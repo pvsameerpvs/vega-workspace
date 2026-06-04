@@ -1,11 +1,13 @@
 import { StatusBadge } from "@/components/admin/StatusBadge";
-import { Eye } from "lucide-react";
+import { Eye, Edit2, Trash2 } from "lucide-react";
 
 interface LeadTableProps {
   leads: any[];
   loading: boolean;
   onStatusChange: (id: number, status: string) => void;
   onView: (lead: any) => void;
+  onEdit: (lead: any) => void;
+  onDelete: (id: number) => void;
   updatingId?: number | null;
 }
 
@@ -18,7 +20,7 @@ const statusOptions = [
   { value: "lost", label: "Lost" },
 ];
 
-export function LeadTable({ leads, loading, onStatusChange, onView, updatingId }: LeadTableProps) {
+export function LeadTable({ leads, loading, onStatusChange, onView, onEdit, onDelete, updatingId }: LeadTableProps) {
   const safeLeads = Array.isArray(leads) ? leads : [];
   if (loading) {
     return (
@@ -76,12 +78,26 @@ export function LeadTable({ leads, loading, onStatusChange, onView, updatingId }
                 </select>
               </td>
               <td className="px-4 py-3 text-right">
-                <button
-                  onClick={() => onView(l)}
-                  className="rounded-md p-1.5 text-slate-400 transition-colors hover:bg-slate-100 hover:text-vega-blue"
-                >
-                  <Eye className="h-4 w-4" />
-                </button>
+                <div className="flex justify-end gap-2">
+                  <button
+                    onClick={() => onView(l)}
+                    className="rounded-md p-1.5 text-slate-400 transition-colors hover:bg-slate-100 hover:text-vega-blue"
+                  >
+                    <Eye className="h-4 w-4" />
+                  </button>
+                  <button
+                    onClick={() => onEdit(l)}
+                    className="rounded-md p-1.5 text-slate-400 transition-colors hover:bg-slate-100 hover:text-vega-blue"
+                  >
+                    <Edit2 className="h-4 w-4" />
+                  </button>
+                  <button
+                    onClick={() => onDelete(l.id)}
+                    className="rounded-md p-1.5 text-slate-400 transition-colors hover:bg-red-50 hover:text-red-500"
+                  >
+                    <Trash2 className="h-4 w-4" />
+                  </button>
+                </div>
               </td>
             </tr>
           ))}

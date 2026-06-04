@@ -1,6 +1,8 @@
 import { Router } from "express";
 import { db, translations } from "@vega/db";
 import { eq, and } from "drizzle-orm";
+import { authenticate } from "../middleware/auth";
+import { cleanBody } from "../lib/utils";
 
 const router = Router();
 
@@ -40,11 +42,11 @@ router.get("/", async (req, res) => {
 });
 
 // POST /api/translations
-router.post("/", async (req, res) => {
+router.post("/", authenticate, async (req, res) => {
   try {
     const result = await db
       .insert(translations)
-      .values(req.body)
+      .values(cleanBody(req.body))
       .returning();
     return res.status(201).json(result[0]);
   } catch (error) {
@@ -53,11 +55,11 @@ router.post("/", async (req, res) => {
 });
 
 // PUT /api/translations/:id
-router.put("/:id", async (req, res) => {
+router.put("/:id", authenticate, async (req, res) => {
   try {
     const result = await db
       .update(translations)
-      .set(req.body)
+      .set(cleanBody(req.body))
       .where(eq(translations.id, Number(req.params.id)))
       .returning();
 
@@ -72,7 +74,7 @@ router.put("/:id", async (req, res) => {
 });
 
 // DELETE /api/translations/:id
-router.delete("/:id", async (req, res) => {
+router.delete("/:id", authenticate, async (req, res) => {
   try {
     await db
       .delete(translations)

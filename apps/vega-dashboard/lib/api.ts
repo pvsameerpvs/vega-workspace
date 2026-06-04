@@ -42,7 +42,9 @@ export const api = {
   // Leads
   getLeads: () => fetcher<any[]>("/leads"),
   createLead: (data: any) => fetcher<any>("/leads", { method: "POST", body: JSON.stringify(data) }),
+  updateLead: (id: number, data: any) => fetcher<any>(`/leads/${id}`, { method: "PUT", body: JSON.stringify(data) }),
   updateLeadStatus: (id: number, status: string) => fetcher<any>(`/leads/${id}/status`, { method: "PUT", body: JSON.stringify({ status }) }),
+  deleteLead: (id: number) => fetcher<any>(`/leads/${id}`, { method: "DELETE" }),
 
   // Blog
   getBlogs: () => fetcher<any[]>("/blog"),

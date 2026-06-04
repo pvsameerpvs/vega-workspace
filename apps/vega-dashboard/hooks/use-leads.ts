@@ -47,11 +47,22 @@ export function useLeads() {
     return updated;
   };
 
+  const updateLead = async (id: number, data: Partial<Lead>) => {
+    const updated = await api.updateLead(id, data);
+    setLeads((prev) => prev.map((l) => (l.id === id ? { ...l, ...updated } : l)));
+    return updated;
+  };
+
+  const deleteLead = async (id: number) => {
+    await api.deleteLead(id);
+    setLeads((prev) => prev.filter((l) => l.id !== id));
+  };
+
   const createLead = async (data: Omit<Lead, "id">) => {
     const created = await api.createLead(data);
     setLeads((prev) => [created, ...prev]);
     return created;
   };
 
-  return { leads, loading, error, refresh: fetchLeads, updateStatus, createLead };
+  return { leads, loading, error, refresh: fetchLeads, updateStatus, updateLead, deleteLead, createLead };
 }

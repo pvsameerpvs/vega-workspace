@@ -2,6 +2,8 @@ import { Router } from "express";
 import { db, products, categories, subcategories } from "@vega/db";
 import { eq, desc, like, and, count } from "drizzle-orm";
 import { slugify } from "@vega/utils";
+import { authenticate } from "../middleware/auth";
+import { cleanBody } from "../lib/utils";
 import {
   getPaginationParams,
   paginateResponse,
@@ -93,11 +95,6 @@ router.get("/:slug", async (req, res) => {
   }
 });
 
-function cleanProductBody(body: any) {
-  const { id, createdAt, updatedAt, ...rest } = body;
-  return rest;
-}
-
 function ensureProductSlug(data: any): any {
   if (!data.slug || String(data.slug).trim() === "") {
     data.slug = slugify(data.name || "product");
@@ -105,9 +102,9 @@ function ensureProductSlug(data: any): any {
   return data;
 }
 
-router.post("/", async (req, res) => {
+router.post("/", authenticate, async (req, res) => {
   try {
-    const data = ensureProductSlug(cleanProductBody(req.body));
+    const data = ensureProductSlug(cleanBody(req.body));
     const { name, slug, sku, categoryId } = data;
     if (!name || !slug || !sku || !categoryId) {
       return res.status(400).json({
@@ -122,9 +119,9 @@ router.post("/", async (req, res) => {
   }
 });
 
-router.put("/:id", async (req, res) => {
+router.put("/:id", authenticate, async (req, res) => {
   try {
-    const data = ensureProductSlug(cleanProductBody(req.body));
+    const data = ensureProductSlug(cleanBody(req.body));
     const { name, slug, sku } = data;
     if (name === "" || slug === "" || sku === "") {
       return res.status(400).json({
@@ -148,7 +145,7 @@ router.put("/:id", async (req, res) => {
   }
 });
 
-router.delete("/:id", async (req, res) => {
+router.delete("/:id", authenticate, async (req, res) => {
   try {
     await db.delete(products).where(eq(products.id, Number(req.params.id)));
     return res.json({ success: true });

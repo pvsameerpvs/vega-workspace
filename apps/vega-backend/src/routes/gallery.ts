@@ -1,6 +1,8 @@
 import { Router } from "express";
 import { db, gallery } from "@vega/db";
 import { eq, asc, like, and } from "drizzle-orm";
+import { authenticate } from "../middleware/auth";
+import { cleanBody } from "../lib/utils";
 import {
   getPaginationParams,
   paginateResponse,
@@ -38,9 +40,9 @@ router.get("/", async (req, res) => {
   }
 });
 
-router.post("/", async (req, res) => {
+router.post("/", authenticate, async (req, res) => {
   try {
-    const result = await db.insert(gallery).values(req.body).returning();
+    const result = await db.insert(gallery).values(cleanBody(req.body)).returning();
     return res.status(201).json(result[0]);
   } catch (error: any) {
     console.error("Create gallery error:", error);
@@ -48,11 +50,11 @@ router.post("/", async (req, res) => {
   }
 });
 
-router.put("/:id", async (req, res) => {
+router.put("/:id", authenticate, async (req, res) => {
   try {
     const result = await db
       .update(gallery)
-      .set(req.body)
+      .set(cleanBody(req.body))
       .where(eq(gallery.id, Number(req.params.id)))
       .returning();
 
@@ -66,7 +68,7 @@ router.put("/:id", async (req, res) => {
   }
 });
 
-router.delete("/:id", async (req, res) => {
+router.delete("/:id", authenticate, async (req, res) => {
   try {
     await db.delete(gallery).where(eq(gallery.id, Number(req.params.id)));
     return res.json({ success: true });

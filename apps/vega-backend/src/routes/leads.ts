@@ -1,6 +1,8 @@
 import { Router } from "express";
 import { db, leads } from "@vega/db";
 import { eq, desc, like, and, or, count } from "drizzle-orm";
+import { authenticate } from "../middleware/auth";
+import { cleanBody } from "../lib/utils";
 import {
   getPaginationParams,
   paginateResponse,
@@ -11,7 +13,7 @@ import {
 const router = Router();
 
 // GET /api/leads?page=1&limit=20&search=ahmed&status=new
-router.get("/", async (req, res) => {
+router.get("/", authenticate, async (req, res) => {
   try {
     const { page, limit, search, status } = getPaginationParams(req);
     const conditions = [];
@@ -51,14 +53,14 @@ router.get("/", async (req, res) => {
 
 router.post("/", async (req, res) => {
   try {
-    const result = await db.insert(leads).values(req.body).returning();
+    const result = await db.insert(leads).values(cleanBody(req.body)).returning();
     return res.status(201).json(result[0]);
   } catch (error) {
     res.status(500).json({ error: "Failed to create lead" });
   }
 });
 
-router.put("/:id/status", async (req, res) => {
+router.put("/:id/status", authenticate, async (req, res) => {
   try {
     const { status } = req.body;
     const result = await db
@@ -74,6 +76,33 @@ router.put("/:id/status", async (req, res) => {
     return res.json(result[0]);
   } catch (error) {
     res.status(500).json({ error: "Failed to update lead status" });
+  }
+});
+
+router.put("/:id", authenticate, async (req, res) => {
+  try {
+    const result = await db
+      .update(leads)
+      .set(cleanBody(req.body))
+      .where(eq(leads.id, Number(req.params.id)))
+      .returning();
+
+    if (!result.length) {
+      return res.status(404).json({ error: "Lead not found" });
+    }
+
+    return res.json(result[0]);
+  } catch (error) {
+    res.status(500).json({ error: "Failed to update lead" });
+  }
+});
+
+router.delete("/:id", authenticate, async (req, res) => {
+  try {
+    await db.delete(leads).where(eq(leads.id, Number(req.params.id)));
+    return res.json({ success: true });
+  } catch (error) {
+    res.status(500).json({ error: "Failed to delete lead" });
   }
 });
 

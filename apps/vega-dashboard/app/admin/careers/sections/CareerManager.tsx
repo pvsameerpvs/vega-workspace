@@ -8,15 +8,16 @@ import { StatusBadge } from "@/components/admin/StatusBadge";
 import { FormDialog } from "@/components/admin/FormDialog";
 import { DeleteDialog } from "@/components/admin/DeleteDialog";
 import { JobForm } from "@/components/admin/careers";
-import { Briefcase, Users, Trash2 } from "lucide-react";
+import { Briefcase, Users, Trash2, Edit2 } from "lucide-react";
 
 export function CareerManager() {
-  const { jobs, applications, loading, create, remove } = useCareers();
+  const { jobs, applications, loading, create, update, remove } = useCareers();
   const safeJobs = Array.isArray(jobs) ? jobs : [];
   const safeApplications = Array.isArray(applications) ? applications : [];
   const { toast } = useToast();
   const [activeTab, setActiveTab] = useState("jobs");
   const [formOpen, setFormOpen] = useState(false);
+  const [editJob, setEditJob] = useState<any>(null);
   const [deleteId, setDeleteId] = useState<number | null>(null);
   const [form, setForm] = useState<any>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -29,15 +30,24 @@ export function CareerManager() {
     { id: "applications", label: `Applications (${safeApplications.length})`, icon: Users },
   ];
 
-  const handleCreate = async () => {
+  const openCreate = () => { setEditJob(null); setForm({}); setFormOpen(true); };
+  const openEdit = (job: any) => { setEditJob(job); setForm({ ...job }); setFormOpen(true); };
+
+  const handleSubmit = async () => {
     setIsSubmitting(true);
     try {
-      await create({ ...form, isActive: true });
-      toast({ title: "Job created", description: "New job listing added successfully." });
+      if (editJob) {
+        await update(editJob.id, form);
+        toast({ title: "Job updated", description: "Job listing updated successfully." });
+      } else {
+        await create({ ...form, isActive: true });
+        toast({ title: "Job created", description: "New job listing added successfully." });
+      }
       setFormOpen(false);
+      setEditJob(null);
       setForm({});
     } catch (e) {
-      toast({ title: "Error", description: e instanceof Error ? e.message : "Failed to create job.", variant: "destructive" });
+      toast({ title: "Error", description: e instanceof Error ? e.message : "Failed to save job.", variant: "destructive" });
     } finally {
       setIsSubmitting(false);
     }
@@ -59,7 +69,7 @@ export function CareerManager() {
 
   return (
     <div className="p-8">
-      <PageHeader title="Career Manager" subtitle="Manage job listings and view applications." actionLabel="Add Job" onAction={() => setFormOpen(true)} />
+      <PageHeader title="Career Manager" subtitle="Manage job listings and view applications." actionLabel="Add Job" onAction={openCreate} />
 
       <div className="flex gap-1 rounded-lg bg-slate-100 p-1 mb-6">
         {tabs.map((t) => (
@@ -86,6 +96,9 @@ export function CareerManager() {
                   </div>
                   <div className="flex items-center gap-2">
                     <StatusBadge status={j.isActive ? "active" : "inactive"} />
+                    <button onClick={() => openEdit(j)} className="rounded-md p-1.5 text-slate-400 hover:bg-slate-100 hover:text-vega-blue">
+                      <Edit2 className="h-4 w-4" />
+                    </button>
                     <button onClick={() => setDeleteId(j.id)} className="rounded-md p-1.5 text-slate-400 hover:bg-red-50 hover:text-red-500">
                       <Trash2 className="h-4 w-4" />
                     </button>
@@ -119,7 +132,7 @@ export function CareerManager() {
         )
       )}
 
-      <FormDialog open={formOpen} onClose={() => setFormOpen(false)} title="Add Job Listing" onSubmit={handleCreate} loading={isSubmitting}>
+      <FormDialog open={formOpen} onClose={() => { setFormOpen(false); setEditJob(null); setForm({}); }} title={editJob ? "Edit Job Listing" : "Add Job Listing"} onSubmit={handleSubmit} loading={isSubmitting}>
         <JobForm form={form} update={updateForm} />
       </FormDialog>
 

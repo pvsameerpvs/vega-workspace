@@ -3,6 +3,7 @@ import multer from "multer";
 import { S3Client, PutObjectCommand } from "@aws-sdk/client-s3";
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 import { generateFilePath } from "@vega/utils";
+import { authenticate } from "../middleware/auth";
 
 const router = Router();
 const upload = multer({ storage: multer.memoryStorage(), limits: { fileSize: 10 * 1024 * 1024 } });
@@ -17,7 +18,7 @@ const s3Client = new S3Client({
   forcePathStyle: true,
 });
 
-router.post("/presigned", async (req, res) => {
+router.post("/presigned", authenticate, async (req, res) => {
   try {
     const { fileName, folder = "uploads" } = req.body;
     const key = generateFilePath(folder, fileName);
@@ -37,7 +38,7 @@ router.post("/presigned", async (req, res) => {
   }
 });
 
-router.post("/file", upload.single("file"), async (req, res) => {
+router.post("/file", authenticate, upload.single("file"), async (req, res) => {
   try {
     if (!req.file) {
       return res.status(400).json({ error: "No file uploaded" });

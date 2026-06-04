@@ -1,6 +1,8 @@
 import { Router } from "express";
 import { db, settings, homeBanners, counters, seoMeta } from "@vega/db";
 import { eq } from "drizzle-orm";
+import { authenticate } from "../middleware/auth";
+import { cleanBody } from "../lib/utils";
 
 const HOMEPAGE_CONFIG_KEY = "homepage";
 
@@ -39,7 +41,7 @@ router.get("/homepage-config", async (_req, res) => {
   }
 });
 
-router.put("/homepage-config", async (req, res) => {
+router.put("/homepage-config", authenticate, async (req, res) => {
   try {
     const json = JSON.stringify(req.body);
     const existing = await db.select().from(settings).where(eq(settings.key, HOMEPAGE_CONFIG_KEY)).limit(1);
@@ -56,7 +58,7 @@ router.put("/homepage-config", async (req, res) => {
   }
 });
 
-router.put("/:key", async (req, res) => {
+router.put("/:key", authenticate, async (req, res) => {
   try {
     const result = await db
       .update(settings)
@@ -74,18 +76,18 @@ router.put("/:key", async (req, res) => {
   }
 });
 
-router.post("/banner", async (req, res) => {
+router.post("/banner", authenticate, async (req, res) => {
   try {
-    const result = await db.insert(homeBanners).values(req.body).returning();
+    const result = await db.insert(homeBanners).values(cleanBody(req.body)).returning();
     return res.status(201).json(result[0]);
   } catch (error) {
     res.status(500).json({ error: "Failed to create banner" });
   }
 });
 
-router.put("/banner/:id", async (req, res) => {
+router.put("/banner/:id", authenticate, async (req, res) => {
   try {
-    const { id, createdAt, updatedAt, ...data } = req.body;
+    const { id, createdAt, updatedAt, ...data } = cleanBody(req.body);
     const result = await db
       .update(homeBanners)
       .set(data)
@@ -103,7 +105,7 @@ router.put("/banner/:id", async (req, res) => {
   }
 });
 
-router.delete("/banner/:id", async (req, res) => {
+router.delete("/banner/:id", authenticate, async (req, res) => {
   try {
     await db.delete(homeBanners).where(eq(homeBanners.id, Number(req.params.id)));
     return res.json({ success: true });
@@ -112,11 +114,11 @@ router.delete("/banner/:id", async (req, res) => {
   }
 });
 
-router.put("/counter/:id", async (req, res) => {
+router.put("/counter/:id", authenticate, async (req, res) => {
   try {
     const result = await db
       .update(counters)
-      .set(req.body)
+      .set(cleanBody(req.body))
       .where(eq(counters.id, Number(req.params.id)))
       .returning();
 
@@ -130,11 +132,11 @@ router.put("/counter/:id", async (req, res) => {
   }
 });
 
-router.put("/seo/:id", async (req, res) => {
+router.put("/seo/:id", authenticate, async (req, res) => {
   try {
     const result = await db
       .update(seoMeta)
-      .set(req.body)
+      .set(cleanBody(req.body))
       .where(eq(seoMeta.id, Number(req.params.id)))
       .returning();
 

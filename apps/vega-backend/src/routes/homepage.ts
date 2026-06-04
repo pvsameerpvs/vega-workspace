@@ -1,4 +1,6 @@
 import { Router } from "express";
+import { authenticate } from "../middleware/auth";
+import { cleanBody } from "../lib/utils";
 import {
   getAllVideos, createVideo, updateVideo, deleteVideo,
   getAllPopularCategories, createPopularCategory, updatePopularCategory, deletePopularCategory,
@@ -18,25 +20,25 @@ router.get("/videos", async (_req, res) => {
   }
 });
 
-router.post("/videos", async (req, res) => {
+router.post("/videos", authenticate, async (req, res) => {
   try {
-    const data = await createVideo(req.body);
+    const data = await createVideo(cleanBody(req.body));
     res.status(201).json(data);
   } catch (error: any) {
     res.status(500).json({ error: error.message || "Failed to create video" });
   }
 });
 
-router.put("/videos/:id", async (req, res) => {
+router.put("/videos/:id", authenticate, async (req, res) => {
   try {
-    const data = await updateVideo(Number(req.params.id), req.body);
+    const data = await updateVideo(Number(req.params.id), cleanBody(req.body));
     res.json(data);
   } catch (error: any) {
     res.status(error.message?.includes("not found") ? 404 : 500).json({ error: error.message || "Failed to update video" });
   }
 });
 
-router.delete("/videos/:id", async (req, res) => {
+router.delete("/videos/:id", authenticate, async (req, res) => {
   try {
     const data = await deleteVideo(Number(req.params.id));
     res.json(data);
@@ -55,25 +57,25 @@ router.get("/popular-categories", async (_req, res) => {
   }
 });
 
-router.post("/popular-categories", async (req, res) => {
+router.post("/popular-categories", authenticate, async (req, res) => {
   try {
-    const data = await createPopularCategory(req.body);
+    const data = await createPopularCategory(cleanBody(req.body));
     res.status(201).json(data);
   } catch (error: any) {
     res.status(500).json({ error: error.message || "Failed to create popular category" });
   }
 });
 
-router.put("/popular-categories/:id", async (req, res) => {
+router.put("/popular-categories/:id", authenticate, async (req, res) => {
   try {
-    const data = await updatePopularCategory(Number(req.params.id), req.body);
+    const data = await updatePopularCategory(Number(req.params.id), cleanBody(req.body));
     res.json(data);
   } catch (error: any) {
     res.status(error.message?.includes("not found") ? 404 : 500).json({ error: error.message || "Failed to update popular category" });
   }
 });
 
-router.delete("/popular-categories/:id", async (req, res) => {
+router.delete("/popular-categories/:id", authenticate, async (req, res) => {
   try {
     const data = await deletePopularCategory(Number(req.params.id));
     res.json(data);
@@ -92,25 +94,25 @@ router.get("/industries", async (_req, res) => {
   }
 });
 
-router.post("/industries", async (req, res) => {
+router.post("/industries", authenticate, async (req, res) => {
   try {
-    const data = await createIndustry(req.body);
+    const data = await createIndustry(cleanBody(req.body));
     res.status(201).json(data);
   } catch (error: any) {
     res.status(500).json({ error: error.message || "Failed to create industry" });
   }
 });
 
-router.put("/industries/:id", async (req, res) => {
+router.put("/industries/:id", authenticate, async (req, res) => {
   try {
-    const data = await updateIndustry(Number(req.params.id), req.body);
+    const data = await updateIndustry(Number(req.params.id), cleanBody(req.body));
     res.json(data);
   } catch (error: any) {
     res.status(error.message?.includes("not found") ? 404 : 500).json({ error: error.message || "Failed to update industry" });
   }
 });
 
-router.delete("/industries/:id", async (req, res) => {
+router.delete("/industries/:id", authenticate, async (req, res) => {
   try {
     const data = await deleteIndustry(Number(req.params.id));
     res.json(data);
@@ -129,25 +131,25 @@ router.get("/spotlight", async (_req, res) => {
   }
 });
 
-router.post("/spotlight", async (req, res) => {
+router.post("/spotlight", authenticate, async (req, res) => {
   try {
-    const data = await createSpotlightItem(req.body);
+    const data = await createSpotlightItem(cleanBody(req.body));
     res.status(201).json(data);
   } catch (error: any) {
     res.status(500).json({ error: error.message || "Failed to create spotlight item" });
   }
 });
 
-router.put("/spotlight/:id", async (req, res) => {
+router.put("/spotlight/:id", authenticate, async (req, res) => {
   try {
-    const data = await updateSpotlightItem(Number(req.params.id), req.body);
+    const data = await updateSpotlightItem(Number(req.params.id), cleanBody(req.body));
     res.json(data);
   } catch (error: any) {
     res.status(error.message?.includes("not found") ? 404 : 500).json({ error: error.message || "Failed to update spotlight item" });
   }
 });
 
-router.delete("/spotlight/:id", async (req, res) => {
+router.delete("/spotlight/:id", authenticate, async (req, res) => {
   try {
     const data = await deleteSpotlightItem(Number(req.params.id));
     res.json(data);

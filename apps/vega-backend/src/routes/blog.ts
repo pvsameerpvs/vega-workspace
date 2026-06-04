@@ -2,6 +2,8 @@ import { Router } from "express";
 import { db, blogs } from "@vega/db";
 import { eq, desc, like, and, or } from "drizzle-orm";
 import { slugify } from "@vega/utils";
+import { authenticate } from "../middleware/auth";
+import { cleanBody } from "../lib/utils";
 import {
   getPaginationParams,
   paginateResponse,
@@ -74,9 +76,9 @@ function ensureBlogSlug(body: any): any {
   return body;
 }
 
-router.post("/", async (req, res) => {
+router.post("/", authenticate, async (req, res) => {
   try {
-    const body = ensureBlogSlug(req.body);
+    const body = ensureBlogSlug(cleanBody(req.body));
     if (!body.title || !body.slug) {
       return res.status(400).json({ error: "Title and slug are required" });
     }
@@ -88,9 +90,9 @@ router.post("/", async (req, res) => {
   }
 });
 
-router.put("/:id", async (req, res) => {
+router.put("/:id", authenticate, async (req, res) => {
   try {
-    const body = ensureBlogSlug(req.body);
+    const body = ensureBlogSlug(cleanBody(req.body));
     const result = await db
       .update(blogs)
       .set(body)
@@ -107,7 +109,7 @@ router.put("/:id", async (req, res) => {
   }
 });
 
-router.delete("/:id", async (req, res) => {
+router.delete("/:id", authenticate, async (req, res) => {
   try {
     await db.delete(blogs).where(eq(blogs.id, Number(req.params.id)));
     return res.json({ success: true });
