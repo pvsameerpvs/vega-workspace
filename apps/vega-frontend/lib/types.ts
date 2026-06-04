@@ -5,8 +5,10 @@ export interface Product {
   slug: string;
   sku: string;
   category: string;
+  categorySlug?: string;
   categoryAr?: string;
   subcategory: string;
+  subcategorySlug?: string;
   subcategoryAr?: string;
   description: string;
   shortDescription?: string;
@@ -22,7 +24,7 @@ export interface Product {
   material?: string;
   fittingType: string;
   features: string[];
-  featuresAr?: string;
+  featuresAr?: string[];
   warranty: string;
   brand?: string;
   country?: string;
@@ -37,13 +39,22 @@ export interface Product {
   isPopular?: boolean;
 }
 
+export interface Subcategory {
+  id: string | number;
+  name: string;
+  nameAr?: string;
+  slug: string;
+  image?: string;
+  description?: string;
+}
+
 export interface ProductCategory {
   id: string;
   name: string;
   nameAr?: string;
   slug: string;
   image: string;
-  subcategories: string[];
+  subcategories: Subcategory[];
   subcategoriesAr?: string[];
 }
 

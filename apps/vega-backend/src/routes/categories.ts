@@ -94,6 +94,50 @@ router.delete("/:id", authenticate, async (req, res) => {
   }
 });
 
+// GET category by slug
+router.get("/slug/:slug", async (req, res) => {
+  try {
+    const [cat] = await db
+      .select()
+      .from(categories)
+      .where(eq(categories.slug, req.params.slug))
+      .limit(1);
+    if (!cat) {
+      return res.status(404).json({ error: "Category not found" });
+    }
+    const subs = await db
+      .select()
+      .from(subcategories)
+      .where(eq(subcategories.categoryId, cat.id))
+      .orderBy(asc(subcategories.displayOrder));
+    return res.json({ ...cat, subcategories: subs });
+  } catch (error) {
+    res.status(500).json({ error: "Failed to fetch category" });
+  }
+});
+
+// GET subcategory by slug
+router.get("/subcategories/slug/:slug", async (req, res) => {
+  try {
+    const [sub] = await db
+      .select()
+      .from(subcategories)
+      .where(eq(subcategories.slug, req.params.slug))
+      .limit(1);
+    if (!sub) {
+      return res.status(404).json({ error: "Subcategory not found" });
+    }
+    const [cat] = await db
+      .select()
+      .from(categories)
+      .where(eq(categories.id, sub.categoryId))
+      .limit(1);
+    return res.json({ ...sub, categorySlug: cat?.slug, categoryName: cat?.name });
+  } catch (error) {
+    res.status(500).json({ error: "Failed to fetch subcategory" });
+  }
+});
+
 // GET subcategories by category ID
 router.get("/:id/subcategories", async (req, res) => {
   try {

@@ -10,8 +10,8 @@ import { ProductMegaMenu } from "./ProductMegaMenu";
 import { MobileMenu } from "./MobileMenu";
 
 interface NavbarProps {
-  categories?: { id: string; name: string; nameAr?: string; slug: string; subcategories?: string[] }[];
-  products?: { id: string; name: string; nameAr?: string; slug: string; image: string; category: string }[];
+  categories?: { id: string; name: string; nameAr?: string; slug: string; subcategories?: (string | { name: string; nameAr?: string })[] }[];
+  products?: { id: string; name: string; nameAr?: string; slug: string; image: string; category: string; categorySlug?: string; subcategorySlug?: string }[];
 }
 
 export function Navbar({ categories = [], products = [] }: NavbarProps) {

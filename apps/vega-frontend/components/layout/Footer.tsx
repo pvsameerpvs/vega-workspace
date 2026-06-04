@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useParams } from "next/navigation";
 import { Mail, Phone, MapPin } from "lucide-react";
+import { getCategoryUrl } from "@/lib/url";
 
 interface FooterProps {
   categories?: { id: string; name: string; nameAr?: string; slug: string }[];
@@ -47,7 +48,7 @@ export function Footer({ categories = [] }: FooterProps) {
             <ul className="space-y-2">
               {categories.slice(0, 5).map((cat) => (
                 <li key={cat.id}>
-                  <Link href={l(`/products/${cat.slug}`)} className="text-sm hover:text-[#FFD400] transition-colors">
+                  <Link href={getCategoryUrl(cat.slug, locale)} className="text-sm hover:text-[#FFD400] transition-colors">
                     {isAR && cat.nameAr ? cat.nameAr : cat.name}
                   </Link>
                 </li>

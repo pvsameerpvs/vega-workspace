@@ -9,6 +9,7 @@ import { ProductGrid } from "@/components/product/ProductGrid";
 import { ArrowRight } from "lucide-react";
 import { isValidLocale } from "@/lib/i18n";
 import { notFound } from "next/navigation";
+import { getCategoryUrl } from "@/lib/url";
 
 export const metadata: Metadata = {
   title: "Products | Vega UAE",
@@ -43,7 +44,7 @@ export default async function ProductsPage({ params: { locale } }: { params: { l
           {mappedCategories.map((cat) => (
             <a
               key={cat.id}
-              href={`/${locale}/products/${cat.slug}`}
+              href={getCategoryUrl(cat.slug, locale)}
               className="group inline-flex items-center gap-2 text-sm font-semibold text-slate-500 hover:text-vega-blue transition-all duration-300"
             >
               {isAR && cat.nameAr ? cat.nameAr : cat.name} <ArrowRight className="h-3.5 w-3.5 transition-transform duration-300 group-hover:translate-x-0.5" />

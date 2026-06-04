@@ -2,6 +2,7 @@
 
 import { slugify } from "@vega/utils";
 import { Plus } from "lucide-react";
+import { ImageUpload } from "@/components/admin/ImageUpload";
 
 interface SubcategoryFormProps {
   catName: string;
@@ -42,6 +43,14 @@ export function SubcategoryForm({ catName, subForm, editSub, updateSubForm, onSa
         <div className="col-span-2">
           <label className="text-xs font-semibold text-slate-700">Description</label>
           <textarea rows={2} value={subForm.description || ""} onChange={(e) => updateSubForm("description", e.target.value)} className="w-full rounded-md border border-slate-200 px-3 py-2 text-sm focus:border-vega-blue focus:outline-none" placeholder="Description" />
+        </div>
+        <div className="col-span-2">
+          <ImageUpload
+            folder="subcategories"
+            value={subForm.image || ""}
+            onChange={(url) => updateSubForm("image", url)}
+            label="Subcategory Image"
+          />
         </div>
       </div>
       <div className="flex justify-end gap-2 mt-3">

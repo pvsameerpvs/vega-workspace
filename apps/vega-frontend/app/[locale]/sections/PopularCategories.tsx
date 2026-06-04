@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { ProtectedImage } from "@/components/ProtectedImage";
 import { getCategories, mapCategoryToFrontend } from "@/lib/api";
+import { getCategoryUrl } from "@/lib/url";
 
 interface PopularCategoriesProps {
   locale?: string;
@@ -8,7 +9,6 @@ interface PopularCategoriesProps {
 
 export async function PopularCategories({ locale = "en" }: PopularCategoriesProps) {
   const isAR = locale === "ar";
-  const l = (path: string) => `/${locale}${path}`;
   const categories = await getCategories();
   const mapped = (categories || []).map(mapCategoryToFrontend).filter(Boolean) as any[];
 
@@ -20,7 +20,7 @@ export async function PopularCategories({ locale = "en" }: PopularCategoriesProp
           {mapped.slice(0, 8).map((cat) => (
             <Link
               key={cat.id}
-              href={l(`/products/${cat.slug}`)}
+              href={getCategoryUrl(cat.slug, locale)}
               className="group flex flex-col items-center text-center"
             >
               <div className="relative mb-3 aspect-square w-full max-w-[120px] overflow-hidden rounded-full border-2 border-slate-100 transition-all duration-300 group-hover:border-[#FFD400] group-hover:shadow-md">

@@ -8,6 +8,7 @@ export interface PaginationParams {
   sortOrder?: "asc" | "desc";
   status?: string;
   category?: string;
+  subcategory?: string;
 }
 
 export function getPaginationParams(req: Request): PaginationParams {
@@ -18,8 +19,9 @@ export function getPaginationParams(req: Request): PaginationParams {
   const sortOrder = (req.query.sortOrder as string) === "asc" ? "asc" : "desc";
   const status = (req.query.status as string) || undefined;
   const category = (req.query.category as string) || undefined;
+  const subcategory = (req.query.subcategory as string) || undefined;
 
-  return { page, limit, search, sortBy, sortOrder, status, category };
+  return { page, limit, search, sortBy, sortOrder, status, category, subcategory };
 }
 
 export function paginateResponse<T>(items: T[], page: number, limit: number, total?: number) {

@@ -84,6 +84,26 @@ export async function getSubcategories(categoryId: number) {
   return fetcherList<any>(`/categories/${categoryId}/subcategories`);
 }
 
+export async function getCategoryBySlug(slug: string) {
+  return fetcher<any>(`/categories/slug/${slug}`);
+}
+
+export async function getSubcategoryBySlug(slug: string) {
+  return fetcher<any>(`/categories/subcategories/slug/${slug}`);
+}
+
+export async function resolveProductPath(path: string) {
+  return fetcher<{ type: string; data: any }>(`/products/resolve?path=${encodeURIComponent(path)}`);
+}
+
+export async function getProductsByCategory(categoryId: number) {
+  return fetcherList<any>(`/products?category=${categoryId}`);
+}
+
+export async function getProductsBySubcategory(subcategoryId: number) {
+  return fetcherList<any>(`/products?subcategory=${subcategoryId}`);
+}
+
 // Mappers
 export function mapProductToFrontend(p: any) {
   if (!p) return null;
@@ -95,8 +115,10 @@ export function mapProductToFrontend(p: any) {
     sku: p.sku || "",
     categoryId: p.categoryId || null,
     category: p.categoryName || p.category || "",
+    categorySlug: p.categorySlug || "",
     categoryAr: p.categoryNameAr || p.categoryAr || "",
     subcategory: p.subcategoryName || p.subcategory || "",
+    subcategorySlug: p.subcategorySlug || "",
     subcategoryAr: p.subcategoryNameAr || p.subcategoryAr || "",
     description: p.shortDescription || p.fullDescription || p.description || "",
     shortDescription: p.shortDescription || "",
@@ -130,13 +152,20 @@ export function mapProductToFrontend(p: any) {
 
 export function mapCategoryToFrontend(c: any) {
   if (!c) return null;
+  const subs = Array.isArray(c.subcategories)
+    ? c.subcategories.map((s: any) =>
+        typeof s === "string"
+          ? { id: s, name: s, slug: s }
+          : { id: s.id || s.slug, name: s.name || "", nameAr: s.nameAr || "", slug: s.slug || "", image: s.image || "" }
+      )
+    : [];
   return {
     id: String(c.id || c.slug),
     name: c.name || "",
     nameAr: c.nameAr || "",
     slug: c.slug || "",
     image: c.image || c.banner || "",
-    subcategories: Array.isArray(c.subcategories) ? c.subcategories.map((s: any) => s.name || s) : [],
+    subcategories: subs,
     subcategoriesAr: Array.isArray(c.subcategoriesAr) ? c.subcategoriesAr : [],
   };
 }

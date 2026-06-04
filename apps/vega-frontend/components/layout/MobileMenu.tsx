@@ -1,11 +1,12 @@
 "use client";
 
 import Link from "next/link";
+import { getCategoryUrl } from "@/lib/url";
 
 interface MobileMenuProps {
   open: boolean;
   onClose: () => void;
-  categories: { id: string; name: string; nameAr?: string; slug: string; subcategories?: string[] }[];
+  categories: { id: string; name: string; nameAr?: string; slug: string; subcategories?: (string | { name: string; nameAr?: string })[] }[];
   isAR: boolean;
   locale: string;
 }
@@ -33,16 +34,19 @@ export function MobileMenu({ open, onClose, categories, isAR, locale }: MobileMe
           <span className="text-xs font-bold text-white/40 uppercase mb-2 block">{isAR ? "المنتجات" : "Products"}</span>
           {categories.map((cat) => (
             <div key={cat.id}>
-              <Link href={l(`/products/${cat.slug}`)} className="block py-2 text-sm font-semibold text-white" onClick={onClose}>
+              <Link href={getCategoryUrl(cat.slug, locale)} className="block py-2 text-sm font-semibold text-white" onClick={onClose}>
                 {isAR && cat.nameAr ? cat.nameAr : cat.name}
               </Link>
               {(cat.subcategories || []).length > 0 && (
                 <div className="pl-3 space-y-1 mb-2">
-                  {cat.subcategories!.map((sub, idx) => (
-                    <Link key={idx} href={l(`/products/${cat.slug}`)} className="block py-1 text-xs text-white/50" onClick={onClose}>
-                      {sub}
-                    </Link>
-                  ))}
+                  {cat.subcategories!.map((sub, idx) => {
+                    const subName = typeof sub === "string" ? sub : (isAR && sub.nameAr ? sub.nameAr : sub.name);
+                    return (
+                      <span key={idx} className="block py-1 text-xs text-white/50">
+                        {subName}
+                      </span>
+                    );
+                  })}
                 </div>
               )}
             </div>

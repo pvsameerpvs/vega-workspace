@@ -4,6 +4,7 @@ import { useState, useEffect, useRef, useCallback } from "react";
 import { useRouter, useParams } from "next/navigation";
 import { Search, X, Loader2, Package, Tag } from "lucide-react";
 import Link from "next/link";
+import { getCategoryUrl } from "@/lib/url";
 
 interface SearchResult {
   products: {
@@ -94,7 +95,6 @@ export function SearchBar() {
     }
   };
 
-  const l = (path: string) => `/${locale}${path}`;
   const hasResults = results.categories.length > 0 || results.products.length > 0;
   const showEmpty = query.trim() && !loading && !hasResults;
 
@@ -109,8 +109,7 @@ export function SearchBar() {
           onFocus={() => setOpen(true)}
           onKeyDown={handleKeyDown}
           placeholder={isAR ? "ابحث عن المنتجات أو الفئات..." : "Search products or categories..."}
-          className="w-full rounded-full bg-white/10 border border-white/20 py-2 text-sm text-white placeholder:text-white/50 focus:outline-none focus:ring-1 focus:ring-[#FFD400]"
-          style={{ paddingInlineStart: query ? "2.5rem" : "1rem", paddingInlineEnd: query ? "3rem" : "2.5rem" }}
+          className={`w-full rounded-full bg-white/10 border border-white/20 py-2 text-sm text-white placeholder:text-white/50 focus:outline-none focus:ring-1 focus:ring-[#FFD400] ${query ? "pl-10 pr-12" : "px-4 pr-10"}`}
         />
         <div className={`absolute top-1/2 -translate-y-1/2 ${isAR ? "left-3" : "right-3"} flex items-center gap-1`}>
           {loading && <Loader2 className="h-4 w-4 text-white/50 animate-spin" />}
@@ -143,7 +142,7 @@ export function SearchBar() {
                 {results.categories.map((cat) => (
                   <Link
                     key={cat.id}
-                    href={l(`/products/${cat.slug}`)}
+                    href={getCategoryUrl(cat.slug, locale)}
                     onClick={() => { setOpen(false); setQuery(""); }}
                     className="flex items-center gap-3 px-2 py-2 rounded-lg hover:bg-slate-50 transition-colors"
                   >
@@ -170,7 +169,7 @@ export function SearchBar() {
                 {results.products.map((prod) => (
                   <Link
                     key={prod.id}
-                    href={l(`/products/${prod.slug}`)}
+                    href={`/${locale}/products/${prod.slug}`}
                     onClick={() => { setOpen(false); setQuery(""); }}
                     className="flex items-center gap-3 px-2 py-2 rounded-lg hover:bg-slate-50 transition-colors"
                   >

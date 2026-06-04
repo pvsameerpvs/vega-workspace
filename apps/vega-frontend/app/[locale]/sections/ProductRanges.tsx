@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { ProtectedImage } from "@/components/ProtectedImage";
+import { getCategoryUrl } from "@/lib/url";
 
 interface Category {
   id: string;
@@ -17,7 +18,6 @@ interface ProductRangesProps {
 
 export function ProductRanges({ categories = [], locale = "en" }: ProductRangesProps) {
   const isAR = locale === "ar";
-  const l = (path: string) => `/${locale}${path}`;
   if (categories.length === 0) return null;
 
   return (
@@ -28,7 +28,7 @@ export function ProductRanges({ categories = [], locale = "en" }: ProductRangesP
           {categories.map((cat) => (
             <Link
               key={cat.id}
-              href={l(`/products/${cat.slug}`)}
+              href={getCategoryUrl(cat.slug, locale)}
               className="group relative overflow-hidden rounded-xl aspect-[4/3]"
             >
               <ProtectedImage

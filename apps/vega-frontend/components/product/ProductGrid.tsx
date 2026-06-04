@@ -2,9 +2,11 @@
 
 import { Product } from "@/lib/types";
 import { getWhatsAppLink } from "@/lib/whatsapp";
+import { getProductUrl } from "@/lib/url";
 import Link from "next/link";
 import { ArrowUpRight, Eye } from "lucide-react";
 import { WhatsAppIcon } from "@/components/icons/WhatsAppIcon";
+import { ProtectedImage } from "@/components/ProtectedImage";
 
 interface ProductGridProps {
   products: Product[];
@@ -13,7 +15,6 @@ interface ProductGridProps {
 
 export function ProductGrid({ products, locale = "en" }: ProductGridProps) {
   const isAR = locale === "ar";
-  const l = (path: string) => `/${locale}${path}`;
 
   if (products.length === 0) {
     return (
@@ -45,15 +46,12 @@ export function ProductGrid({ products, locale = "en" }: ProductGridProps) {
             {/* Card Container */}
             <div className="modern-card overflow-hidden transition-all duration-500 hover:shadow-card-hover hover:-translate-y-2">
               {/* Image Section */}
-              <Link href={l(`/products/${product.slug}`)} className="block relative overflow-hidden">
+              <Link href={getProductUrl(product, locale)} className="block relative overflow-hidden">
                 <div className="aspect-[4/3] overflow-hidden bg-slate-100">
-                  <img
-                    src={product.image}
+                  <ProtectedImage
+                    src={product.image || ""}
                     alt={name}
                     className="h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-110"
-                    draggable={false}
-                    onContextMenu={(e) => e.preventDefault()}
-                    loading="lazy"
                   />
                   {/* Subtle gradient overlay on hover */}
                   <div className="absolute inset-0 bg-gradient-to-t from-vega-blue/20 via-transparent to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
@@ -67,22 +65,26 @@ export function ProductGrid({ products, locale = "en" }: ProductGridProps) {
                 </div>
 
                 {/* Category badge */}
-                <div className="absolute right-4 top-4">
-                  <span className="inline-flex items-center rounded-full bg-vega-yellow/95 backdrop-blur-sm px-3 py-1.5 text-xs font-bold text-vega-blue shadow-md">
-                    {subcategory}
-                  </span>
-                </div>
+                {subcategory && (
+                  <div className="absolute right-4 top-4">
+                    <span className="inline-flex items-center rounded-full bg-vega-yellow/95 backdrop-blur-sm px-3 py-1.5 text-xs font-bold text-vega-blue shadow-md">
+                      {subcategory}
+                    </span>
+                  </div>
+                )}
 
                 {/* Hover Overlay with Quick Actions */}
                 <div className="absolute inset-0 flex items-center justify-center gap-3 opacity-0 transition-all duration-500 group-hover:opacity-100 bg-black/20 backdrop-blur-[2px]">
                   <Link
-                    href={l(`/products/${product.slug}`)}
+                    href={getProductUrl(product, locale)}
                     className="inline-flex items-center gap-1.5 rounded-full bg-white px-4 py-2 text-xs font-bold text-vega-blue shadow-lg transition-all duration-300 hover:bg-vega-blue hover:text-white hover:scale-105 font-heading"
                   >
                     <Eye className="h-3.5 w-3.5" /> {isAR ? "عرض" : "View"}
                   </Link>
                   <button
-                     onClick={(e) => {
+                    type="button"
+                    onClick={(e) => {
+                      e.stopPropagation();
                       e.preventDefault();
                       window.open(getWhatsAppLink(product, locale), "_blank");
                     }}
@@ -119,7 +121,7 @@ export function ProductGrid({ products, locale = "en" }: ProductGridProps) {
                 {/* Action Buttons */}
                 <div className="flex flex-col sm:flex-row items-stretch gap-3">
                   <Link
-                    href={l(`/products/${product.slug}`)}
+                    href={getProductUrl(product, locale)}
                     className="flex-1 inline-flex items-center justify-center gap-1.5 rounded-full border border-slate-200 px-4 py-2.5 text-xs font-bold text-vega-blue transition-all duration-300 hover:border-vega-blue hover:bg-vega-blue hover:text-white hover:shadow-md font-heading"
                   >
                     <Eye className="h-3.5 w-3.5" /> {isAR ? "التفاصيل" : "Details"}

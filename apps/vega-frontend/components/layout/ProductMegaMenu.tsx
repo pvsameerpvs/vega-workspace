@@ -3,10 +3,11 @@
 import { useMemo } from "react";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
+import { getCategoryUrl, getProductUrl } from "@/lib/url";
 
 interface ProductMegaMenuProps {
-  categories: { id: string; name: string; nameAr?: string; slug: string; subcategories?: string[] }[];
-  products: { id: string; name: string; nameAr?: string; slug: string; image: string; category: string }[];
+  categories: { id: string; name: string; nameAr?: string; slug: string; subcategories?: (string | { name: string; nameAr?: string })[] }[];
+  products: { id: string; name: string; nameAr?: string; slug: string; image: string; category: string; categorySlug?: string; subcategorySlug?: string }[];
   isAR: boolean;
   locale: string;
   open: boolean;
@@ -26,7 +27,6 @@ export function ProductMegaMenu({ categories, products, isAR, locale, open }: Pr
     return map;
   }, [categories, products]);
 
-  const l = (path: string) => `/${locale}${path}`;
   if (!open) return null;
 
   return (
@@ -35,22 +35,25 @@ export function ProductMegaMenu({ categories, products, isAR, locale, open }: Pr
         <div className="grid grid-cols-4 gap-6">
           {categories.map((cat) => (
             <div key={cat.id}>
-              <Link href={l(`/products/${cat.slug}`)} className="block text-sm font-bold text-[#1F3A93] mb-2 hover:text-[#162d70] transition-colors">
+              <Link href={getCategoryUrl(cat.slug, locale)} className="block text-sm font-bold text-[#1F3A93] mb-2 hover:text-[#162d70] transition-colors">
                 {isAR && cat.nameAr ? cat.nameAr : cat.name}
               </Link>
               <ul className="space-y-1 mb-3">
-                {(cat.subcategories || []).slice(0, 4).map((sub, idx) => (
-                  <li key={idx}>
-                    <Link href={l(`/products/${cat.slug}`)} className="text-xs text-slate-400 hover:text-[#1F3A93] transition-colors">
-                      {sub}
-                    </Link>
-                  </li>
-                ))}
+                {(cat.subcategories || []).slice(0, 4).map((sub, idx) => {
+                  const subName = typeof sub === "string" ? sub : (isAR && sub.nameAr ? sub.nameAr : sub.name);
+                  return (
+                    <li key={idx}>
+                      <span className="text-xs text-slate-400">
+                        {subName}
+                      </span>
+                    </li>
+                  );
+                })}
               </ul>
               {(productsByCategory[cat.slug] || []).length > 0 && (
                 <div className="space-y-2 pt-2 border-t border-slate-100">
                   {(productsByCategory[cat.slug] || []).map((prod) => (
-                    <Link key={prod.id} href={l(`/products/${prod.slug}`)} className="flex items-center gap-2 group">
+                    <Link key={prod.id} href={getProductUrl(prod as any, locale)} className="flex items-center gap-2 group">
                       <div className="h-8 w-8 rounded-lg bg-slate-100 overflow-hidden shrink-0">
                         <img src={prod.image} alt={isAR && prod.nameAr ? prod.nameAr : prod.name} className="h-full w-full object-cover" draggable={false} onContextMenu={(e) => e.preventDefault()} />
                       </div>
@@ -59,7 +62,7 @@ export function ProductMegaMenu({ categories, products, isAR, locale, open }: Pr
                   ))}
                 </div>
               )}
-              <Link href={l(`/products/${cat.slug}`)} className="inline-flex items-center gap-1 text-[10px] font-semibold text-[#FFD400] hover:text-[#1F3A93] transition-colors mt-2">
+              <Link href={getCategoryUrl(cat.slug, locale)} className="inline-flex items-center gap-1 text-[10px] font-semibold text-[#FFD400] hover:text-[#1F3A93] transition-colors mt-2">
                 {isAR ? "عرض الكل" : "View All"} <ArrowRight className="h-3 w-3" />
               </Link>
             </div>
