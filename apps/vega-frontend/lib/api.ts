@@ -104,6 +104,10 @@ export async function getProductsBySubcategory(subcategoryId: number) {
   return fetcherList<any>(`/products?subcategory=${subcategoryId}`);
 }
 
+export async function getHomepageConfig() {
+  return fetcher<{ sectionVisibility?: Record<string, boolean> }>("/settings/homepage-config", { next: { revalidate: 0 } });
+}
+
 // Mappers
 export function mapProductToFrontend(p: any) {
   if (!p) return null;
