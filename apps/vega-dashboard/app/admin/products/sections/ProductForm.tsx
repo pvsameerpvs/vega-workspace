@@ -62,7 +62,6 @@ export function ProductForm({ open, onClose, onSubmit, product, loading = false 
         isFeatured: false,
         isPopular: false,
         showPrice: false,
-        availabilityStatus: "In Stock",
         deliveryAvailable: true,
         installationAvailable: false,
       });

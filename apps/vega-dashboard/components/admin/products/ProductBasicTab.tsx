@@ -83,18 +83,6 @@ export function ProductBasicTab({
             <option value="archived">Archived</option>
           </select>
         </div>
-        <div>
-          <label className="mb-1 block text-xs font-semibold text-slate-700">Availability</label>
-          <select
-            value={form.availabilityStatus || "In Stock"}
-            onChange={(e) => update("availabilityStatus", e.target.value)}
-            className="h-10 w-full rounded-md border border-slate-200 px-3 text-sm focus:border-vega-blue focus:outline-none"
-          >
-            <option>In Stock</option>
-            <option>Made to Order</option>
-            <option>Out of Stock</option>
-          </select>
-        </div>
       </div>
       <div className="grid grid-cols-2 gap-4">
         <div>

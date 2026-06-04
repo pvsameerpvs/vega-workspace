@@ -5,6 +5,14 @@ function getAuthHeaders(): Record<string, string> {
   return token ? { Authorization: `Bearer ${token}` } : {};
 }
 
+function handleUnauthorized(status: number) {
+  if (typeof window !== "undefined" && status === 401) {
+    localStorage.removeItem("token");
+    localStorage.removeItem("user");
+    window.location.href = "/login";
+  }
+}
+
 async function fetcher<T>(path: string, options?: RequestInit): Promise<T> {
   const isFormData = options?.body instanceof FormData;
   const res = await fetch(`${API_BASE}${path}`, {
@@ -15,12 +23,18 @@ async function fetcher<T>(path: string, options?: RequestInit): Promise<T> {
   });
   if (!res.ok) {
     const err = await res.json().catch(() => ({}));
+    handleUnauthorized(res.status);
     throw new Error(err.error || `Request failed: ${res.status}`);
   }
   return res.json() as Promise<T>;
 }
 
 export const api = {
+  // Auth
+  login: (data: { email: string; password: string }) => fetcher<{ token: string; refreshToken: string; user: any }>("/auth/login", { method: "POST", body: JSON.stringify(data) }),
+  logout: () => fetcher<any>("/auth/logout", { method: "POST" }),
+  me: () => fetcher<any>("/auth/me"),
+
   // Products
   getProducts: () => fetcher<any[]>("/products"),
   getProduct: (slug: string) => fetcher<any>(`/products/${slug}`),

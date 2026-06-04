@@ -1,8 +1,9 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname } from "next/navigation";
-import { useState } from "react";
+import { usePathname, useRouter } from "next/navigation";
+import { useState, useEffect } from "react";
+import { useAuth } from "@/hooks/use-auth";
 import {
   LayoutDashboard,
   Package,
@@ -43,7 +44,25 @@ export default function AdminLayout({
   children: React.ReactNode;
 }) {
   const pathname = usePathname();
+  const router = useRouter();
+  const { user, isAuthenticated, isLoading, logout } = useAuth();
   const [mobileOpen, setMobileOpen] = useState(false);
+
+  useEffect(() => {
+    if (!isLoading && !isAuthenticated) {
+      router.push("/login");
+    }
+  }, [isLoading, isAuthenticated, router]);
+
+  if (isLoading) {
+    return (
+      <div className="flex min-h-screen items-center justify-center bg-slate-50">
+        <div className="h-8 w-8 animate-spin rounded-full border-2 border-slate-300 border-t-vega-blue" />
+      </div>
+    );
+  }
+
+  if (!isAuthenticated) return null;
 
   return (
     <div className="flex min-h-screen bg-slate-50">
@@ -96,11 +115,14 @@ export default function AdminLayout({
               <User className="h-4 w-4 text-white" />
             </div>
             <div className="flex-1 min-w-0">
-              <p className="text-sm font-medium text-white truncate">Admin User</p>
-              <p className="text-xs text-white/40 truncate">Super Admin</p>
+              <p className="text-sm font-medium text-white truncate">{user?.name || "Admin"}</p>
+              <p className="text-xs text-white/40 truncate capitalize">{user?.role?.replace(/_/g, " ") || "Admin"}</p>
             </div>
           </div>
-          <button className="flex w-full items-center gap-2 rounded-lg px-3 py-2 text-xs font-medium text-white/40 transition-all hover:bg-white/5 hover:text-white">
+          <button
+            onClick={logout}
+            className="flex w-full items-center gap-2 rounded-lg px-3 py-2 text-xs font-medium text-white/40 transition-all hover:bg-white/5 hover:text-white"
+          >
             <LogOut className="h-3.5 w-3.5" />
             Logout
           </button>

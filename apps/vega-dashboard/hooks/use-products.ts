@@ -16,7 +16,6 @@ export type Product = {
   subcategoryId?: number | null;
   isFeatured?: boolean;
   isPopular?: boolean;
-  availabilityStatus?: string;
   deliveryAvailable?: boolean;
   installationAvailable?: boolean;
   mainImage?: string;
@@ -39,7 +38,6 @@ export type Product = {
   country?: string;
   bulkAvailable?: boolean;
   bulkQuantityNote?: string;
-  wholesaleNote?: string;
   wholesaleDiscountNote?: string;
   deliveryInfo?: string;
   installation?: string;

@@ -30,7 +30,6 @@ export interface Product {
   installation: string;
   bulkAvailable: boolean;
   bulkQuantityNote?: string;
-  wholesaleNote?: string;
   wholesaleDiscountNote?: string;
   price?: number | null;
   showPrice?: boolean;

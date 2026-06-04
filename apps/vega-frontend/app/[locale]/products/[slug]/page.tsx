@@ -2,6 +2,7 @@ import { Metadata } from "next";
 import { notFound } from "next/navigation";
 import {
   getProducts,
+  getProduct,
   getCategories,
   mapProductToFrontend,
   mapCategoryToFrontend,
@@ -19,8 +20,7 @@ export async function generateMetadata({
 }: {
   params: { slug: string; locale: string };
 }): Promise<Metadata> {
-  const all = await getProducts();
-  const p = (all || []).find((x: any) => x.slug === params.slug);
+  const p = await getProduct(params.slug);
   const isAR = params.locale === "ar";
   if (p) {
     const name = isAR && p.nameAr ? p.nameAr : p.name;
@@ -44,16 +44,17 @@ export default async function ProductOrCategoryPage({
   const isAR = params.locale === "ar";
   const l = (path: string) => `/${params.locale}${path}`;
 
-  const [products, categories] = await Promise.all([
+  const [products, categories, rawProduct] = await Promise.all([
     getProducts(),
     getCategories(),
+    getProduct(params.slug),
   ]);
 
   const mappedProducts = (products || []).map(mapProductToFrontend).filter(Boolean) as any[];
   const mappedCategories = (categories || []).map(mapCategoryToFrontend).filter(Boolean) as any[];
 
   const category = mappedCategories.find((c) => c.slug === params.slug);
-  const product = mappedProducts.find((p) => p.slug === params.slug);
+  const product = rawProduct ? mapProductToFrontend(rawProduct) : null;
 
   if (!category && !product) {
     notFound();
@@ -152,6 +153,12 @@ export default async function ProductOrCategoryPage({
           <div>
             <span className="mb-3 inline-block text-sm text-slate-400">
               {isAR && product!.categoryAr ? product!.categoryAr : product!.category}
+              {product!.subcategory && (
+                <>
+                  <span className="mx-2 text-slate-300">/</span>
+                  {isAR && product!.subcategoryAr ? product!.subcategoryAr : product!.subcategory}
+                </>
+              )}
             </span>
             <h1 className="text-3xl font-bold text-slate-900 md:text-4xl tracking-tight">
               {displayName}
@@ -223,12 +230,6 @@ export default async function ProductOrCategoryPage({
                 <div className="flex items-center gap-3 text-base text-slate-500">
                   <BadgePercent className="h-4 w-4 text-vega-yellow" />
                   <span>{product!.wholesaleDiscountNote}</span>
-                </div>
-              )}
-              {product!.wholesaleNote && !product!.wholesaleDiscountNote && (
-                <div className="flex items-center gap-3 text-base text-slate-500">
-                  <BadgePercent className="h-4 w-4 text-vega-yellow" />
-                  <span>{product!.wholesaleNote}</span>
                 </div>
               )}
               {product!.deliveryInfo && (
