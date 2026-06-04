@@ -1,67 +1,70 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
-import { useToast } from "@vega/ui";
-import { useUpload } from "@/hooks/use-upload";
-import { Upload, X } from "lucide-react";
+import { useState, useRef } from "react";
+import { api } from "@/lib/api";
 
 interface ImageUploadProps {
   value?: string;
   onChange: (url: string) => void;
-  folder?: string;
   label?: string;
+  folder?: string;
 }
 
-export function ImageUpload({ value, onChange, folder = "uploads", label = "Image" }: ImageUploadProps) {
-  const { toast } = useToast();
-  const [uploading, setUploading] = useState(false);
-  const [preview, setPreview] = useState(value || "");
+export function ImageUpload({ value, onChange, label, folder = "showcases" }: ImageUploadProps) {
+  const [loading, setLoading] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
-  const { upload } = useUpload();
-
-  useEffect(() => {
-    setPreview(value || "");
-  }, [value]);
 
   const handleFile = async (file: File) => {
-    if (!file.type.startsWith("image/")) {
-      toast({ title: "Invalid file", description: "Please upload an image file.", variant: "destructive" });
-      return;
-    }
-    setUploading(true);
+    if (!file) return;
+    setLoading(true);
     try {
-      const url = await upload(file, folder);
-      setPreview(url);
-      onChange(url);
+      const res = await api.uploadFile(file, folder);
+      onChange(res.publicUrl);
     } catch (e) {
-      const message = e instanceof Error ? e.message : "Please try again.";
-      toast({ title: "Upload failed", description: message, variant: "destructive" });
+      console.error("Upload failed", e);
     } finally {
-      setUploading(false);
+      setLoading(false);
     }
-  };
-
-  const handleDrop = (e: React.DragEvent) => {
-    e.preventDefault();
-    const file = e.dataTransfer.files[0];
-    if (file) handleFile(file);
-  };
-
-  const clear = () => {
-    setPreview("");
-    onChange("");
-    if (inputRef.current) inputRef.current.value = "";
   };
 
   return (
-    <div className="space-y-2">
-      <label className="text-sm font-medium text-slate-700">{label}</label>
-      <div
-        onDragOver={(e) => e.preventDefault()}
-        onDrop={handleDrop}
-        onClick={() => inputRef.current?.click()}
-        className="relative flex cursor-pointer flex-col items-center justify-center rounded-xl border-2 border-dashed border-slate-200 bg-slate-50 p-6 transition-colors hover:border-vega-blue hover:bg-slate-100"
-      >
+    <div>
+      {label && <label className="mb-1 block text-xs font-medium text-slate-600">{label}</label>}
+      <div className="relative h-24 w-full rounded-lg border border-slate-200 bg-slate-50 overflow-hidden">
+        {value ? (
+          <div className="relative h-full w-full">
+            <img
+              src={value}
+              alt="Preview"
+              draggable={false}
+              onContextMenu={(e) => e.preventDefault()}
+              className="h-full w-full object-cover select-none pointer-events-none"
+            />
+            <button
+              onClick={() => onChange("")}
+              className="absolute top-1 right-1 rounded-md bg-red-500 px-1.5 py-0.5 text-[10px] text-white hover:bg-red-600"
+            >
+              Remove
+            </button>
+          </div>
+        ) : (
+          <button
+            onClick={() => inputRef.current?.click()}
+            disabled={loading}
+            className="flex h-full w-full flex-col items-center justify-center gap-1 text-xs text-slate-400 hover:text-slate-600 transition-colors"
+          >
+            {loading ? (
+              <div className="h-4 w-4 animate-spin rounded-full border border-slate-300 border-t-vega-blue" />
+            ) : (
+              <>
+                <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                </svg>
+                <span>Upload image</span>
+              </>
+            )}
+          </button>
+        )}
         <input
           ref={inputRef}
           type="file"
@@ -70,32 +73,9 @@ export function ImageUpload({ value, onChange, folder = "uploads", label = "Imag
           onChange={(e) => {
             const file = e.target.files?.[0];
             if (file) handleFile(file);
+            e.target.value = "";
           }}
         />
-        {preview ? (
-          <div className="relative">
-            <img
-              src={preview}
-              alt="Preview"
-              draggable={false}
-              onContextMenu={(e) => e.preventDefault()}
-              className="h-32 w-auto rounded-lg object-cover select-none pointer-events-none"
-              style={{ WebkitUserDrag: "none" } as any}
-            />
-            <button
-              type="button"
-              onClick={(e) => { e.stopPropagation(); clear(); }}
-              className="absolute -right-2 -top-2 flex h-6 w-6 items-center justify-center rounded-full bg-red-500 text-white shadow-sm hover:bg-red-600"
-            >
-              <X className="h-3 w-3" />
-            </button>
-          </div>
-        ) : (
-          <div className="flex flex-col items-center gap-2 text-slate-400">
-            <Upload className="h-8 w-8" />
-            <span className="text-xs font-medium">{uploading ? "Uploading..." : "Click or drag image here"}</span>
-          </div>
-        )}
       </div>
     </div>
   );

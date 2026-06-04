@@ -6,6 +6,7 @@ import {
   getAllPopularCategories, createPopularCategory, updatePopularCategory, deletePopularCategory,
   getAllIndustries, createIndustry, updateIndustry, deleteIndustry,
   getAllSpotlightItems, createSpotlightItem, updateSpotlightItem, deleteSpotlightItem,
+  getAllCategoryShowcases, createCategoryShowcase, updateCategoryShowcase, deleteCategoryShowcase,
 } from "../services/homepage";
 
 const router = Router();
@@ -155,6 +156,43 @@ router.delete("/spotlight/:id", authenticate, async (req, res) => {
     res.json(data);
   } catch (error: any) {
     res.status(500).json({ error: error.message || "Failed to delete spotlight item" });
+  }
+});
+
+// Category Showcases
+router.get("/category-showcases", async (_req, res) => {
+  try {
+    const data = await getAllCategoryShowcases();
+    res.json(data);
+  } catch (error: any) {
+    res.status(500).json({ error: error.message || "Failed to fetch category showcases" });
+  }
+});
+
+router.post("/category-showcases", authenticate, async (req, res) => {
+  try {
+    const data = await createCategoryShowcase(cleanBody(req.body));
+    res.status(201).json(data);
+  } catch (error: any) {
+    res.status(500).json({ error: error.message || "Failed to create category showcase" });
+  }
+});
+
+router.put("/category-showcases/:id", authenticate, async (req, res) => {
+  try {
+    const data = await updateCategoryShowcase(Number(req.params.id), cleanBody(req.body));
+    res.json(data);
+  } catch (error: any) {
+    res.status(error.message?.includes("not found") ? 404 : 500).json({ error: error.message || "Failed to update category showcase" });
+  }
+});
+
+router.delete("/category-showcases/:id", authenticate, async (req, res) => {
+  try {
+    const data = await deleteCategoryShowcase(Number(req.params.id));
+    res.json(data);
+  } catch (error: any) {
+    res.status(500).json({ error: error.message || "Failed to delete category showcase" });
   }
 });
 

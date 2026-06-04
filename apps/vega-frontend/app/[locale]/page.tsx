@@ -6,6 +6,7 @@ import {
   FeaturedProducts,
   SpotlightSection,
   BusinessSolutions,
+  CategoryShowcases,
   BestSellers,
   NewArrivals,
   ProductRanges,
@@ -36,6 +37,7 @@ export default async function HomePage({ params: { locale } }: { params: { local
       {isVisible("featuredProducts") && <FeaturedProducts locale={locale} />}
       {isVisible("spotlight") && <SpotlightSection locale={locale} />}
       <BusinessSolutions locale={locale} />
+      {isVisible("categoryShowcases") && <CategoryShowcases locale={locale} />}
       {isVisible("bestSellers") && <BestSellers locale={locale} />}
       {isVisible("newArrivals") && <NewArrivals locale={locale} />}
       {isVisible("productRanges") && <ProductRanges locale={locale} />}

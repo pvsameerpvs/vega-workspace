@@ -5,6 +5,7 @@ export { PopularCategories } from "./PopularCategories";
 export { FeaturedProducts } from "./FeaturedProducts";
 export { SpotlightSection } from "./SpotlightSection";
 export { BusinessSolutions } from "./BusinessSolutions";
+export { CategoryShowcases } from "./CategoryShowcases";
 export { BestSellers } from "./BestSellers";
 export { NewArrivals } from "./NewArrivals";
 export { ProductRanges } from "./ProductRanges";

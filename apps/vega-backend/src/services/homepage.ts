@@ -1,4 +1,4 @@
-import { db, homeVideos, popularCategories, industries, spotlightItems } from "@vega/db";
+import { db, homeVideos, popularCategories, industries, spotlightItems, categoryShowcases, categories } from "@vega/db";
 import { eq, asc } from "drizzle-orm";
 
 export async function getAllVideos() {
@@ -100,5 +100,40 @@ export async function updateSpotlightItem(id: number, data: any) {
 
 export async function deleteSpotlightItem(id: number) {
   await db.delete(spotlightItems).where(eq(spotlightItems.id, id));
+  return { success: true };
+}
+
+// Category Showcases
+export async function getAllCategoryShowcases() {
+  const showcases = await db.select().from(categoryShowcases).orderBy(asc(categoryShowcases.displayOrder));
+  const allCategories = await db.select().from(categories);
+  return showcases.map((s) => {
+    const cat = allCategories.find((c) => c.id === s.categoryId);
+    return {
+      ...s,
+      categorySlug: cat?.slug || "",
+      categoryName: cat?.name || "",
+      categoryNameAr: cat?.nameAr || "",
+    };
+  });
+}
+
+export async function createCategoryShowcase(data: any) {
+  const result = await db.insert(categoryShowcases).values(data).returning();
+  return result[0];
+}
+
+export async function updateCategoryShowcase(id: number, data: any) {
+  const result = await db
+    .update(categoryShowcases)
+    .set(data)
+    .where(eq(categoryShowcases.id, id))
+    .returning();
+  if (!result.length) throw new Error("Category showcase not found");
+  return result[0];
+}
+
+export async function deleteCategoryShowcase(id: number) {
+  await db.delete(categoryShowcases).where(eq(categoryShowcases.id, id));
   return { success: true };
 }

@@ -1,5 +1,8 @@
 export { HomepageManager } from "./HomepageManager";
 export { BusinessSolutionsManager } from "./BusinessSolutionsManager";
+export { CategoryShowcaseCard } from "./CategoryShowcaseCard";
+export { CategoryShowcaseForm } from "./CategoryShowcaseForm";
+export { CategoryShowcasesManager } from "./CategoryShowcasesManager";
 export { FeaturedProductsManager } from "./FeaturedProductsManager";
 export { LimitedDealsManager } from "./LimitedDealsManager";
 export { PopularCategoriesManager } from "./PopularCategoriesManager";

@@ -82,3 +82,23 @@ export const spotlightItems = pgTable("spotlight_items", {
   activeOrderIdx: index("spotlight_active_order_idx").on(table.isActive, table.displayOrder),
   linkTypeIdx: index("spotlight_link_type_idx").on(table.linkType, table.isActive),
 }));
+
+export const categoryShowcases = pgTable("category_showcases", {
+  id: serial("id").primaryKey(),
+  categoryId: integer("category_id").notNull(),
+  title: varchar("title", { length: 255 }),
+  titleAr: varchar("title_ar", { length: 255 }),
+  description: text("description"),
+  descriptionAr: text("description_ar"),
+  image1: text("image1"),
+  image2: text("image2"),
+  image3: text("image3"),
+  image4: text("image4"),
+  displayOrder: integer("display_order").default(0),
+  isActive: boolean("is_active").notNull().default(true),
+  createdAt: timestamp("created_at", { withTimezone: true }).defaultNow(),
+  updatedAt: timestamp("updated_at", { withTimezone: true }).defaultNow(),
+}, (table) => ({
+  activeOrderIdx: index("showcase_active_order_idx").on(table.isActive, table.displayOrder),
+  categoryIdx: index("showcase_category_idx").on(table.categoryId),
+}));

@@ -1,13 +1,12 @@
 import { Router } from "express";
-import { db, categories, subcategories } from "@vega/db";
-import { eq, asc } from "drizzle-orm";
+import { db, categories, subcategories, products } from "@vega/db";
+import { eq, asc, desc } from "drizzle-orm";
 import { slugify } from "@vega/utils";
 import { authenticate } from "../middleware/auth";
 import { cleanBody } from "../lib/utils";
 import {
   getPaginationParams,
   paginateResponse,
-  filterBySearch,
 } from "../lib/pagination";
 
 const router = Router();
@@ -38,6 +37,43 @@ router.get("/", async (req, res) => {
     return res.json(paginateResponse(withSubs, page, limit));
   } catch (error) {
     res.status(500).json({ error: "Failed to fetch categories" });
+  }
+});
+
+// GET categories with top 4 products each
+router.get("/with-products", async (req, res) => {
+  try {
+    const allCategories = await db
+      .select()
+      .from(categories)
+      .where(eq(categories.isActive, true))
+      .orderBy(asc(categories.displayOrder));
+
+    const allProducts = await db
+      .select({
+        id: products.id,
+        name: products.name,
+        nameAr: products.nameAr,
+        slug: products.slug,
+        sku: products.sku,
+        mainImage: products.mainImage,
+        categoryId: products.categoryId,
+      })
+      .from(products)
+      .where(eq(products.status, "published"))
+      .orderBy(desc(products.createdAt));
+
+    const result = allCategories.map((cat) => ({
+      ...cat,
+      products: allProducts
+        .filter((p) => p.categoryId === cat.id)
+        .slice(0, 4),
+    }));
+
+    return res.json(result);
+  } catch (error) {
+    console.error("Fetch categories with products error:", error);
+    res.status(500).json({ error: "Failed to fetch categories with products" });
   }
 });
 

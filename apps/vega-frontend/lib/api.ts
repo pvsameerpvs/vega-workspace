@@ -38,6 +38,10 @@ export async function getCategories() {
   return fetcherList<any>("/categories");
 }
 
+export async function getCategoryShowcases() {
+  return fetcherList<any>("/homepage/category-showcases");
+}
+
 export async function getBanners() {
   const data = await fetcher<any>("/settings");
   return data?.banners || [];

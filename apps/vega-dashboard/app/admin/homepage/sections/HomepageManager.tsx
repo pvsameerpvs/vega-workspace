@@ -13,6 +13,7 @@ import { LimitedDealsManager } from "./LimitedDealsManager";
 import { PopularCategoriesManager } from "./PopularCategoriesManager";
 import { TestimonialsManager } from "./TestimonialsManager";
 import { BusinessSolutionsManager } from "./BusinessSolutionsManager";
+import { CategoryShowcasesManager } from "./CategoryShowcasesManager";
 import { Save, RotateCcw } from "lucide-react";
 
 const defaultSections = {
@@ -20,6 +21,7 @@ const defaultSections = {
   popularCategories: true,
   featuredProducts: true,
   spotlight: true,
+  categoryShowcases: true,
   bestSellers: true,
   newArrivals: true,
   productRanges: true,
@@ -48,6 +50,7 @@ export function HomepageManager() {
     { id: "sections", label: "Section Visibility" },
     { id: "featured", label: "Featured Products" },
     { id: "spotlight", label: "Spotlight" },
+    { id: "showcases", label: "Category Showcases" },
     { id: "deals", label: "Limited Deals" },
     { id: "popular", label: "Popular & Ranges" },
     { id: "reviews", label: "Testimonials" },
@@ -124,14 +127,16 @@ export function HomepageManager() {
             <SectionToggle name="Limited Deals" desc="Promotional deal cards" active={sections.limitedDeals} onToggle={() => toggleSection("limitedDeals")} />
             <SectionToggle name="Recently Viewed" desc="Recently viewed products" active={sections.recentViewed} onToggle={() => toggleSection("recentViewed")} />
             <SectionToggle name="Testimonials" desc="Customer reviews" active={sections.testimonials} onToggle={() => toggleSection("testimonials")} />
-            <SectionToggle name="FAQ Section" desc="Frequently asked questions" active={sections.faqSection} onToggle={() => toggleSection("faqSection")} />
-            <SectionToggle name="SEO Content" desc="Footer SEO text" active={sections.seoContent} onToggle={() => toggleSection("seoContent")} />
+  <SectionToggle name="Category Showcases" desc="Category sections with 4 images each" active={sections.categoryShowcases} onToggle={() => toggleSection("categoryShowcases")} />
+  <SectionToggle name="FAQ Section" desc="Frequently asked questions" active={sections.faqSection} onToggle={() => toggleSection("faqSection")} />
+  <SectionToggle name="SEO Content" desc="Footer SEO text" active={sections.seoContent} onToggle={() => toggleSection("seoContent")} />
           </div>
         </div>
       )}
 
       {activeTab === "featured" && <FeaturedProductsManager products={products} loading={productsLoading} />}
       {activeTab === "spotlight" && <SpotlightManager />}
+      {activeTab === "showcases" && <CategoryShowcasesManager categories={categories} loading={catsLoading} />}
       {activeTab === "deals" && <LimitedDealsManager />}
       {activeTab === "popular" && <PopularCategoriesManager categories={categories} loading={catsLoading} />}
       {activeTab === "reviews" && <TestimonialsManager />}
