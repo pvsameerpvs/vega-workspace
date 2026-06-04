@@ -11,7 +11,7 @@ import {
   ProductRanges,
   LimitedDeals,
   RecentViewed,
-  Testimonials,
+  GoogleReviews,
   ContactFormSection,
   SeoContent,
   FaqSection,
@@ -41,7 +41,7 @@ export default async function HomePage({ params: { locale } }: { params: { local
       {isVisible("productRanges") && <ProductRanges locale={locale} />}
       {isVisible("limitedDeals") && <LimitedDeals locale={locale} />}
       {isVisible("recentViewed") && <RecentViewed locale={locale} />}
-      {isVisible("testimonials") && <Testimonials locale={locale} />}
+      {isVisible("testimonials") && <GoogleReviews locale={locale} />}
       <ContactFormSection locale={locale} />
       {isVisible("seoContent") && <SeoContent locale={locale} />}
       {isVisible("faqSection") && <FaqSection locale={locale} />}

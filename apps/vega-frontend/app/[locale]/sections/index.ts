@@ -11,6 +11,7 @@ export { ProductRanges } from "./ProductRanges";
 export { LimitedDeals } from "./LimitedDeals";
 export { RecentViewed } from "./RecentViewed";
 export { Testimonials } from "./Testimonials";
+export { GoogleReviews } from "./GoogleReviews";
 export { SeoContent } from "./SeoContent";
 export { FaqSection } from "./FaqSection";
 export { ContactFormSection } from "./ContactFormSection";

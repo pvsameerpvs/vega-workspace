@@ -108,6 +108,11 @@ export async function getHomepageConfig() {
   return fetcher<{ sectionVisibility?: Record<string, boolean> }>("/settings/homepage-config", { next: { revalidate: 0 } });
 }
 
+export async function getGoogleReviews() {
+  const data = await fetcher<{ reviews: any[]; rating?: number; userRatingCount?: number }>("/google-reviews", { next: { revalidate: 3600 } });
+  return data?.reviews || [];
+}
+
 // Mappers
 export function mapProductToFrontend(p: any) {
   if (!p) return null;

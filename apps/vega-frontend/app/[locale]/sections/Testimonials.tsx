@@ -38,7 +38,6 @@ interface TestimonialsProps {
 
 export function Testimonials({ reviews = [], locale = "en" }: TestimonialsProps) {
   const isAR = locale === "ar";
-  if (reviews.length === 0) return null;
 
   return (
     <section className="py-16 bg-slate-50">
@@ -77,58 +76,83 @@ export function Testimonials({ reviews = [], locale = "en" }: TestimonialsProps)
           </div>
         </div>
 
-        {/* Swiper */}
-        <Swiper
-          modules={[Navigation]}
-          navigation={{ prevEl: ".test-prev", nextEl: ".test-next" }}
-          spaceBetween={20}
-          slidesPerView={1}
-          breakpoints={{
-            640: { slidesPerView: 2 },
-            1024: { slidesPerView: 3 },
-            1280: { slidesPerView: 4 },
-          }}
-        >
-          {reviews.map((review, i) => (
-            <SwiperSlide key={i}>
-              <div className="bg-white rounded-xl border border-slate-100 p-5 h-full flex flex-col shadow-sm hover:shadow-md transition-shadow">
-                {/* Header */}
-                <div className="flex items-center gap-3 mb-3">
-                  <div className={`flex h-10 w-10 items-center justify-center rounded-full text-sm font-bold ${AVATAR_COLORS[i % AVATAR_COLORS.length]}`}>
-                    {getInitials(review.name)}
+        {reviews.length === 0 ? (
+          <div className="flex flex-col items-center justify-center py-12 text-center">
+            <div className="flex items-center gap-1 mb-3">
+              {Array.from({ length: 5 }).map((_, i) => (
+                <Star key={i} className="h-6 w-6 fill-[#FFD400] text-[#FFD400]" />
+              ))}
+            </div>
+            <p className="text-lg font-semibold text-slate-700 mb-1">
+              {isAR ? "4.8 من 5 نجوم على Google" : "4.8 out of 5 stars on Google"}
+            </p>
+            <p className="text-sm text-slate-500 mb-4">
+              {isAR ? "انقر لقراءة تقييمات عملائنا على Google" : "Click to read our customer reviews on Google"}
+            </p>
+            <a
+              href="https://www.google.com/maps/place/?q=place_id:ChIJ5UtFaHNnXz4RWif9gPewmzU"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 rounded-full bg-[#1F3A93] px-6 py-2.5 text-sm font-medium text-white hover:bg-[#152a6e] transition-colors"
+            >
+              <span className="text-[#FFD400]">
+                {isAR ? "اقرأ التقييمات" : "Read Reviews"}
+              </span>
+            </a>
+          </div>
+        ) : (
+          <Swiper
+            modules={[Navigation]}
+            navigation={{ prevEl: ".test-prev", nextEl: ".test-next" }}
+            spaceBetween={20}
+            slidesPerView={1}
+            breakpoints={{
+              640: { slidesPerView: 2 },
+              1024: { slidesPerView: 3 },
+              1280: { slidesPerView: 4 },
+            }}
+          >
+            {reviews.map((review, i) => (
+              <SwiperSlide key={i}>
+                <div className="bg-white rounded-xl border border-slate-100 p-5 h-full flex flex-col shadow-sm hover:shadow-md transition-shadow">
+                  {/* Header */}
+                  <div className="flex items-center gap-3 mb-3">
+                    <div className={`flex h-10 w-10 items-center justify-center rounded-full text-sm font-bold ${AVATAR_COLORS[i % AVATAR_COLORS.length]}`}>
+                      {getInitials(review.name)}
+                    </div>
+                    <div>
+                      <div className="text-sm font-semibold text-slate-900">{review.name}</div>
+                      <div className="text-[11px] text-slate-400">{isAR ? "عميل موثق" : "Verified Customer"}</div>
+                    </div>
                   </div>
-                  <div>
-                    <div className="text-sm font-semibold text-slate-900">{review.name}</div>
-                    <div className="text-[11px] text-slate-400">{isAR ? "عميل موثق" : "Verified Customer"}</div>
+
+                  {/* Stars */}
+                  <div className="flex items-center gap-0.5 mb-3">
+                    {Array.from({ length: 5 }).map((_, j) => (
+                      <Star
+                        key={j}
+                        className={`h-3.5 w-3.5 ${
+                          j < review.rating
+                            ? "fill-[#FFD400] text-[#FFD400]"
+                            : "text-slate-200"
+                        }`}
+                      />
+                    ))}
+                    <span className="ml-1 text-[11px] text-slate-400">{review.rating}.0</span>
+                  </div>
+
+                  {/* Quote */}
+                  <div className="relative flex-1">
+                    <Quote className="absolute -top-1 -left-1 h-4 w-4 text-[#FFD400]/40" />
+                    <p className="text-sm text-slate-600 leading-relaxed pl-4">
+                      {review.text}
+                    </p>
                   </div>
                 </div>
-
-                {/* Stars */}
-                <div className="flex items-center gap-0.5 mb-3">
-                  {Array.from({ length: 5 }).map((_, j) => (
-                    <Star
-                      key={j}
-                      className={`h-3.5 w-3.5 ${
-                        j < review.rating
-                          ? "fill-[#FFD400] text-[#FFD400]"
-                          : "text-slate-200"
-                      }`}
-                    />
-                  ))}
-                  <span className="ml-1 text-[11px] text-slate-400">{review.rating}.0</span>
-                </div>
-
-                {/* Quote */}
-                <div className="relative flex-1">
-                  <Quote className="absolute -top-1 -left-1 h-4 w-4 text-[#FFD400]/40" />
-                  <p className="text-sm text-slate-600 leading-relaxed pl-4">
-                    {review.text}
-                  </p>
-                </div>
-              </div>
-            </SwiperSlide>
-          ))}
-        </Swiper>
+              </SwiperSlide>
+            ))}
+          </Swiper>
+        )}
       </div>
     </section>
   );
