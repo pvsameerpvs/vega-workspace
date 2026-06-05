@@ -97,7 +97,8 @@ export const api = {
   updateCareer: (id: number, data: any) => fetcher<any>(`/careers/jobs/${id}`, { method: "PUT", body: JSON.stringify(data) }),
   deleteCareer: (id: number) => fetcher<any>(`/careers/jobs/${id}`, { method: "DELETE" }),
   getApplications: () => fetcher<any[]>("/careers/applications"),
-  createApplication: (data: any) => fetcher<any>("/careers/applications", { method: "POST", body: JSON.stringify(data) }),
+  updateApplicationStatus: (id: number, status: string) => fetcher<any>(`/careers/applications/${id}/status`, { method: "PUT", body: JSON.stringify({ status }) }),
+  deleteApplication: (id: number) => fetcher<any>(`/careers/applications/${id}`, { method: "DELETE" }),
 
   // Settings
   getSettings: () => fetcher<any>("/settings"),

@@ -28,10 +28,14 @@ export type Career = {
 
 export type Application = {
   id: number;
+  careerId: number;
   fullName: string;
   email?: string;
+  phone?: string;
   position?: string;
   experience?: string;
+  cvUrl?: string;
+  message?: string;
   status: string;
   createdAt?: string;
   updatedAt?: string;
@@ -78,5 +82,16 @@ export function useCareers() {
     setJobs((prev) => prev.filter((j) => j.id !== id));
   };
 
-  return { jobs, applications, loading, error, refresh: fetchCareers, create, update, remove };
+  const updateAppStatus = async (id: number, status: string) => {
+    const updated = await api.updateApplicationStatus(id, status);
+    setApplications((prev) => prev.map((a) => (a.id === id ? { ...a, ...updated } : a)));
+    return updated;
+  };
+
+  const removeApplication = async (id: number) => {
+    await api.deleteApplication(id);
+    setApplications((prev) => prev.filter((a) => a.id !== id));
+  };
+
+  return { jobs, applications, loading, error, refresh: fetchCareers, create, update, remove, updateAppStatus, removeApplication };
 }

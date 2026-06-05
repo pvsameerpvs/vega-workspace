@@ -68,6 +68,30 @@ export async function getCareers() {
   return fetcherList<any>("/careers/jobs");
 }
 
+export async function submitApplication(data: any) {
+  const res = await fetch(`${API_BASE}/careers/applications`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(data),
+  });
+  if (!res.ok) {
+    const err = await res.json().catch(() => ({}));
+    throw new Error(err.error || `Submission failed: ${res.status}`);
+  }
+  return res.json();
+}
+
+export async function uploadCv(file: File) {
+  const formData = new FormData();
+  formData.append("file", file);
+  const res = await fetch(`${API_BASE}/careers/upload-cv`, {
+    method: "POST",
+    body: formData,
+  });
+  if (!res.ok) throw new Error("Failed to upload CV");
+  return res.json() as Promise<{ publicUrl: string; key: string }>;
+}
+
 export async function getTeam() {
   return fetcherList<any>("/team");
 }
@@ -213,6 +237,7 @@ export function mapGalleryToFrontend(g: any) {
 export function mapCareerToFrontend(c: any) {
   if (!c) return null;
   return {
+    id: c.id || 0,
     slug: c.slug || String(c.id),
     title: c.title || "",
     titleAr: c.titleAr || "",
