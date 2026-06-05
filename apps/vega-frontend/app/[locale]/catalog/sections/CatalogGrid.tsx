@@ -1,5 +1,8 @@
+"use client";
+
 import { Download, FileText, Eye } from "lucide-react";
 import { ProtectedImage } from "@/components/ProtectedImage";
+import { downloadFile } from "@/lib/download";
 
 interface CatalogGridProps {
   catalogs: any[];
@@ -34,9 +37,14 @@ export function CatalogGrid({ catalogs, locale = "en" }: CatalogGridProps) {
               />
               {/* Overlay on hover */}
               <div className="absolute inset-0 flex items-center justify-center gap-3 bg-black/30 opacity-0 transition-all duration-500 group-hover:opacity-100">
-                <button className="inline-flex items-center gap-1.5 rounded-full bg-white px-5 py-2.5 text-xs font-bold text-[#1F3A93] shadow-lg transition-all duration-300 hover:bg-[#1F3A93] hover:text-white hover:scale-105">
+                <a
+                  href={cat.pdfFile}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="inline-flex items-center gap-1.5 rounded-full bg-white px-5 py-2.5 text-xs font-bold text-[#1F3A93] shadow-lg transition-all duration-300 hover:bg-[#1F3A93] hover:text-white hover:scale-105"
+                >
                   <Eye className="h-3.5 w-3.5" /> {isAR ? "معاينة" : "Preview"}
-                </button>
+                </a>
               </div>
 
               {/* Category Badge */}
@@ -68,12 +76,20 @@ export function CatalogGrid({ catalogs, locale = "en" }: CatalogGridProps) {
               <div className="mb-5 h-px bg-slate-100" />
 
               <div className="flex items-center gap-3">
-                <button className="flex-1 inline-flex items-center justify-center gap-1.5 rounded-full bg-[#FFD400] px-4 py-2.5 text-xs font-bold text-[#1F3A93] transition-all duration-300 hover:bg-[#e6bf00] hover:shadow-md hover:-translate-y-0.5">
+                <button
+                  onClick={() => downloadFile(cat.pdfFile, `${cat.name}.pdf`)}
+                  className="flex-1 inline-flex items-center justify-center gap-1.5 rounded-full bg-[#FFD400] px-4 py-2.5 text-xs font-bold text-[#1F3A93] transition-all duration-300 hover:bg-[#e6bf00] hover:shadow-md hover:-translate-y-0.5"
+                >
                   <Download className="h-3.5 w-3.5" /> {isAR ? "تحميل" : "Download"}
                 </button>
-                <button className="inline-flex items-center justify-center gap-1 rounded-full border border-slate-200 px-4 py-2.5 text-xs font-bold text-slate-500 transition-all duration-300 hover:border-[#1F3A93] hover:bg-[#1F3A93] hover:text-white">
+                <a
+                  href={cat.pdfFile}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="inline-flex items-center justify-center gap-1 rounded-full border border-slate-200 px-4 py-2.5 text-xs font-bold text-slate-500 transition-all duration-300 hover:border-[#1F3A93] hover:bg-[#1F3A93] hover:text-white"
+                >
                   <Eye className="h-3.5 w-3.5" /> {isAR ? "عرض" : "View"}
-                </button>
+                </a>
               </div>
             </div>
           </div>

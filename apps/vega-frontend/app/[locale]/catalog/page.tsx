@@ -1,6 +1,6 @@
 import { Metadata } from "next";
 import { BookOpen } from "lucide-react";
-import { getCatalogs } from "@/lib/api";
+import { getCatalogs, mapCatalogToFrontend } from "@/lib/api";
 import Link from "next/link";
 import { CatalogGrid } from "./sections/CatalogGrid";
 import { CatalogCTA } from "./sections/CatalogCTA";
@@ -17,7 +17,8 @@ export default async function CatalogPage({ params: { locale } }: { params: { lo
   const isAR = locale === "ar";
   const l = (path: string) => `/${locale}${path}`;
 
-  const catalogs = await getCatalogs();
+  const rawCatalogs = await getCatalogs();
+  const catalogs = rawCatalogs.map(mapCatalogToFrontend).filter(Boolean);
   const categories = Array.from(new Set(catalogs.map((c: any) => c.category)));
 
   return (
