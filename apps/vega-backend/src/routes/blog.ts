@@ -1,15 +1,10 @@
 import { Router } from "express";
 import { db, blogs } from "@vega/db";
 import { eq, desc, like, and, or } from "drizzle-orm";
-import { slugify } from "@vega/utils";
 import { authenticate } from "../middleware/auth";
 import { cleanBody } from "../lib/utils";
-import {
-  getPaginationParams,
-  paginateResponse,
-  filterBySearch,
-  filterByStatus,
-} from "../lib/pagination";
+import { getPaginationParams, paginateResponse } from "../lib/pagination";
+import { blogSchema, ensureBlogSlug, normalizeBlogDates } from "./blog.utils";
 
 const router = Router();
 
@@ -69,16 +64,13 @@ router.get("/:slug", async (req, res) => {
   }
 });
 
-function ensureBlogSlug(body: any): any {
-  if (!body.slug || String(body.slug).trim() === "") {
-    body.slug = slugify(body.title || "blog-post");
-  }
-  return body;
-}
-
 router.post("/", authenticate, async (req, res) => {
   try {
-    const body = ensureBlogSlug(cleanBody(req.body));
+    const parsed = blogSchema.safeParse(req.body);
+    if (!parsed.success) {
+      return res.status(400).json({ error: parsed.error.errors.map((e) => e.message).join(", ") });
+    }
+    const body = normalizeBlogDates(ensureBlogSlug(cleanBody(parsed.data)));
     if (!body.title || !body.slug) {
       return res.status(400).json({ error: "Title and slug are required" });
     }
@@ -92,7 +84,11 @@ router.post("/", authenticate, async (req, res) => {
 
 router.put("/:id", authenticate, async (req, res) => {
   try {
-    const body = ensureBlogSlug(cleanBody(req.body));
+    const parsed = blogSchema.partial().safeParse(req.body);
+    if (!parsed.success) {
+      return res.status(400).json({ error: parsed.error.errors.map((e) => e.message).join(", ") });
+    }
+    const body = normalizeBlogDates(ensureBlogSlug(cleanBody(parsed.data)));
     const result = await db
       .update(blogs)
       .set(body)

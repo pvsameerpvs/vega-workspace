@@ -9,7 +9,6 @@ export type Blog = {
   titleAr?: string;
   slug: string;
   category?: string;
-  categoryAr?: string;
   author?: string;
   excerpt?: string;
   excerptAr?: string;

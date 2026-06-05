@@ -2,36 +2,44 @@
 
 import { useState } from "react";
 import { useBlog } from "@/hooks/use-blog";
+import { useBlogForm } from "@/hooks/use-blog-form";
 import { useToast } from "@vega/ui";
-import { slugify } from "@vega/utils";
 import { PageHeader } from "@/components/admin/PageHeader";
 import { StatusBadge } from "@/components/admin/StatusBadge";
-import { ImageUpload } from "@/components/admin/ImageUpload";
 import { FormDialog } from "@/components/admin/FormDialog";
 import { DeleteDialog } from "@/components/admin/DeleteDialog";
+import { BlogForm } from "@/components/admin/blog/BlogForm";
 import { Edit2, Trash2 } from "lucide-react";
 
 export function BlogManager() {
   const { items: blogs, loading, create, update, remove } = useBlog();
   const { toast } = useToast();
+  const { form, setForm, update: updateForm, setTitle, reset } = useBlogForm();
   const [search, setSearch] = useState("");
   const [formOpen, setFormOpen] = useState(false);
   const [editBlog, setEditBlog] = useState<any>(null);
   const [deleteId, setDeleteId] = useState<number | null>(null);
-  const [form, setForm] = useState<any>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
 
   const safeBlogs = Array.isArray(blogs) ? blogs : [];
-  const filtered = safeBlogs.filter((b) =>
-    b.title?.toLowerCase().includes(search.toLowerCase()) ||
-    b.category?.toLowerCase().includes(search.toLowerCase())
+  const filtered = safeBlogs.filter(
+    (b) =>
+      b.title?.toLowerCase().includes(search.toLowerCase()) ||
+      b.category?.toLowerCase().includes(search.toLowerCase())
   );
 
-  const updateForm = (k: string, v: any) => setForm((f: any) => ({ ...f, [k]: v }));
+  const openCreate = () => {
+    setEditBlog(null);
+    reset();
+    setFormOpen(true);
+  };
 
-  const openCreate = () => { setEditBlog(null); setForm({}); setFormOpen(true); };
-  const openEdit = (blog: any) => { setEditBlog(blog); setForm({ ...blog }); setFormOpen(true); };
+  const openEdit = (blog: any) => {
+    setEditBlog(blog);
+    setForm({ ...blog });
+    setFormOpen(true);
+  };
 
   const handleSubmit = async () => {
     setIsSubmitting(true);
@@ -45,7 +53,7 @@ export function BlogManager() {
       }
       setFormOpen(false);
       setEditBlog(null);
-      setForm({});
+      reset();
     } catch (e) {
       toast({ title: "Error", description: e instanceof Error ? e.message : "Failed to save blog post.", variant: "destructive" });
     } finally {
@@ -72,7 +80,13 @@ export function BlogManager() {
       <PageHeader title="Blog Manager" subtitle="Create and publish blog posts." actionLabel="Add Post" onAction={openCreate} />
 
       <div className="mb-4">
-        <input type="text" placeholder="Search posts..." value={search} onChange={(e) => setSearch(e.target.value)} className="w-full max-w-md rounded-lg border border-slate-200 px-4 py-2.5 text-sm focus:border-vega-blue focus:outline-none" />
+        <input
+          type="text"
+          placeholder="Search posts..."
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+          className="w-full max-w-md rounded-lg border border-slate-200 px-4 py-2.5 text-sm focus:border-vega-blue focus:outline-none"
+        />
       </div>
 
       {loading ? (
@@ -89,7 +103,6 @@ export function BlogManager() {
                 draggable={false}
                 onContextMenu={(e) => e.preventDefault()}
                 className="h-16 w-24 rounded-lg object-cover select-none pointer-events-none"
-                style={{ WebkitUserDrag: "none" } as any}
               />
               <div className="flex-1 min-w-0">
                 <p className="font-medium text-slate-900 truncate">{b.title}</p>
@@ -105,58 +118,14 @@ export function BlogManager() {
         </div>
       )}
 
-      <FormDialog open={formOpen} onClose={() => { setFormOpen(false); setEditBlog(null); setForm({}); }} title={editBlog ? "Edit Blog Post" : "Add Blog Post"} onSubmit={handleSubmit} loading={isSubmitting}>
-        <div className="space-y-4">
-          <div className="grid grid-cols-2 gap-3">
-            <div>
-              <label className="mb-1 block text-xs font-semibold text-slate-700">Title</label>
-              <input value={form.title || ""} onChange={(e) => {
-                const title = e.target.value;
-                updateForm("title", title);
-                updateForm("slug", slugify(title));
-              }} className="w-full rounded-md border border-slate-200 px-3 py-2 text-sm focus:border-vega-blue focus:outline-none" placeholder="Post title" />
-            </div>
-            <div>
-              <label className="mb-1 block text-xs font-semibold text-slate-700">Title (Arabic)</label>
-              <input value={form.titleAr || ""} onChange={(e) => updateForm("titleAr", e.target.value)} className="w-full rounded-md border border-slate-200 px-3 py-2 text-sm focus:border-vega-blue focus:outline-none" placeholder="العنوان" />
-            </div>
-          </div>
-          <div className="grid grid-cols-2 gap-3">
-            <div>
-              <label className="mb-1 block text-xs font-semibold text-slate-700">Category</label>
-              <input value={form.category || ""} onChange={(e) => updateForm("category", e.target.value)} className="w-full rounded-md border border-slate-200 px-3 py-2 text-sm focus:border-vega-blue focus:outline-none" placeholder="Category" />
-            </div>
-            <div>
-              <label className="mb-1 block text-xs font-semibold text-slate-700">Category (Arabic)</label>
-              <input value={form.categoryAr || ""} onChange={(e) => updateForm("categoryAr", e.target.value)} className="w-full rounded-md border border-slate-200 px-3 py-2 text-sm focus:border-vega-blue focus:outline-none" placeholder="الفئة" />
-            </div>
-          </div>
-          <div>
-            <label className="mb-1 block text-xs font-semibold text-slate-700">Author</label>
-            <input value={form.author || ""} onChange={(e) => updateForm("author", e.target.value)} className="w-full rounded-md border border-slate-200 px-3 py-2 text-sm focus:border-vega-blue focus:outline-none" placeholder="Author name" />
-          </div>
-          <ImageUpload folder="blog" value={form.featuredImage} onChange={(url) => updateForm("featuredImage", url)} label="Featured Image" />
-          <div>
-            <label className="mb-1 block text-xs font-semibold text-slate-700">Excerpt</label>
-            <textarea rows={3} value={form.excerpt || ""} onChange={(e) => updateForm("excerpt", e.target.value)} className="w-full rounded-md border border-slate-200 px-3 py-2 text-sm focus:border-vega-blue focus:outline-none" placeholder="Short excerpt" />
-          </div>
-          <div>
-            <label className="mb-1 block text-xs font-semibold text-slate-700">Excerpt (Arabic)</label>
-            <textarea rows={3} value={form.excerptAr || ""} onChange={(e) => updateForm("excerptAr", e.target.value)} className="w-full rounded-md border border-slate-200 px-3 py-2 text-sm focus:border-vega-blue focus:outline-none" placeholder="مقتطف قصير" />
-          </div>
-          <div>
-            <label className="mb-1 block text-xs font-semibold text-slate-700">Content</label>
-            <textarea rows={5} value={form.content || ""} onChange={(e) => updateForm("content", e.target.value)} className="w-full rounded-md border border-slate-200 px-3 py-2 text-sm focus:border-vega-blue focus:outline-none" placeholder="Full content" />
-          </div>
-          <div>
-            <label className="mb-1 block text-xs font-semibold text-slate-700">Content (Arabic)</label>
-            <textarea rows={5} value={form.contentAr || ""} onChange={(e) => updateForm("contentAr", e.target.value)} className="w-full rounded-md border border-slate-200 px-3 py-2 text-sm focus:border-vega-blue focus:outline-none" placeholder="المحتوى الكامل" />
-          </div>
-          <div>
-            <label className="mb-1 block text-xs font-semibold text-slate-700">Slug</label>
-            <input value={form.slug || ""} onChange={(e) => updateForm("slug", e.target.value)} className="w-full rounded-md border border-slate-200 px-3 py-2 text-sm focus:border-vega-blue focus:outline-none" placeholder="blog-post-slug" />
-          </div>
-        </div>
+      <FormDialog
+        open={formOpen}
+        onClose={() => { setFormOpen(false); setEditBlog(null); reset(); }}
+        title={editBlog ? "Edit Blog Post" : "Add Blog Post"}
+        onSubmit={handleSubmit}
+        loading={isSubmitting}
+      >
+        <BlogForm form={form} onChange={updateForm} onTitleChange={setTitle} />
       </FormDialog>
 
       <DeleteDialog open={!!deleteId} onClose={() => setDeleteId(null)} onConfirm={handleDelete} title="Delete Blog Post" />
