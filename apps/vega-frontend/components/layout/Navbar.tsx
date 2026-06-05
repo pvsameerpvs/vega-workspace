@@ -113,7 +113,7 @@ export function Navbar({ categories = [], products = [] }: NavbarProps) {
             ))}
           </nav>
 
-          <div className="hidden lg:flex items-center gap-3 shrink-0">
+          <div className="hidden lg:flex items-center gap-3 shrink-0 ml-auto">
             <Link href={l("/contact-us")} className="rounded-full bg-[#FFD400] px-5 py-2 text-sm font-bold text-[#1F3A93] hover:bg-white transition-all duration-300 whitespace-nowrap">
               {isAR ? "تواصل معنا" : "Contact Us"}
             </Link>
