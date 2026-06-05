@@ -23,6 +23,9 @@ export function NewArrivals({ locale = "en" }: NewArrivalsProps) {
     });
   }, []);
 
+  const prevClass = isAR ? ".na-next" : ".na-prev";
+  const nextClass = isAR ? ".na-prev" : ".na-next";
+
   return (
     <section className="py-12 bg-slate-50">
       <div className="mx-auto max-w-7xl px-4">
@@ -39,7 +42,7 @@ export function NewArrivals({ locale = "en" }: NewArrivalsProps) {
         </div>
         <Swiper
           modules={[Navigation]}
-          navigation={{ prevEl: ".na-prev", nextEl: ".na-next" }}
+          navigation={{ prevEl: prevClass, nextEl: nextClass }}
           spaceBetween={16}
           slidesPerView={2}
           breakpoints={{ 640: { slidesPerView: 3 }, 1024: { slidesPerView: 4 } }}

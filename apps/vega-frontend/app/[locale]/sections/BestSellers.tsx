@@ -23,6 +23,9 @@ export function BestSellers({ locale = "en" }: BestSellersProps) {
     });
   }, []);
 
+  const prevClass = isAR ? ".bs-next" : ".bs-prev";
+  const nextClass = isAR ? ".bs-prev" : ".bs-next";
+
   return (
     <section className="py-12 bg-white">
       <div className="mx-auto max-w-7xl px-4">
@@ -39,7 +42,7 @@ export function BestSellers({ locale = "en" }: BestSellersProps) {
         </div>
         <Swiper
           modules={[Navigation]}
-          navigation={{ prevEl: ".bs-prev", nextEl: ".bs-next" }}
+          navigation={{ prevEl: prevClass, nextEl: nextClass }}
           spaceBetween={16}
           slidesPerView={2}
           breakpoints={{ 640: { slidesPerView: 3 }, 1024: { slidesPerView: 4 } }}

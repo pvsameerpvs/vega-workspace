@@ -22,7 +22,7 @@ export function PromoBanner({ locale = "en" }: PromoBannerProps) {
           </div>
         </div>
         <Link href={l("/contact-us")} className="inline-flex items-center gap-2 rounded-full bg-[#FFD400] px-6 py-2.5 text-sm font-bold text-[#1F3A93] hover:bg-white transition-all shrink-0">
-          {isAR ? "اطلب عرض سعر" : "Request a Quote"} <ArrowRight className="h-4 w-4" />
+          {isAR ? "اطلب عرض سعر" : "Request a Quote"} <ArrowRight className={`h-4 w-4 ${isAR ? "rotate-180" : ""}`} />
         </Link>
       </div>
     </section>

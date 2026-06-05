@@ -91,7 +91,7 @@ export function Navbar({ categories = [], products = [] }: NavbarProps) {
 
       {/* Main Nav */}
       <div className={`border-b transition-all duration-300 ${scrolled ? "bg-[#1F3A93]/95 backdrop-blur-md border-white/10 shadow-lg" : "bg-[#1F3A93] border-white/10"}`}>
-        <div className={`mx-auto flex max-w-7xl items-center px-4 py-3 ${isAR ? "flex-row-reverse" : ""}`}>
+        <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3">
           <Link href={l("/")} className="flex items-center shrink-0">
             <img src="/images/logo/logo.jpeg" alt="Vega Logo" className="h-16 w-auto rounded-md object-contain" draggable={false} onContextMenu={(e) => e.preventDefault()} />
           </Link>
@@ -113,13 +113,13 @@ export function Navbar({ categories = [], products = [] }: NavbarProps) {
             ))}
           </nav>
 
-          <div className={`hidden lg:flex items-center gap-3 shrink-0 ${isAR ? "mr-auto" : "ml-auto"}`}>
+          <div className="hidden lg:flex items-center gap-3 shrink-0">
             <Link href={l("/contact-us")} className="rounded-full bg-[#FFD400] px-5 py-2 text-sm font-bold text-[#1F3A93] hover:bg-white transition-all duration-300 whitespace-nowrap">
               {isAR ? "تواصل معنا" : "Contact Us"}
             </Link>
           </div>
 
-          <button onClick={() => setMobile(!mobile)} className={`lg:hidden p-2 text-white shrink-0 ${isAR ? "mr-auto" : "ml-auto"}`}>
+          <button onClick={() => setMobile(!mobile)} className="lg:hidden p-2 text-white shrink-0">
             {mobile ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
           </button>
         </div>

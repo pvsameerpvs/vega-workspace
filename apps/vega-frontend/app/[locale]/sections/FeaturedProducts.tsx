@@ -26,6 +26,9 @@ export function FeaturedProducts({ locale = "en" }: FeaturedProductsProps) {
 
   const featured = products.length > 0 ? products : [];
 
+  const prevClass = isAR ? ".featured-next" : ".featured-prev";
+  const nextClass = isAR ? ".featured-prev" : ".featured-next";
+
   return (
     <section className="py-12 bg-slate-50">
       <div className="mx-auto max-w-7xl px-4">
@@ -42,7 +45,7 @@ export function FeaturedProducts({ locale = "en" }: FeaturedProductsProps) {
         </div>
         <Swiper
           modules={[Navigation]}
-          navigation={{ prevEl: ".featured-prev", nextEl: ".featured-next" }}
+          navigation={{ prevEl: prevClass, nextEl: nextClass }}
           spaceBetween={16}
           slidesPerView={2}
           breakpoints={{ 640: { slidesPerView: 3 }, 1024: { slidesPerView: 4 } }}

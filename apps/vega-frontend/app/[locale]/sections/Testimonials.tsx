@@ -39,6 +39,10 @@ interface TestimonialsProps {
 export function Testimonials({ reviews = [], locale = "en" }: TestimonialsProps) {
   const isAR = locale === "ar";
 
+  // In RTL, Swiper prev/next classes must be swapped
+  const prevClass = isAR ? ".test-next" : ".test-prev";
+  const nextClass = isAR ? ".test-prev" : ".test-next";
+
   return (
     <section className="py-16 bg-slate-50">
       <div className="mx-auto max-w-7xl px-4">
@@ -49,20 +53,21 @@ export function Testimonials({ reviews = [], locale = "en" }: TestimonialsProps)
               {isAR ? "ماذا يقول عملاؤنا عن فيجا" : "What Customers Say About Vega"}
             </h2>
             <div className="flex items-center gap-2 mt-2">
-              <div className="flex items-center gap-1">
+              {/* Google logo — force LTR so letters don't reverse in RTL */}
+              <span dir="ltr" className="flex items-center gap-1">
                 <span className="text-2xl font-bold text-[#1F3A93]">G</span>
                 <span className="text-2xl font-bold text-rose-600">o</span>
                 <span className="text-2xl font-bold text-amber-500">o</span>
                 <span className="text-2xl font-bold text-[#1F3A93]">g</span>
                 <span className="text-2xl font-bold text-emerald-600">l</span>
                 <span className="text-2xl font-bold text-rose-600">e</span>
-              </div>
+              </span>
               <span className="text-sm text-slate-500">{isAR ? "التقييمات" : "Reviews"}</span>
-              <div className="flex items-center gap-0.5 ml-2">
+              <div className="flex items-center gap-0.5">
                 {Array.from({ length: 5 }).map((_, i) => (
                   <Star key={i} className="h-4 w-4 fill-[#FFD400] text-[#FFD400]" />
                 ))}
-                <span className="ml-1 text-sm font-bold text-slate-700">4.8</span>
+                <span className="ms-1 text-sm font-bold text-slate-700">4.8</span>
               </div>
             </div>
           </div>
@@ -103,7 +108,7 @@ export function Testimonials({ reviews = [], locale = "en" }: TestimonialsProps)
         ) : (
           <Swiper
             modules={[Navigation]}
-            navigation={{ prevEl: ".test-prev", nextEl: ".test-next" }}
+            navigation={{ prevEl: prevClass, nextEl: nextClass }}
             spaceBetween={20}
             slidesPerView={1}
             breakpoints={{
@@ -138,13 +143,13 @@ export function Testimonials({ reviews = [], locale = "en" }: TestimonialsProps)
                         }`}
                       />
                     ))}
-                    <span className="ml-1 text-[11px] text-slate-400">{review.rating}.0</span>
+                    <span className="ms-1 text-[11px] text-slate-400">{review.rating}.0</span>
                   </div>
 
                   {/* Quote */}
                   <div className="relative flex-1">
-                    <Quote className="absolute -top-1 -left-1 h-4 w-4 text-[#FFD400]/40" />
-                    <p className="text-sm text-slate-600 leading-relaxed pl-4">
+                    <Quote className={`absolute -top-1 h-4 w-4 text-[#FFD400]/40 ${isAR ? "-right-1" : "-left-1"}`} />
+                    <p className={`text-sm text-slate-600 leading-relaxed ${isAR ? "pr-4" : "pl-4"}`}>
                       {review.text}
                     </p>
                   </div>

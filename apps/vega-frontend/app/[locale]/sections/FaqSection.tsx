@@ -29,7 +29,7 @@ export function FaqSection({ locale = "en" }: FaqSectionProps) {
             <div key={i} className="rounded-xl border border-slate-100 bg-white overflow-hidden">
               <button
                 onClick={() => setOpen(open === i ? null : i)}
-                className="flex w-full items-center justify-between px-4 py-3 text-left"
+                className="flex w-full items-center justify-between px-4 py-3 text-start"
               >
                 <span className="text-sm font-semibold text-slate-900">{isAR && faq.qAr ? faq.qAr : faq.q}</span>
                 <ChevronDown className={`h-4 w-4 text-slate-400 transition-transform ${open === i ? "rotate-180" : ""}`} />

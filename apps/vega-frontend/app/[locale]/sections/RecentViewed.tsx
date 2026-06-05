@@ -16,6 +16,9 @@ export function RecentViewed({ products = [], locale = "en" }: RecentViewedProps
   const isAR = locale === "ar";
   if (products.length === 0) return null;
 
+  const prevClass = isAR ? ".rv-next" : ".rv-prev";
+  const nextClass = isAR ? ".rv-prev" : ".rv-next";
+
   return (
     <section className="py-12 bg-white">
       <div className="mx-auto max-w-7xl px-4">
@@ -32,7 +35,7 @@ export function RecentViewed({ products = [], locale = "en" }: RecentViewedProps
         </div>
         <Swiper
           modules={[Navigation]}
-          navigation={{ prevEl: ".rv-prev", nextEl: ".rv-next" }}
+          navigation={{ prevEl: prevClass, nextEl: nextClass }}
           spaceBetween={16}
           slidesPerView={2}
           breakpoints={{ 640: { slidesPerView: 3 }, 1024: { slidesPerView: 4 } }}

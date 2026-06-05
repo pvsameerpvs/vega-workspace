@@ -52,7 +52,7 @@ export function LimitedDeals({ locale = "en" }: LimitedDealsProps) {
               <p className="text-xs font-bold mb-2">{d.subtitle}</p>
               <p className="text-[10px] opacity-70 mb-4 leading-relaxed">{d.desc}</p>
               <Link href={l("/contact-us")} className={`inline-flex items-center gap-1 text-xs font-bold ${d.bg.includes("FFD400") ? "text-[#1F3A93]" : "text-white"}`}>
-                {d.cta} <ArrowRight className="h-3 w-3" />
+                {d.cta} <ArrowRight className={`h-3 w-3 ${isAR ? "rotate-180" : ""}`} />
               </Link>
             </div>
           ))}

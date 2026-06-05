@@ -21,7 +21,7 @@ export function CollageGrid({ images, title, isAR }: CollageGridProps) {
 
   if (count === 1) {
     return (
-      <div className="relative aspect-[4/3] rounded-2xl overflow-hidden shadow-elevated">
+      <div className="relative h-full rounded-2xl overflow-hidden shadow-elevated">
         <CollageImage src={images[0]} alt={title} />
       </div>
     );
@@ -29,11 +29,11 @@ export function CollageGrid({ images, title, isAR }: CollageGridProps) {
 
   if (count === 2) {
     return (
-      <div className="grid grid-cols-2 gap-3">
-        <div className="relative aspect-[3/4] rounded-2xl overflow-hidden shadow-elevated">
+      <div className="grid grid-cols-2 gap-2 h-full">
+        <div className="relative h-full rounded-2xl overflow-hidden shadow-elevated">
           <CollageImage src={images[0]} alt={title} />
         </div>
-        <div className="relative aspect-[3/4] rounded-2xl overflow-hidden shadow-elevated mt-8">
+        <div className="relative h-full rounded-2xl overflow-hidden shadow-elevated">
           <CollageImage src={images[1]} alt={title} />
         </div>
       </div>
@@ -42,33 +42,40 @@ export function CollageGrid({ images, title, isAR }: CollageGridProps) {
 
   if (count === 3) {
     return (
-      <div className="grid grid-cols-2 gap-3">
-        <div className="relative aspect-[3/4] rounded-2xl overflow-hidden shadow-elevated row-span-2">
+      <div className="grid grid-cols-12 gap-2 h-full">
+        <div className="col-span-7 relative h-full rounded-2xl overflow-hidden shadow-elevated">
           <CollageImage src={images[0]} alt={title} />
+          <div className="absolute bottom-3 left-3 bg-white/90 backdrop-blur-sm rounded-lg px-3 py-1.5 shadow-subtle">
+            <span className="text-xs font-bold text-vega-blue uppercase tracking-wider">
+              {isAR ? "مجموعة" : "Collection"}
+            </span>
+          </div>
         </div>
-        <div className="relative aspect-[4/3] rounded-2xl overflow-hidden shadow-elevated">
-          <CollageImage src={images[1]} alt={title} />
-        </div>
-        <div className="relative aspect-[4/3] rounded-2xl overflow-hidden shadow-elevated">
-          <CollageImage src={images[2]} alt={title} />
+        <div className="col-span-5 flex flex-col gap-2 h-full">
+          <div className="relative flex-1 rounded-2xl overflow-hidden shadow-elevated min-h-0">
+            <CollageImage src={images[1]} alt={title} />
+          </div>
+          <div className="relative flex-1 rounded-2xl overflow-hidden shadow-elevated min-h-0">
+            <CollageImage src={images[2]} alt={title} />
+          </div>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="grid grid-cols-12 gap-3">
-      <div className="col-span-7 relative aspect-[3/4] rounded-2xl overflow-hidden shadow-elevated">
+    <div className="grid grid-cols-12 gap-2 h-full">
+      <div className="col-span-7 relative h-full rounded-2xl overflow-hidden shadow-elevated">
         <CollageImage src={images[0]} alt={title} />
-        <div className="absolute bottom-4 left-4 bg-white/90 backdrop-blur-sm rounded-xl px-4 py-2 shadow-subtle">
+        <div className="absolute bottom-3 left-3 bg-white/90 backdrop-blur-sm rounded-lg px-3 py-1.5 shadow-subtle">
           <span className="text-xs font-bold text-vega-blue uppercase tracking-wider">
             {isAR ? "مجموعة" : "Collection"}
           </span>
         </div>
       </div>
-      <div className="col-span-5 flex flex-col gap-3">
-        {images.slice(1, 4).map((src, i) => (
-          <div key={i} className="relative aspect-[16/10] rounded-2xl overflow-hidden shadow-card flex-1">
+      <div className="col-span-5 flex flex-col gap-2 h-full">
+        {images.slice(1, 3).map((src, i) => (
+          <div key={i} className="relative flex-1 rounded-2xl overflow-hidden shadow-card min-h-0">
             <CollageImage src={src} alt={title} />
           </div>
         ))}

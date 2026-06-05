@@ -98,8 +98,8 @@ export function HeroBanner({ banners, locale = "en" }: HeroBannerProps) {
               <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent" />
               <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/50 to-transparent" />
 
-              {/* Title & Subtitle — left side, vertically centered */}
-              <div className={`absolute inset-0 flex flex-col items-center justify-center p-6 md:p-12 lg:p-16 ${isAR ? "md:items-end" : "md:items-start"}`}>
+              {/* Title & Subtitle — start side (left in LTR, right in RTL) */}
+              <div className="absolute inset-0 flex flex-col items-center justify-center p-6 md:p-12 lg:p-16 md:items-start">
                 <div className={`max-w-xl space-y-5 ${isAR ? "text-center md:text-right" : "text-center md:text-left"}`}>
                   {slide.title && (
                     <motion.h2
@@ -135,7 +135,7 @@ export function HeroBanner({ banners, locale = "en" }: HeroBannerProps) {
                 </div>
               </div>
 
-              {/* Buttons — right side bottom */}
+              {/* Buttons — start side (left in LTR, right in RTL) */}
               <motion.div
                 custom={2}
                 variants={slideUp}

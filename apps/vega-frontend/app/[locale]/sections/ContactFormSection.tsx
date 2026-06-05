@@ -51,8 +51,8 @@ export function ContactFormSection({ locale = "en" }: ContactFormSectionProps) {
       <div className="mx-auto max-w-3xl px-6">
         <div className="modern-card p-8 md:p-10">
           <div className="mb-8">
-            <div className="mb-3 flex items-center gap-3">
-              <div className="h-px w-6 bg-[#FFD400]" />
+            <div className={`mb-3 flex items-center gap-3 ${isAR ? "flex-row-reverse" : ""}`}>
+              <div className="h-px w-6 bg-[#FFD400] shrink-0" />
               <span className="text-xs font-bold uppercase tracking-[0.2em] text-[#FFD400]">
                 {isAR ? "أرسل استفسار" : "Send Enquiry"}
               </span>
@@ -167,7 +167,7 @@ export function ContactFormSection({ locale = "en" }: ContactFormSectionProps) {
                 disabled={status === "submitting"}
                 className="pill-btn-yellow w-full text-sm group mt-2 disabled:opacity-60 disabled:cursor-not-allowed"
               >
-                <Send className="mr-2 inline h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5" />
+                <Send className={`inline h-4 w-4 transition-transform duration-300 ${isAR ? "ms-2 group-hover:-translate-x-0.5" : "me-2 group-hover:translate-x-0.5"}`} />
                 {status === "submitting"
                   ? isAR ? "جاري الإرسال..." : "Submitting..."
                   : isAR ? "إرسال الاستفسار" : "Submit Enquiry"}

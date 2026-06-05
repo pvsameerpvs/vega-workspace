@@ -52,7 +52,7 @@ export async function SpotlightSection({ locale = "en" }: SpotlightSectionProps)
                 <p className="text-sm text-white/70 mb-4 max-w-md">{first.subtitle}</p>
               )}
               <span className="inline-flex items-center gap-1.5 text-xs font-bold text-[#FFD400] transition-all group-hover:gap-2">
-                {isAR ? "استكشف" : "Explore"} <ArrowRight className="h-3 w-3" />
+                {isAR ? "استكشف" : "Explore"} <ArrowRight className={`h-3 w-3 ${isAR ? "rotate-180" : ""}`} />
               </span>
             </div>
           </Link>
@@ -78,7 +78,7 @@ export async function SpotlightSection({ locale = "en" }: SpotlightSectionProps)
                   <p className="text-xs text-white/60 line-clamp-1">{item.subtitle}</p>
                 )}
                 <span className="mt-2 inline-flex items-center gap-1 text-[10px] font-bold text-[#FFD400] transition-all group-hover:gap-1.5">
-                  {isAR ? "عرض" : "View"} <ArrowRight className="h-2.5 w-2.5" />
+                  {isAR ? "عرض" : "View"} <ArrowRight className={`h-2.5 w-2.5 ${isAR ? "rotate-180" : ""}`} />
                 </span>
               </div>
             </Link>
