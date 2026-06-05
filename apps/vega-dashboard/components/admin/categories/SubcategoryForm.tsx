@@ -54,8 +54,8 @@ export function SubcategoryForm({ catName, subForm, editSub, updateSubForm, onSa
         </div>
       </div>
       <div className="flex justify-end gap-2 mt-3">
-        <button onClick={onCancel} className="rounded-md border border-slate-200 px-4 py-2 text-sm font-medium text-slate-600 hover:bg-slate-50">Cancel</button>
-        <button onClick={onSave} className="flex items-center gap-2 rounded-md bg-vega-blue px-4 py-2 text-sm font-semibold text-white hover:bg-vega-blue-dark">
+        <button type="button" onClick={onCancel} className="rounded-md border border-slate-200 px-4 py-2 text-sm font-medium text-slate-600 hover:bg-slate-50">Cancel</button>
+        <button type="button" onClick={onSave} className="flex items-center gap-2 rounded-md bg-vega-blue px-4 py-2 text-sm font-semibold text-white hover:bg-vega-blue-dark">
           <Plus className="h-4 w-4" /> {editSub ? "Update" : "Create"}
         </button>
       </div>

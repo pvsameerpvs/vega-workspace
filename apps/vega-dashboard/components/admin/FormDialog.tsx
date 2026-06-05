@@ -39,7 +39,7 @@ export function FormDialog({
 
   return (
     <Dialog open={open} onOpenChange={onClose}>
-      <DialogContent className="sm:max-w-2xl max-h-[90vh] overflow-y-auto">
+      <DialogContent className="sm:max-w-2xl max-h-[90vh] overflow-y-auto" onPointerDownOutside={(e) => e.preventDefault()}>
         <DialogTitle className="text-lg font-bold text-slate-900">{title}</DialogTitle>
         <form onSubmit={handleSubmit} className="space-y-4">
           {children}

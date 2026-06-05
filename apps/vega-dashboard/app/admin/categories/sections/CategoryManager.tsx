@@ -75,6 +75,7 @@ export function CategoryManager() {
     toast({ title: "Subcategory updated", description: `${subForm.name} updated.` });
     setEditSub(null);
     setSubForm({});
+    setSubFormOpen(null);
   };
 
   const handleDeleteSubcategory = async () => {

@@ -49,6 +49,7 @@ export function ImageUpload({ value, onChange, label, folder = "showcases" }: Im
           </div>
         ) : (
           <button
+            type="button"
             onClick={() => inputRef.current?.click()}
             disabled={loading}
             className="flex h-full w-full flex-col items-center justify-center gap-1 text-xs text-slate-400 hover:text-slate-600 transition-colors"
