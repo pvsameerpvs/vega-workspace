@@ -12,7 +12,7 @@ import { DeleteDialog } from "@/components/admin/DeleteDialog";
 import { Plus } from "lucide-react";
 
 export function LeadManager() {
-  const { leads, loading, updateStatus, updateLead, deleteLead, createLead } = useLeads();
+  const { leads, loading, error, updateStatus, updateLead, deleteLead, createLead } = useLeads();
   const { toast } = useToast();
   const [search, setSearch] = useState("");
   const [statusFilter, setStatusFilter] = useState("");
@@ -29,10 +29,10 @@ export function LeadManager() {
   const filtered = safeLeads.filter((l) => {
     const q = search.toLowerCase();
     const matchesSearch =
-      l.name?.toLowerCase().includes(q) ||
-      l.companyName?.toLowerCase().includes(q) ||
-      l.productName?.toLowerCase().includes(q) ||
-      l.email?.toLowerCase().includes(q);
+      (l.name || "").toLowerCase().includes(q) ||
+      (l.companyName || "").toLowerCase().includes(q) ||
+      (l.productName || "").toLowerCase().includes(q) ||
+      (l.email || "").toLowerCase().includes(q);
     const matchesStatus = !statusFilter || l.status === statusFilter;
     return matchesSearch && matchesStatus;
   });
@@ -127,6 +127,12 @@ export function LeadManager() {
           Add Lead
         </button>
       </div>
+
+      {error && (
+        <div className="mb-4 rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
+          Failed to load leads: {error}
+        </div>
+      )}
 
       <LeadTable
         leads={filtered}

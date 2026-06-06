@@ -28,11 +28,13 @@ export function ContactFormSection({ locale = "en" }: ContactFormSectionProps) {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          ...formData,
+          name: formData.name,
           companyName: formData.company,
+          email: formData.email,
+          phone: formData.phone,
+          message: formData.message,
           location: "Homepage Contact Form",
           status: "new",
-          createdAt: new Date().toISOString(),
         }),
       });
       if (res.ok) {

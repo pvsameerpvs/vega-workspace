@@ -105,7 +105,16 @@ export async function getSpotlightItems() {
 }
 
 export async function submitLead(data: any) {
-  return fetcher<any>("/leads", { method: "POST", body: JSON.stringify(data) });
+  const res = await fetch(`${API_BASE}/leads`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(data),
+  });
+  if (!res.ok) {
+    const err = await res.json().catch(() => ({}));
+    throw new Error(err.error || `Submission failed: ${res.status}`);
+  }
+  return res.json();
 }
 
 export async function getSubcategories(categoryId: number) {

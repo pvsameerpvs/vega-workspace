@@ -1,7 +1,7 @@
 import { Metadata } from "next";
-import { Mail, MapPin, Clock, Send, Phone, ArrowRight } from "lucide-react";
+import { Mail, MapPin, Clock, Phone, ArrowRight } from "lucide-react";
 import { WhatsAppIcon } from "@/components/icons/WhatsAppIcon";
-import { submitLead } from "@/lib/api";
+import { ContactUsForm } from "@/components/forms/ContactUsForm";
 import { isValidLocale } from "@/lib/i18n";
 import { notFound } from "next/navigation";
 
@@ -14,21 +14,6 @@ export default function ContactPage({ params: { locale } }: { params: { locale: 
   if (!isValidLocale(locale)) notFound();
   const isAR = locale === "ar";
   const l = (path: string) => `/${locale}${path}`;
-
-  async function handleSubmit(formData: FormData) {
-    "use server";
-    const data = {
-      name: formData.get("name") as string,
-      companyName: formData.get("company") as string,
-      email: formData.get("email") as string,
-      phone: formData.get("phone") as string,
-      message: formData.get("message") as string,
-      location: "Website Contact Form",
-      status: "new",
-      createdAt: new Date().toISOString(),
-    };
-    await submitLead(data);
-  }
 
   const contactCards = [
     {
@@ -160,80 +145,7 @@ export default function ContactPage({ params: { locale } }: { params: { locale: 
                 </p>
               </div>
 
-              <form action={handleSubmit} className="space-y-5">
-                <div className="grid gap-5 md:grid-cols-2">
-                  <div className="space-y-2">
-                    <label className="text-xs font-bold uppercase tracking-wider text-[#1F3A93]">
-                      {isAR ? "الاسم الكامل *" : "Full Name *"}
-                    </label>
-                    <input
-                      name="name"
-                      type="text"
-                      placeholder={isAR ? "محمد أحمد" : "John Doe"}
-                      required
-                      className="flex h-12 w-full rounded-xl border border-slate-200 bg-slate-50 px-4 text-sm text-slate-900 placeholder:text-slate-400 focus:border-[#1F3A93] focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#1F3A93]/10 transition-all"
-                    />
-                  </div>
-                  <div className="space-y-2">
-                    <label className="text-xs font-bold uppercase tracking-wider text-[#1F3A93]">
-                      {isAR ? "الشركة" : "Company"}
-                    </label>
-                    <input
-                      name="company"
-                      type="text"
-                      placeholder={isAR ? "اسم الشركة" : "Company name"}
-                      className="flex h-12 w-full rounded-xl border border-slate-200 bg-slate-50 px-4 text-sm text-slate-900 placeholder:text-slate-400 focus:border-[#1F3A93] focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#1F3A93]/10 transition-all"
-                    />
-                  </div>
-                </div>
-
-                <div className="grid gap-5 md:grid-cols-2">
-                  <div className="space-y-2">
-                    <label className="text-xs font-bold uppercase tracking-wider text-[#1F3A93]">
-                      {isAR ? "البريد الإلكتروني *" : "Email *"}
-                    </label>
-                    <input
-                      name="email"
-                      type="email"
-                      placeholder="you@company.com"
-                      required
-                      className="flex h-12 w-full rounded-xl border border-slate-200 bg-slate-50 px-4 text-sm text-slate-900 placeholder:text-slate-400 focus:border-[#1F3A93] focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#1F3A93]/10 transition-all"
-                    />
-                  </div>
-                  <div className="space-y-2">
-                    <label className="text-xs font-bold uppercase tracking-wider text-[#1F3A93]">
-                      {isAR ? "الهاتف *" : "Phone *"}
-                    </label>
-                    <input
-                      name="phone"
-                      type="tel"
-                      placeholder="+971 5X XXX XXXX"
-                      required
-                      className="flex h-12 w-full rounded-xl border border-slate-200 bg-slate-50 px-4 text-sm text-slate-900 placeholder:text-slate-400 focus:border-[#1F3A93] focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#1F3A93]/10 transition-all"
-                    />
-                  </div>
-                </div>
-
-                <div className="space-y-2">
-                  <label className="text-xs font-bold uppercase tracking-wider text-[#1F3A93]">
-                    {isAR ? "الرسالة" : "Message"}
-                  </label>
-                  <textarea
-                    name="message"
-                    placeholder={isAR ? "أخبرنا بما تحتاجه..." : "Tell us what you need..."}
-                    rows={5}
-                    className="flex w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-900 placeholder:text-slate-400 focus:border-[#1F3A93] focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#1F3A93]/10 transition-all resize-none"
-                  />
-                </div>
-
-                <button
-                  type="submit"
-                  className="pill-btn-yellow w-full text-sm group mt-2"
-                >
-                  <Send className="mr-2 inline h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5" />
-                  {isAR ? "إرسال الاستفسار" : "Submit Enquiry"}
-                </button>
-              </form>
+              <ContactUsForm isAR={isAR} />
             </div>
           </div>
 
