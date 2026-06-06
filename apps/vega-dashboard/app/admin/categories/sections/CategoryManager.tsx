@@ -53,9 +53,14 @@ export function CategoryManager() {
 
   const handleDeleteCategory = async () => {
     if (!deleteCatId) return;
-    await deleteCategory(deleteCatId);
-    toast({ title: "Deleted", description: "Category removed." });
-    setDeleteCatId(null);
+    try {
+      await deleteCategory(deleteCatId);
+      toast({ title: "Deleted", description: "Category removed." });
+    } catch (e: any) {
+      toast({ title: "Error", description: e?.message || "Failed to delete category.", variant: "destructive" });
+    } finally {
+      setDeleteCatId(null);
+    }
   };
 
   const handleCreateSubcategory = async (categoryId: number) => {
@@ -132,7 +137,7 @@ export function CategoryManager() {
         <CategoryDialogContent form={catForm} update={updateCatForm} />
       </FormDialog>
 
-      <DeleteDialog open={!!deleteCatId} onClose={() => setDeleteCatId(null)} onConfirm={handleDeleteCategory} title="Delete Category" description="This will also delete all subcategories. Are you sure?" />
+      <DeleteDialog open={!!deleteCatId} onClose={() => setDeleteCatId(null)} onConfirm={handleDeleteCategory} title="Delete Category" description="You can only delete a category after removing all its subcategories and products." />
       <DeleteDialog open={!!deleteSubId} onClose={() => setDeleteSubId(null)} onConfirm={handleDeleteSubcategory} title="Delete Subcategory" />
     </div>
   );

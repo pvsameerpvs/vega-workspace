@@ -8,6 +8,7 @@ import {
   getPaginationParams,
   paginateResponse,
 } from "../lib/pagination";
+import { removeCategory } from "../services/categories";
 
 const router = Router();
 
@@ -122,11 +123,12 @@ router.put("/:id", authenticate, async (req, res) => {
 
 router.delete("/:id", authenticate, async (req, res) => {
   try {
-    await db.delete(categories).where(eq(categories.id, Number(req.params.id)));
-    return res.json({ success: true });
+    const result = await removeCategory(Number(req.params.id));
+    return res.json(result);
   } catch (error: any) {
     console.error("Delete category error:", error);
-    res.status(500).json({ error: error.message || "Failed to delete category" });
+    const status = error.message?.startsWith("Cannot delete category") ? 400 : error.message === "Category not found" ? 404 : 500;
+    res.status(status).json({ error: error.message || "Failed to delete category" });
   }
 });
 
