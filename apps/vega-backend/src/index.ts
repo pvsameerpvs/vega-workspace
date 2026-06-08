@@ -4,6 +4,14 @@ import cors from "cors";
 import helmet from "helmet";
 
 import authRoutes from "./routes/auth";
+
+// Validate critical env vars before starting
+const REQUIRED_VARS = ["DATABASE_URL", "JWT_SECRET", "CLOUDFLARE_R2_BUCKET_NAME"];
+const missing = REQUIRED_VARS.filter((v) => !process.env[v]);
+if (missing.length > 0) {
+  console.error(`[Vega API] Missing required environment variables: ${missing.join(", ")}`);
+  process.exit(1);
+}
 import productRoutes from "./routes/products";
 import categoryRoutes from "./routes/categories";
 import leadRoutes from "./routes/leads";

@@ -12,6 +12,19 @@ if (!connectionString) {
   );
 }
 
+// Validate URL format before passing to postgres driver
+function validateDatabaseUrl(url: string): void {
+  try {
+    new URL(url);
+  } catch {
+    throw new Error(
+      `Invalid DATABASE_URL: "${url}". Please provide a valid PostgreSQL connection string (e.g. postgresql://user:pass@host:port/db).`
+    );
+  }
+}
+
+validateDatabaseUrl(connectionString);
+
 const client = postgres(connectionString, {
   prepare: false,
   max: 10,
