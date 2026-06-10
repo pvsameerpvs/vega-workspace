@@ -22,6 +22,9 @@ ENV NEXT_PUBLIC_APP_URL=$NEXT_PUBLIC_APP_URL
 COPY . .
 RUN pnpm --filter vega-dashboard build
 
+# Copy static files into standalone output (required for Next.js standalone mode)
+RUN cp -r .next/static .next/standalone/.next/static
+
 # Production runtime
 ENV NODE_ENV=production
 EXPOSE 3000
