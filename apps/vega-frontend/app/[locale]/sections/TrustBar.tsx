@@ -57,20 +57,19 @@ export function TrustBar({ locale = "en" }: TrustBarProps) {
   const isAR = locale === "ar";
 
   return (
-    <section className="relative overflow-hidden bg-white py-10 lg:py-12 border-b border-slate-100">
-      {/* Decorative background pattern */}
+    <section className="relative overflow-hidden bg-white py-8 sm:py-10 lg:py-12 border-b border-slate-100">
       <div className="mx-auto max-w-7xl px-4 relative">
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6 md:gap-8">
-          {stats.map((stat) => (
-            <div key={stat.label} className="flex flex-col items-center text-center group">
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4 sm:gap-6 md:gap-8">
+          {stats.map((stat, i) => (
+            <div key={stat.label} className={`flex flex-col items-center text-center group ${i === stats.length - 1 ? "col-span-2 sm:col-span-1" : ""}`}>
               <div className="relative">
-                <span className="text-3xl lg:text-4xl font-extrabold text-[#1F3A93] tabular-nums leading-none">
+                <span className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-[#1F3A93] tabular-nums leading-none">
                   <AnimatedNumber target={stat.value} />
                   {stat.suffix}
                 </span>
               </div>
-              <div className="mt-2 h-0.5 w-8 rounded-full bg-[#FFD400]/60 group-hover:w-12 transition-all duration-500" />
-              <div className="mt-2 text-xs lg:text-sm font-semibold text-[#1F3A93]">
+              <div className="mt-1.5 sm:mt-2 h-0.5 w-6 sm:w-8 rounded-full bg-[#FFD400]/60 group-hover:w-10 sm:group-hover:w-12 transition-all duration-500" />
+              <div className="mt-1.5 sm:mt-2 text-[11px] sm:text-xs lg:text-sm font-semibold text-[#1F3A93]">
                 {isAR ? stat.labelAr : stat.label}
               </div>
             </div>
