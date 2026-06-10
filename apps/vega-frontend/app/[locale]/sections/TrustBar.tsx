@@ -1,11 +1,52 @@
-import Image from "next/image";
+"use client";
 
-const features = [
-  { image: "/images/trustbar/customers.png", label: "5000+ Customers" },
-  { image: "/images/trustbar/uae-delivery.png", label: "UAE Delivery" },
-  { image: "/images/trustbar/best-prices.png", label: "Best Prices" },
-  { image: "/images/trustbar/secure-payment.png", label: "Secure Payment" },
-  { image: "/images/trustbar/easy-returns.png", label: "Easy Returns" },
+import { useState, useEffect, useRef } from "react";
+
+interface Stat {
+  value: number;
+  suffix: string;
+  label: string;
+  labelAr: string;
+}
+
+function AnimatedNumber({ target, duration = 2200 }: { target: number; duration?: number }) {
+  const [count, setCount] = useState(0);
+  const ref = useRef<HTMLSpanElement>(null);
+  const started = useRef(false);
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting && !started.current) {
+          started.current = true;
+          const startTime = Date.now();
+          const animate = () => {
+            const elapsed = Date.now() - startTime;
+            const progress = Math.min(elapsed / duration, 1);
+            const eased = 1 - Math.pow(1 - progress, 3);
+            setCount(Math.floor(eased * target));
+            if (progress < 1) requestAnimationFrame(animate);
+          };
+          requestAnimationFrame(animate);
+        }
+      },
+      { threshold: 0.3 }
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, [target, duration]);
+
+  return <span ref={ref}>{count.toLocaleString()}</span>;
+}
+
+const stats: Stat[] = [
+  { value: 5000, suffix: "+", label: "Customers", labelAr: "عميل" },
+  { value: 300, suffix: "+", label: "Products in stock", labelAr: "منتج في المخزون" },
+  { value: 15, suffix: "+", label: "Years in Business", labelAr: "سنة في العمل" },
+  { value: 10000, suffix: "+ sq ft", label: "Storage Facility", labelAr: "مستودع تخزين" },
+  { value: 25, suffix: "+", label: "Team Members", labelAr: "فريق العمل" },
 ];
 
 interface TrustBarProps {
@@ -14,34 +55,24 @@ interface TrustBarProps {
 
 export function TrustBar({ locale = "en" }: TrustBarProps) {
   const isAR = locale === "ar";
-  const features = [
-    { image: "/images/trustbar/customers.png", label: isAR ? "5000+ عميل" : "5000+ Customers" },
-    { image: "/images/trustbar/uae-delivery.png", label: isAR ? "توصيل الإمارات" : "UAE Delivery" },
-    { image: "/images/trustbar/best-prices.png", label: isAR ? "أفضل الأسعار" : "Best Prices" },
-    { image: "/images/trustbar/secure-payment.png", label: isAR ? "دفع آمن" : "Secure Payment" },
-    { image: "/images/trustbar/easy-returns.png", label: isAR ? "إرجاع سهل" : "Easy Returns" },
-  ];
 
   return (
-    <section className="bg-white border-b border-slate-100">
-      <div className="mx-auto max-w-7xl px-4 py-12 lg:py-16">
-        <div className="flex items-center justify-between gap-6 overflow-x-auto no-scrollbar">
-          {features.map((f) => (
-            <div
-              key={f.label}
-              className="flex flex-col items-center gap-4 min-w-[160px] text-center"
-            >
-              <div className="relative h-28 w-28 lg:h-32 lg:w-32 shrink-0 rounded-full bg-slate-50 border border-slate-100">
-                <Image
-                  src={f.image}
-                  alt={f.label}
-                  fill
-                  className="object-contain p-3"
-                  draggable={false}
-                  sizes="128px"
-                />
+    <section className="relative overflow-hidden bg-white py-10 lg:py-12 border-b border-slate-100">
+      {/* Decorative background pattern */}
+      <div className="mx-auto max-w-7xl px-4 relative">
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6 md:gap-8">
+          {stats.map((stat) => (
+            <div key={stat.label} className="flex flex-col items-center text-center group">
+              <div className="relative">
+                <span className="text-3xl lg:text-4xl font-extrabold text-[#1F3A93] tabular-nums leading-none">
+                  <AnimatedNumber target={stat.value} />
+                  {stat.suffix}
+                </span>
               </div>
-              <div className="text-base font-semibold text-slate-900">{f.label}</div>
+              <div className="mt-2 h-0.5 w-8 rounded-full bg-[#FFD400]/60 group-hover:w-12 transition-all duration-500" />
+              <div className="mt-2 text-xs lg:text-sm font-semibold text-[#1F3A93]">
+                {isAR ? stat.labelAr : stat.label}
+              </div>
             </div>
           ))}
         </div>
