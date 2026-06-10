@@ -10,7 +10,7 @@ const nextConfig = {
     ],
     unoptimized: true,
   },
-  output: "standalone",
+
   transpilePackages: ["@vega/ui", "@vega/utils"],
 };
 

@@ -4,7 +4,7 @@ const nextConfig = {
   images: {
     unoptimized: true,
   },
-  output: "standalone",
+
   transpilePackages: ["@vega/ui", "@vega/utils"],
 };
 
