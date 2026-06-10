@@ -23,7 +23,7 @@ COPY . .
 RUN pnpm --filter vega-dashboard build
 
 # Copy static files into standalone output (required for Next.js standalone mode)
-RUN cp -r .next/static .next/standalone/.next/static
+RUN cd apps/vega-dashboard && cp -r .next/static .next/standalone/.next/static
 
 # Production runtime
 ENV NODE_ENV=production
