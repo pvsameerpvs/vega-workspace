@@ -30,7 +30,7 @@ export function ProductCard({ product, tag, tagColor = "bg-[#1F3A93]" }: Product
           {tag}
         </span>
       )}
-      <Link href={productUrl} className="block">
+      <Link href={productUrl} className="block w-full">
         <div className="relative aspect-[4/3] overflow-hidden bg-slate-50">
           <ProtectedImage
             src={product.image || ""}

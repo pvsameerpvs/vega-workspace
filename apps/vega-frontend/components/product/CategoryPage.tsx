@@ -16,6 +16,9 @@ export function CategoryPage({ category, products, locale }: CategoryPageProps) 
   const l = (path: string) => `/${locale}${path}`;
   const displayName = isAR && category.nameAr ? category.nameAr : category.name;
 
+  const heroImage = category.banner || category.image;
+  const displayDescription = isAR && category.descriptionAr ? category.descriptionAr : category.description;
+
   return (
     <main className="pt-36 pb-32">
       <div className="mx-auto max-w-7xl px-6">
@@ -23,15 +26,40 @@ export function CategoryPage({ category, products, locale }: CategoryPageProps) 
           <ArrowLeft className="h-4 w-4" /> {isAR ? "العودة إلى المنتجات" : "Back to Products"}
         </Link>
 
-        <div className="mb-16">
-          <span className="mb-6 block text-sm text-slate-400">{isAR ? "الفئة" : "Category"}</span>
-          <h1 className="section-heading text-4xl md:text-5xl">{displayName}</h1>
-          <p className="mt-6 text-lg text-slate-500 max-w-lg leading-relaxed">
-            {isAR
-              ? `تصفح مجموعة ${displayName.toLowerCase()}.`
-              : `Browse our ${category.name.toLowerCase()} collection.`}
-          </p>
-        </div>
+        {heroImage && (
+          <div className="relative w-full min-h-[420px] md:h-[50vh] rounded-2xl overflow-hidden mb-16 bg-slate-100 flex items-end">
+            <ProtectedImage
+              src={heroImage}
+              alt={displayName}
+              className="absolute inset-0 h-full w-full object-cover"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent" />
+            <div className="absolute inset-0 bg-gradient-to-r from-black/30 to-transparent" />
+            <div className="relative z-10 p-8 md:p-14 w-full">
+              <span className="text-xs font-bold uppercase tracking-[0.2em] text-vega-yellow mb-4 block">
+                {isAR ? "الفئة" : "Category"}
+              </span>
+              <h1 className="text-3xl md:text-5xl lg:text-6xl font-extrabold text-white leading-tight max-w-3xl drop-shadow-lg">
+                {displayName}
+              </h1>
+              {displayDescription && (
+                <p className="mt-4 text-sm md:text-base lg:text-lg text-white/85 max-w-2xl leading-relaxed drop-shadow">
+                  {displayDescription}
+                </p>
+              )}
+            </div>
+          </div>
+        )}
+
+        {!heroImage && (
+          <div className="mb-16">
+            <span className="mb-6 block text-sm text-slate-400">{isAR ? "الفئة" : "Category"}</span>
+            <h1 className="section-heading text-4xl md:text-5xl">{displayName}</h1>
+            {displayDescription && (
+              <p className="mt-4 text-lg text-slate-500 max-w-lg leading-relaxed">{displayDescription}</p>
+            )}
+          </div>
+        )}
 
         {/* Subcategories Grid */}
         {category.subcategories.length > 0 && (
@@ -47,7 +75,7 @@ export function CategoryPage({ category, products, locale }: CategoryPageProps) 
                 <Link
                   key={sub.id}
                   href={getSubcategoryUrl(category.slug, sub.slug, locale)}
-                  className="group modern-card overflow-hidden transition-all duration-500 hover:shadow-card-hover hover:-translate-y-2"
+                  className="group modern-card block overflow-hidden transition-all duration-500 hover:shadow-card-hover hover:-translate-y-2"
                 >
                   <div className="relative aspect-[4/3] overflow-hidden bg-slate-100">
                     {sub.image ? (

@@ -54,6 +54,9 @@ export interface ProductCategory {
   nameAr?: string;
   slug: string;
   image: string;
+  banner?: string;
+  description?: string;
+  descriptionAr?: string;
   subcategories: Subcategory[];
   subcategoriesAr?: string[];
 }

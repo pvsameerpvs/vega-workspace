@@ -210,7 +210,10 @@ export function mapCategoryToFrontend(c: any) {
     name: c.name || "",
     nameAr: c.nameAr || "",
     slug: c.slug || "",
+    description: c.description || "",
+    descriptionAr: c.descriptionAr || "",
     image: c.image || c.banner || "",
+    banner: c.banner || "",
     subcategories: subs,
     subcategoriesAr: Array.isArray(c.subcategoriesAr) ? c.subcategoriesAr : [],
   };
