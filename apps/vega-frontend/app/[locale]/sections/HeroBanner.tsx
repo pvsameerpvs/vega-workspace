@@ -12,10 +12,14 @@ interface Banner {
   id: number;
   image?: string;
   title?: string;
+  titleAr?: string;
   subtitle?: string;
+  subtitleAr?: string;
   ctaText?: string;
+  ctaTextAr?: string;
   ctaLink?: string;
   ctaSecondaryText?: string;
+  ctaSecondaryTextAr?: string;
   ctaSecondaryLink?: string;
   slideDuration?: number;
   isActive?: boolean;
@@ -54,11 +58,11 @@ export function HeroBanner({ banners, locale = "en" }: HeroBannerProps) {
   const activeBanners = banners?.filter((b) => b.isActive && b.image) || [];
   const slides = activeBanners.map((b) => ({
     id: String(b.id),
-    title: b.title || "",
-    subtitle: b.subtitle || "",
-    ctaText: b.ctaText || (isAR ? "اطلب عرض سعر" : "Request a Quote"),
+    title: isAR ? (b.titleAr || b.title || "") : (b.title || ""),
+    subtitle: isAR ? (b.subtitleAr || b.subtitle || "") : (b.subtitle || ""),
+    ctaText: isAR ? (b.ctaTextAr || b.ctaText || "اطلب عرض سعر") : (b.ctaText || "Request a Quote"),
     ctaLink: b.ctaLink || "/contact-us",
-    ctaSecondaryText: b.ctaSecondaryText || (isAR ? "عرض المنتجات" : "View Products"),
+    ctaSecondaryText: isAR ? (b.ctaSecondaryTextAr || b.ctaSecondaryText || "عرض المنتجات") : (b.ctaSecondaryText || "View Products"),
     ctaSecondaryLink: b.ctaSecondaryLink || "/products",
     image: b.image,
     slideDuration: b.slideDuration || 6000,
