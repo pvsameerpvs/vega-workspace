@@ -52,6 +52,10 @@
     color: #1F3A93;
   }
 
+  h1 + p, h2 + p, h3 + p, h4 + p, h5 + p, h6 + p {
+    font-family: var(--font-poppins), system-ui, sans-serif;
+  }
+
   button, [role="button"] {
     font-family: var(--font-poppins), system-ui, sans-serif;
   }

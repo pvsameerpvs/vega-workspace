@@ -125,13 +125,13 @@ export function ProductDetailPage({ product, related, locale }: ProductDetailPag
 
             {/* Full Description */}
             {displayDesc && (
-              <p className="mt-6 text-lg text-slate-500 leading-relaxed max-w-md">
+              <p className="mt-6 text-lg text-slate-500 leading-relaxed max-w-md font-display">
                 {displayDesc}
               </p>
             )}
 
             {displayFullDesc && displayFullDesc !== displayDesc && (
-              <p className="mt-4 text-base text-slate-500 leading-relaxed max-w-md">
+              <p className="mt-4 text-base text-slate-500 leading-relaxed max-w-md font-display">
                 {displayFullDesc}
               </p>
             )}

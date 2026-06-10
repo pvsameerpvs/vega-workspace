@@ -54,14 +54,15 @@ export function Navbar({ categories = [], products = [] }: NavbarProps) {
               <Phone className="h-5 w-5 shrink-0" />
               <span className="tabular-nums">+971 56 735 1095</span>
             </a>
-            <a href="mailto:Sales@thevegauae.com" className="hidden sm:flex items-center gap-1.5 hover:text-white transition-colors whitespace-nowrap font-medium">
-              <Mail className="h-5 w-5 shrink-0" />
-              sales@thevegauae.com
-            </a>
             <a href="https://wa.me/971567351095" target="_blank" rel="noreferrer" className="hidden md:flex items-center gap-1.5 hover:text-white transition-colors whitespace-nowrap font-medium">
               <WhatsAppIcon className="h-5 w-5 text-[#FFD400] shrink-0" />
               WhatsApp
             </a>
+            <a href="mailto:Sales@thevegauae.com" className="hidden sm:flex items-center gap-1.5 hover:text-white transition-colors whitespace-nowrap font-medium">
+              <Mail className="h-5 w-5 shrink-0" />
+              sales@thevegauae.com
+            </a>
+            
           </div>
 
           <div className="flex items-center gap-3">

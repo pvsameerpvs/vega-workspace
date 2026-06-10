@@ -87,7 +87,7 @@ export function CategoryShowcaseItem({ item, index, locale, isAR }: CategoryShow
 
           <div className="w-16 h-1 bg-vega-yellow rounded-full mb-4" />
 
-          <p className="text-slate-500 leading-[1.7] text-sm md:text-base mb-5 max-w-md line-clamp-2">
+          <p className="text-slate-500 leading-[1.7] text-sm md:text-base mb-5 max-w-md line-clamp-2 font-display">
             {desc || (isAR
               ? "استكشف مجموعتنا المتميزة من المنتجات المصممة بعناية لتلبية احتياجات عملك."
               : "Explore our premium collection of products, carefully curated to meet your business needs with exceptional quality.")}
