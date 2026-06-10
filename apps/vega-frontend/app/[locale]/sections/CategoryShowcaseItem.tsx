@@ -1,4 +1,7 @@
+"use client";
+
 import Link from "next/link";
+import { motion } from "framer-motion";
 import { CollageGrid } from "@/components/collage";
 import { getCategoryUrl } from "@/lib/url";
 import { generateWhatsAppLink } from "@vega/utils";
@@ -49,19 +52,35 @@ export function CategoryShowcaseItem({ item, index, locale, isAR }: CategoryShow
     : isEven ? "lg:order-2" : "lg:order-1";
 
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16 items-center">
-      <div className={imageOrder}>
+    <motion.div
+      initial={{ opacity: 0, y: 40 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: "-80px" }}
+      transition={{ duration: 0.7, ease: "easeOut" }}
+      className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16 items-center"
+    >
+      <motion.div
+        initial={{ opacity: 0, x: isContentOnRight ? 40 : -40 }}
+        whileInView={{ opacity: 1, x: 0 }}
+        viewport={{ once: true, margin: "-80px" }}
+        transition={{ duration: 0.6, delay: 0.15, ease: "easeOut" }}
+        className={imageOrder}
+      >
         <div className="relative w-full h-[220px] sm:h-[260px] lg:h-[300px]">
           <div className="absolute -top-3 -left-3 w-20 h-20 rounded-full bg-vega-yellow/20 blur-2xl pointer-events-none" />
           <div className="absolute -bottom-4 -right-4 w-28 h-28 rounded-full bg-vega-blue/10 blur-2xl pointer-events-none" />
           <CollageGrid images={imgs} title={title} isAR={isAR} />
         </div>
-      </div>
+      </motion.div>
 
-      <div className={contentOrder}>
+      <motion.div
+        initial={{ opacity: 0, x: isContentOnRight ? -40 : 40 }}
+        whileInView={{ opacity: 1, x: 0 }}
+        viewport={{ once: true, margin: "-80px" }}
+        transition={{ duration: 0.6, delay: 0.3, ease: "easeOut" }}
+        className={contentOrder}
+      >
         <div className={`flex flex-col ${contentAlign}`}>
-         
-
           <h3 className="text-xl md:text-2xl lg:text-3xl font-bold text-slate-900 font-display leading-tight tracking-tight mb-3">
             {title}
           </h3>
@@ -97,7 +116,7 @@ export function CategoryShowcaseItem({ item, index, locale, isAR }: CategoryShow
             </Link>
           </div>
         </div>
-      </div>
-    </div>
+      </motion.div>
+    </motion.div>
   );
 }
