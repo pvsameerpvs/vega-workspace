@@ -1,12 +1,11 @@
 "use client";
 
-import { useMemo } from "react";
+import { useState, useMemo } from "react";
 import Link from "next/link";
-import { ArrowRight } from "lucide-react";
-import { getCategoryUrl, getProductUrl } from "@/lib/url";
+import { getCategoryUrl, getSubcategoryUrl, getProductUrl } from "@/lib/url";
 
 interface ProductMegaMenuProps {
-  categories: { id: string; name: string; nameAr?: string; slug: string; subcategories?: (string | { name: string; nameAr?: string })[] }[];
+  categories: { id: string; name: string; nameAr?: string; slug: string; subcategories?: { id: string; name: string; nameAr?: string; slug: string }[] }[];
   products: { id: string; name: string; nameAr?: string; slug: string; image: string; category: string; categorySlug?: string; subcategorySlug?: string }[];
   isAR: boolean;
   locale: string;
@@ -14,59 +13,117 @@ interface ProductMegaMenuProps {
 }
 
 export function ProductMegaMenu({ categories, products, isAR, locale, open }: ProductMegaMenuProps) {
-  const productsByCategory = useMemo(() => {
+  const [activeCategory, setActiveCategory] = useState<string | null>(null);
+  const [activeSubcategory, setActiveSubcategory] = useState<string | null>(null);
+
+  const productsBySubcategory = useMemo(() => {
     const map: Record<string, typeof products> = {};
-    for (const cat of categories) {
-      map[cat.slug] = products
-        .filter((p) =>
-          p.category.toLowerCase().replace(/\s+/g, "-") === cat.slug.toLowerCase() ||
-          p.category.toLowerCase() === cat.name.toLowerCase()
-        )
-        .slice(0, 3);
+    for (const prod of products) {
+      const key = prod.subcategorySlug;
+      if (key) {
+        if (!map[key]) map[key] = [];
+        map[key].push(prod);
+      }
     }
     return map;
-  }, [categories, products]);
+  }, [products]);
+
+  const currentCategory = activeCategory
+    ? categories.find((c) => c.slug === activeCategory)
+    : null;
+
+  const currentSubs = currentCategory?.subcategories || [];
+
+  const currentProducts = activeSubcategory
+    ? productsBySubcategory[activeSubcategory] || []
+    : [];
+
+  const panelOrder = isAR ? "flex-row-reverse" : "";
 
   if (!open) return null;
 
   return (
     <div className={`absolute top-full pt-3 ${isAR ? "right-0" : "left-1/2 -translate-x-1/2"}`}>
-      <div className="w-[800px] rounded-2xl bg-white p-6 shadow-elevated border border-slate-100 animate-scale-in origin-top">
-        <div className="grid grid-cols-4 gap-6">
+      <div className={`w-[900px] rounded-2xl bg-white shadow-elevated border border-slate-100 animate-scale-in origin-top flex ${panelOrder} overflow-hidden`}>
+        {/* Categories */}
+        <div className="w-56 shrink-0 border-r border-slate-100 p-3 space-y-1 max-h-[70vh] overflow-y-auto">
           {categories.map((cat) => (
-            <div key={cat.id}>
-              <Link href={getCategoryUrl(cat.slug, locale)} className="block text-sm font-bold text-[#1F3A93] mb-2 hover:text-[#162d70] transition-colors">
-                {isAR && cat.nameAr ? cat.nameAr : cat.name}
-              </Link>
-              <ul className="space-y-1 mb-3">
-                {(cat.subcategories || []).slice(0, 4).map((sub, idx) => {
-                  const subName = typeof sub === "string" ? sub : (isAR && sub.nameAr ? sub.nameAr : sub.name);
-                  return (
-                    <li key={idx}>
-                      <span className="text-xs text-slate-400">
-                        {subName}
-                      </span>
-                    </li>
-                  );
-                })}
-              </ul>
-              {(productsByCategory[cat.slug] || []).length > 0 && (
-                <div className="space-y-2 pt-2 border-t border-slate-100">
-                  {(productsByCategory[cat.slug] || []).map((prod) => (
-                    <Link key={prod.id} href={getProductUrl(prod as any, locale)} className="flex items-center gap-2 group">
-                      <div className="h-8 w-8 rounded-lg bg-slate-100 overflow-hidden shrink-0">
-                        <img src={prod.image} alt={isAR && prod.nameAr ? prod.nameAr : prod.name} className="h-full w-full object-cover" draggable={false} onContextMenu={(e) => e.preventDefault()} />
-                      </div>
-                      <span className="text-[10px] text-slate-500 group-hover:text-[#1F3A93] transition-colors line-clamp-1">{isAR && prod.nameAr ? prod.nameAr : prod.name}</span>
-                    </Link>
-                  ))}
-                </div>
-              )}
-              <Link href={getCategoryUrl(cat.slug, locale)} className="inline-flex items-center gap-1 text-[10px] font-semibold text-[#FFD400] hover:text-[#1F3A93] transition-colors mt-2">
-                {isAR ? "عرض الكل" : "View All"} <ArrowRight className="h-3 w-3" />
-              </Link>
-            </div>
+            <button
+              key={cat.id}
+              onMouseEnter={() => { setActiveCategory(cat.slug); setActiveSubcategory(null); }}
+              className={`w-full text-left px-3 py-2.5 rounded-lg text-sm transition-colors ${
+                activeCategory === cat.slug
+                  ? "bg-[#1F3A93] text-white font-semibold"
+                  : "text-slate-600 hover:bg-slate-50"
+              }`}
+            >
+              {isAR && cat.nameAr ? cat.nameAr : cat.name}
+            </button>
           ))}
+        </div>
+
+        {/* Subcategories */}
+        <div className="w-56 shrink-0 border-r border-slate-100 p-3 space-y-1 max-h-[70vh] overflow-y-auto">
+          {currentSubs.length > 0 ? (
+            currentSubs.map((sub) => (
+              <Link
+                key={sub.slug}
+                href={getSubcategoryUrl(activeCategory!, sub.slug, locale)}
+                onMouseEnter={() => setActiveSubcategory(sub.slug)}
+                className={`block px-3 py-2.5 rounded-lg text-sm transition-colors ${
+                  activeSubcategory === sub.slug
+                    ? "bg-[#FFD400] text-[#1F3A93] font-semibold"
+                    : "text-slate-600 hover:bg-slate-50"
+                }`}
+              >
+                {isAR && sub.nameAr ? sub.nameAr : sub.name}
+              </Link>
+            ))
+          ) : (
+            <p className="px-3 py-2.5 text-xs text-slate-400">
+              {activeCategory
+                ? (isAR ? "لا توجد فئات فرعية" : "No subcategories")
+                : (isAR ? "اختر تصنيفاً" : "Select a category")}
+            </p>
+          )}
+        </div>
+
+        {/* Products */}
+        <div className="flex-1 p-3 max-h-[70vh] overflow-y-auto">
+          {currentProducts.length > 0 ? (
+            <div className="grid grid-cols-2 gap-2">
+              {currentProducts.map((prod) => (
+                <Link
+                  key={prod.id}
+                  href={getProductUrl(prod as any, locale)}
+                  className="flex items-center gap-2 p-2 rounded-lg hover:bg-slate-50 transition-colors group"
+                >
+                  <div className="h-10 w-10 rounded-lg bg-slate-100 overflow-hidden shrink-0">
+                    <img
+                      src={prod.image}
+                      alt={isAR && prod.nameAr ? prod.nameAr : prod.name}
+                      className="h-full w-full object-cover"
+                      draggable={false}
+                      onContextMenu={(e) => e.preventDefault()}
+                    />
+                  </div>
+                  <span className="text-xs text-slate-600 group-hover:text-[#1F3A93] transition-colors line-clamp-2 leading-tight">
+                    {isAR && prod.nameAr ? prod.nameAr : prod.name}
+                  </span>
+                </Link>
+              ))}
+            </div>
+          ) : (
+            <div className="flex items-center justify-center h-full min-h-[120px]">
+              <p className="text-xs text-slate-400">
+                {activeSubcategory
+                  ? (isAR ? "لا توجد منتجات" : "No products")
+                  : activeCategory
+                    ? (isAR ? "اختر فئة فرعية لعرض المنتجات" : "Select a subcategory")
+                    : (isAR ? "اختر تصنيفاً لعرض المنتجات" : "Select a category")}
+              </p>
+            </div>
+          )}
         </div>
       </div>
     </div>

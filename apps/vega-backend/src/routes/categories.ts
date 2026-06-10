@@ -32,7 +32,7 @@ router.get("/", async (req, res) => {
       ...cat,
       subcategories: allSubcategories
         .filter((s) => s.categoryId === cat.id)
-        .map((s) => s.name),
+        .map((s) => ({ id: s.id, name: s.name, nameAr: s.nameAr, slug: s.slug })),
     }));
 
     return res.json(paginateResponse(withSubs, page, limit));

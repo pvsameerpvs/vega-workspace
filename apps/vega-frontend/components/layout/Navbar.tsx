@@ -10,7 +10,7 @@ import { ProductMegaMenu } from "./ProductMegaMenu";
 import { MobileMenu } from "./MobileMenu";
 
 interface NavbarProps {
-  categories?: { id: string; name: string; nameAr?: string; slug: string; subcategories?: (string | { name: string; nameAr?: string })[] }[];
+  categories?: { id: string; name: string; nameAr?: string; slug: string; subcategories?: { id: string; name: string; nameAr?: string; slug: string }[] }[];
   products?: { id: string; name: string; nameAr?: string; slug: string; image: string; category: string; categorySlug?: string; subcategorySlug?: string }[];
 }
 
@@ -125,7 +125,7 @@ export function Navbar({ categories = [], products = [] }: NavbarProps) {
         </div>
       </div>
 
-      <MobileMenu open={mobile} onClose={() => setMobile(false)} categories={categories} isAR={isAR} locale={locale} />
+      <MobileMenu open={mobile} onClose={() => setMobile(false)} categories={categories} products={products} isAR={isAR} locale={locale} />
     </header>
   );
 }

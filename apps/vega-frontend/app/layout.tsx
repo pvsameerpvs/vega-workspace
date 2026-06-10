@@ -48,8 +48,6 @@ export default async function RootLayout({
 
   const mappedCategories = (categories || []).map(mapCategoryToFrontend).filter(Boolean) as any[];
   const mappedProducts = (products || []).map(mapProductToFrontend).filter(Boolean) as any[];
-  const featuredProducts = mappedProducts.filter((p: any) => p.isFeatured || p.isPopular).slice(0, 6);
-
   return (
     <html suppressHydrationWarning>
       <head>
@@ -72,7 +70,7 @@ export default async function RootLayout({
         />
       </head>
       <body className={`${inter.variable} ${poppins.variable} ${cairo.variable} font-sans antialiased pt-28`}>
-        <Navbar categories={mappedCategories || []} products={featuredProducts || []} />
+        <Navbar categories={mappedCategories || []} products={mappedProducts || []} />
         {children}
         <Footer categories={mappedCategories || []} />
       </body>
