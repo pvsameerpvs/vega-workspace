@@ -16,6 +16,7 @@ import {
   ContactFormSection,
   SeoContent,
   FaqSection,
+  FeaturesSection,
 } from "./sections";
 import { getBanners, getHomepageConfig } from "@/lib/api";
 import { isValidLocale } from "@/lib/i18n";
@@ -31,13 +32,16 @@ export default async function HomePage({ params: { locale } }: { params: { local
   return (
     <main>
       {isVisible("heroBanner") && <HeroBanner banners={banners} locale={locale} />}
-      <TrustBar locale={locale} />
+       <TrustBar locale={locale} />
+      
+     
       <PromoBanner locale={locale} />
       {isVisible("popularCategories") && <PopularCategories locale={locale} />}
       {isVisible("featuredProducts") && <FeaturedProducts locale={locale} />}
       {isVisible("spotlight") && <SpotlightSection locale={locale} />}
       
       {isVisible("categoryShowcases") && <CategoryShowcases locale={locale} />}
+      <FeaturesSection locale={locale} />
       {isVisible("bestSellers") && <BestSellers locale={locale} />}
       {isVisible("newArrivals") && <NewArrivals locale={locale} />}
       {isVisible("productRanges") && <ProductRanges locale={locale} />}
