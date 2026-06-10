@@ -48,18 +48,18 @@ export function Navbar({ categories = [], products = [] }: NavbarProps) {
     <header className="fixed top-0 left-0 right-0 z-50">
       {/* Top Bar */}
       <div className={`bg-[#1F3A93] transition-all duration-500 ${topHidden ? "h-0 opacity-0 overflow-hidden" : "h-auto opacity-100"}`}>
-        <div className={`mx-auto flex max-w-7xl items-center px-4 py-2 text-[11px] text-white/70 ${isAR ? "flex-row-reverse justify-between" : "justify-between"}`}>
-          <div className="flex items-center gap-4" dir="ltr">
-            <a href="tel:+971567351095" className="flex items-center gap-1 hover:text-white transition-colors whitespace-nowrap">
-              <Phone className="h-3 w-3 shrink-0" />
+        <div className={`mx-auto flex max-w-7xl items-center px-4 py-3.5 text-base text-white/85 ${isAR ? "flex-row-reverse justify-between" : "justify-between"}`}>
+          <div className="flex items-center gap-7" dir="ltr">
+            <a href="tel:+971567351095" className="flex items-center gap-1.5 hover:text-white transition-colors whitespace-nowrap font-medium">
+              <Phone className="h-5 w-5 shrink-0" />
               <span className="tabular-nums">+971 56 735 1095</span>
             </a>
-            <a href="mailto:Sales@thevegauae.com" className="hidden sm:flex items-center gap-1 hover:text-white transition-colors whitespace-nowrap">
-              <Mail className="h-3 w-3 shrink-0" />
-              Sales@thevegauae.com
+            <a href="mailto:Sales@thevegauae.com" className="hidden sm:flex items-center gap-1.5 hover:text-white transition-colors whitespace-nowrap font-medium">
+              <Mail className="h-5 w-5 shrink-0" />
+              sales@thevegauae.com
             </a>
-            <a href="https://wa.me/971567351095" target="_blank" rel="noreferrer" className="hidden md:flex items-center gap-1 hover:text-white transition-colors whitespace-nowrap">
-              <WhatsAppIcon className="h-3 w-3 text-[#FFD400] shrink-0" />
+            <a href="https://wa.me/971567351095" target="_blank" rel="noreferrer" className="hidden md:flex items-center gap-1.5 hover:text-white transition-colors whitespace-nowrap font-medium">
+              <WhatsAppIcon className="h-5 w-5 text-[#FFD400] shrink-0" />
               WhatsApp
             </a>
           </div>
