@@ -60,14 +60,7 @@ export function CategoryShowcaseItem({ item, index, locale, isAR }: CategoryShow
 
       <div className={contentOrder}>
         <div className={`flex flex-col ${contentAlign}`}>
-          <div className={`flex items-center gap-3 mb-3 ${badgeRow}`}>
-            <div className="h-px w-8 bg-vega-yellow shrink-0" />
-            <span className="text-xs font-bold uppercase tracking-[0.2em] text-vega-blue/60">
-              {isAR
-                ? `فئة ${String(index + 1).padStart(2, "0")}`
-                : `Category ${String(index + 1).padStart(2, "0")}`}
-            </span>
-          </div>
+         
 
           <h3 className="text-xl md:text-2xl lg:text-3xl font-bold text-slate-900 font-display leading-tight tracking-tight mb-3">
             {title}
