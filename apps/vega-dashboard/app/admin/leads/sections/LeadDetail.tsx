@@ -12,7 +12,7 @@ export function LeadDetail({ lead, onClose }: LeadDetailProps) {
 
   return (
     <Dialog open={!!lead} onOpenChange={onClose}>
-      <DialogContent className="sm:max-w-lg">
+      <DialogContent className="sm:max-w-lg" onPointerDownOutside={(e) => e.preventDefault()}>
         <DialogTitle className="text-lg font-bold text-slate-900">Lead Details</DialogTitle>
         <div className="space-y-4">
           <div className="flex items-center justify-between">

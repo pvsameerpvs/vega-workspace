@@ -22,7 +22,7 @@ interface ProductFormProps {
 export function ProductForm({ open, onClose, onSubmit, product, loading = false }: ProductFormProps) {
   const [form, setForm] = useState<any>({});
   const [activeTab, setActiveTab] = useState("basic");
-  const [lang, setLang] = useState<"en" | "ar">("ar");
+  const [lang, setLang] = useState<"en" | "ar">("en");
   const [categories, setCategories] = useState<any[]>([]);
   const [subcategories, setSubcategories] = useState<any[]>([]);
   const [selectedCategoryId, setSelectedCategoryId] = useState<number | "">("");
@@ -89,6 +89,7 @@ export function ProductForm({ open, onClose, onSubmit, product, loading = false 
         {tabs.map((t) => (
           <button
             key={t.id}
+            type="button"
             onClick={() => setActiveTab(t.id)}
             className={`flex-1 rounded-md px-3 py-1.5 text-xs font-semibold transition-all ${
               activeTab === t.id ? "bg-white text-vega-blue shadow-sm" : "text-slate-500 hover:text-slate-700"

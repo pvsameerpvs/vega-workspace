@@ -34,7 +34,7 @@ export function DeleteDialog({
 
   return (
     <Dialog open={open} onOpenChange={onClose}>
-      <DialogContent className="sm:max-w-md">
+      <DialogContent className="sm:max-w-md" onPointerDownOutside={(e) => e.preventDefault()}>
         <DialogTitle className="flex items-center gap-2 text-lg font-bold text-slate-900">
           <AlertTriangle className="h-5 w-5 text-red-500" />
           {title}

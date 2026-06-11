@@ -134,12 +134,14 @@ export function ProductCategoryBlock({
           </div>
           <div className="flex justify-end gap-2">
             <button
+              type="button"
               onClick={() => setShowInlineCategory(false)}
               className="rounded-md border border-slate-200 px-3 py-1.5 text-xs font-medium text-slate-600 hover:bg-slate-50"
             >
               Cancel
             </button>
             <button
+              type="button"
               onClick={handleCreateInlineCategory}
               className="flex items-center gap-1 rounded-md bg-vega-blue px-3 py-1.5 text-xs font-semibold text-white hover:bg-vega-blue-dark"
             >

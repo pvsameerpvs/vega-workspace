@@ -41,6 +41,7 @@ export function ImageUpload({ value, onChange, label, folder = "showcases" }: Im
               className="h-full w-full object-cover select-none pointer-events-none"
             />
             <button
+              type="button"
               onClick={() => onChange("")}
               className="absolute top-1 right-1 rounded-md bg-red-500 px-1.5 py-0.5 text-[10px] text-white hover:bg-red-600"
             >
