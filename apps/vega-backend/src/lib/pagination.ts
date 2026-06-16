@@ -13,7 +13,7 @@ export interface PaginationParams {
 
 export function getPaginationParams(req: Request): PaginationParams {
   const page = Math.max(1, parseInt(req.query.page as string, 10) || 1);
-  const limit = Math.min(100, Math.max(1, parseInt(req.query.limit as string, 10) || 20));
+  const limit = Math.min(1000, Math.max(1, parseInt(req.query.limit as string, 10) || 20));
   const search = (req.query.search as string) || undefined;
   const sortBy = (req.query.sortBy as string) || "createdAt";
   const sortOrder = (req.query.sortOrder as string) === "asc" ? "asc" : "desc";

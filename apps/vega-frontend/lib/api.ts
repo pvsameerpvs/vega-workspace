@@ -27,7 +27,7 @@ async function fetcherList<T>(path: string, options?: RequestInit): Promise<T[]>
 }
 
 export async function getProducts() {
-  return fetcherList<any>("/products");
+  return fetcherList<any>("/products?limit=1000");
 }
 
 export async function getProduct(slug: string) {
@@ -134,11 +134,11 @@ export async function resolveProductPath(path: string) {
 }
 
 export async function getProductsByCategory(categoryId: number) {
-  return fetcherList<any>(`/products?category=${categoryId}`);
+  return fetcherList<any>(`/products?category=${categoryId}&limit=1000`);
 }
 
 export async function getProductsBySubcategory(subcategoryId: number) {
-  return fetcherList<any>(`/products?subcategory=${subcategoryId}`);
+  return fetcherList<any>(`/products?subcategory=${subcategoryId}&limit=1000`);
 }
 
 export async function getHomepageConfig() {

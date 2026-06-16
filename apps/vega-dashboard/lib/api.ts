@@ -36,7 +36,7 @@ export const api = {
   me: () => fetcher<any>("/auth/me"),
 
   // Products
-  getProducts: () => fetcher<any[]>("/products"),
+  getProducts: () => fetcher<any[]>("/products?limit=1000"),
   getProduct: (slug: string) => fetcher<any>(`/products/${slug}`),
   createProduct: (data: any) => fetcher<any>("/products", { method: "POST", body: JSON.stringify(data) }),
   updateProduct: (id: number, data: any) => fetcher<any>(`/products/${id}`, { method: "PUT", body: JSON.stringify(data) }),

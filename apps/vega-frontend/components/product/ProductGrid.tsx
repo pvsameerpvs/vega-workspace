@@ -4,6 +4,7 @@ import { Product } from "@/lib/types";
 import { getWhatsAppLink } from "@/lib/whatsapp";
 import { getProductUrl } from "@/lib/url";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { ArrowUpRight, Eye } from "lucide-react";
 import { WhatsAppIcon } from "@/components/icons/WhatsAppIcon";
 import { ProtectedImage } from "@/components/ProtectedImage";
@@ -14,6 +15,7 @@ interface ProductGridProps {
 }
 
 export function ProductGrid({ products, locale = "en" }: ProductGridProps) {
+  const router = useRouter();
   const isAR = locale === "ar";
 
   if (products.length === 0) {
@@ -75,12 +77,16 @@ export function ProductGrid({ products, locale = "en" }: ProductGridProps) {
 
                 {/* Hover Overlay with Quick Actions */}
                 <div className="absolute inset-0 flex items-center justify-center gap-3 opacity-0 transition-all duration-500 group-hover:opacity-100 bg-black/20 backdrop-blur-[2px]">
-                  <Link
-                    href={getProductUrl(product, locale)}
+                  <button
+                    type="button"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      router.push(getProductUrl(product, locale));
+                    }}
                     className="inline-flex items-center gap-1.5 rounded-full bg-white px-4 py-2 text-xs font-bold text-vega-blue shadow-lg transition-all duration-300 hover:bg-vega-blue hover:text-white hover:scale-105 font-heading"
                   >
                     <Eye className="h-3.5 w-3.5" /> {isAR ? "عرض" : "View"}
-                  </Link>
+                  </button>
                   <button
                     type="button"
                     onClick={(e) => {
