@@ -1,7 +1,7 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { useProducts } from "@/hooks/use-products";
+import { useState, useEffect, useCallback } from "react";
+import { usePaginatedProducts } from "@/hooks/use-paginated-products";
 import { useToast } from "@vega/ui";
 import { api } from "@/lib/api";
 import { PageHeader } from "@/components/admin/PageHeader";
@@ -10,13 +10,18 @@ import { ProductForm } from "./ProductForm";
 import { DeleteDialog } from "@/components/admin/DeleteDialog";
 
 export function ProductManager() {
-  const { items: products, loading, create, update, remove } = useProducts();
+  const {
+    items: products, loading, page, total, totalPages,
+    categoryId, subcategoryId,
+    setPage, setSearch, setCategoryId, setSubcategoryId, refresh,
+  } = usePaginatedProducts(20);
   const { toast } = useToast();
-  const [search, setSearch] = useState("");
+  const [searchInput, setSearchInput] = useState("");
   const [formOpen, setFormOpen] = useState(false);
   const [editProduct, setEditProduct] = useState<any>(null);
   const [deleteId, setDeleteId] = useState<number | null>(null);
   const [categories, setCategories] = useState<any[]>([]);
+  const [subcategories, setSubcategories] = useState<any[]>([]);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
 
@@ -24,17 +29,15 @@ export function ProductManager() {
     api.getCategories().then(setCategories).catch(() => setCategories([]));
   }, []);
 
-  const safeProducts = Array.isArray(products) ? products : [];
-  const filtered = safeProducts.filter((p) => {
-    const q = search.toLowerCase();
-    return (
-      p.name?.toLowerCase().includes(q) ||
-      p.sku?.toLowerCase().includes(q) ||
-      p.slug?.toLowerCase().includes(q)
-    );
-  });
+  useEffect(() => {
+    if (categoryId) {
+      api.getSubcategories(categoryId).then(setSubcategories).catch(() => setSubcategories([]));
+    } else {
+      setSubcategories([]);
+    }
+  }, [categoryId]);
 
-  const handleSave = async (data: any) => {
+  const handleSave = useCallback(async (data: any) => {
     if (!data.name?.trim()) {
       toast({ title: "Validation Error", description: "Product name is required.", variant: "destructive" });
       return;
@@ -50,34 +53,36 @@ export function ProductManager() {
     setIsSubmitting(true);
     try {
       if (editProduct) {
-        await update(editProduct.id, data);
+        await api.updateProduct(editProduct.id, data);
         toast({ title: "Product updated", description: `${data.name} has been updated.` });
       } else {
-        await create(data);
+        await api.createProduct(data);
         toast({ title: "Product created", description: `${data.name} has been added.` });
       }
       setEditProduct(null);
       setFormOpen(false);
+      refresh();
     } catch (e) {
       toast({ title: "Error", description: e instanceof Error ? e.message : "Failed to save product.", variant: "destructive" });
     } finally {
       setIsSubmitting(false);
     }
-  };
+  }, [editProduct, toast, refresh]);
 
-  const handleDelete = async () => {
+  const handleDelete = useCallback(async () => {
     if (!deleteId) return;
     setIsDeleting(true);
     try {
-      await remove(deleteId);
+      await api.deleteProduct(deleteId);
       toast({ title: "Product deleted", description: "The product has been removed." });
+      setDeleteId(null);
+      refresh();
     } catch (e) {
       toast({ title: "Error", description: e instanceof Error ? e.message : "Failed to delete.", variant: "destructive" });
     } finally {
       setIsDeleting(false);
-      setDeleteId(null);
     }
-  };
+  }, [deleteId, toast, refresh]);
 
   return (
     <div className="p-8">
@@ -91,18 +96,39 @@ export function ProductManager() {
         }}
       />
 
-      <div className="mb-4">
+      <div className="mb-4 flex flex-wrap items-center gap-3">
         <input
           type="text"
           placeholder="Search by name, SKU, or slug..."
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-          className="w-full max-w-md rounded-lg border border-slate-200 px-4 py-2.5 text-sm focus:border-vega-blue focus:outline-none"
+          value={searchInput}
+          onChange={(e) => { setSearchInput(e.target.value); setSearch(e.target.value); }}
+          className="w-full max-w-xs rounded-lg border border-slate-200 px-4 py-2.5 text-sm focus:border-vega-blue focus:outline-none"
         />
+        <select
+          value={categoryId ?? ""}
+          onChange={(e) => setCategoryId(e.target.value ? Number(e.target.value) : null)}
+          className="rounded-lg border border-slate-200 px-4 py-2.5 text-sm focus:border-vega-blue focus:outline-none"
+        >
+          <option value="">All Categories</option>
+          {categories.map((c: any) => (
+            <option key={c.id} value={c.id}>{c.name}</option>
+          ))}
+        </select>
+        <select
+          value={subcategoryId ?? ""}
+          onChange={(e) => setSubcategoryId(e.target.value ? Number(e.target.value) : null)}
+          disabled={!categoryId}
+          className="rounded-lg border border-slate-200 px-4 py-2.5 text-sm focus:border-vega-blue focus:outline-none disabled:opacity-40 disabled:cursor-not-allowed"
+        >
+          <option value="">All Subcategories</option>
+          {subcategories.map((s: any) => (
+            <option key={s.id} value={s.id}>{s.name}</option>
+          ))}
+        </select>
       </div>
 
       <ProductTable
-        products={filtered}
+        products={products}
         loading={loading}
         categories={categories}
         onEdit={(p) => {
@@ -110,6 +136,10 @@ export function ProductManager() {
           setFormOpen(true);
         }}
         onDelete={(id) => setDeleteId(id)}
+        page={page}
+        totalPages={totalPages}
+        total={total}
+        onPageChange={setPage}
       />
 
       <ProductForm

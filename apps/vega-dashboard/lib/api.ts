@@ -37,6 +37,13 @@ export const api = {
 
   // Products
   getProducts: () => fetcher<any[]>("/products?limit=1000"),
+  getProductsPaginated: (page: number, limit: number, search?: string, category?: number, subcategory?: number) => {
+    const params = new URLSearchParams({ page: String(page), limit: String(limit) });
+    if (search) params.set("search", search);
+    if (category) params.set("category", String(category));
+    if (subcategory) params.set("subcategory", String(subcategory));
+    return fetcher<{ data: any[]; meta: { total: number; totalPages: number; page: number; limit: number } }>(`/products?${params}`);
+  },
   getProduct: (slug: string) => fetcher<any>(`/products/${slug}`),
   createProduct: (data: any) => fetcher<any>("/products", { method: "POST", body: JSON.stringify(data) }),
   updateProduct: (id: number, data: any) => fetcher<any>(`/products/${id}`, { method: "PUT", body: JSON.stringify(data) }),

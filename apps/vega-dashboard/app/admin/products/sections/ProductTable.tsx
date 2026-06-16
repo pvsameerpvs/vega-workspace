@@ -1,6 +1,6 @@
 import { Badge } from "@vega/ui";
 import { StatusBadge } from "@/components/admin/StatusBadge";
-import { Edit2, Trash2 } from "lucide-react";
+import { ChevronLeft, ChevronRight, Edit2, Trash2 } from "lucide-react";
 
 interface ProductTableProps {
   products: any[];
@@ -8,9 +8,13 @@ interface ProductTableProps {
   onEdit: (product: any) => void;
   onDelete: (id: number) => void;
   categories?: any[];
+  page?: number;
+  totalPages?: number;
+  total?: number;
+  onPageChange?: (page: number) => void;
 }
 
-export function ProductTable({ products, loading, onEdit, onDelete, categories = [] }: ProductTableProps) {
+export function ProductTable({ products, loading, onEdit, onDelete, categories = [], page = 1, totalPages = 1, total = 0, onPageChange }: ProductTableProps) {
   const safeProducts = Array.isArray(products) ? products : [];
   const safeCategories = Array.isArray(categories) ? categories : [];
   const categoryMap = Object.fromEntries(safeCategories.map((c) => [c.id, c]));
@@ -113,6 +117,38 @@ export function ProductTable({ products, loading, onEdit, onDelete, categories =
           ))}
         </tbody>
       </table>
+      {totalPages > 1 && onPageChange && (
+        <div className="flex items-center justify-between border-t border-slate-100 px-4 py-3">
+          <p className="text-xs text-slate-400">{total} total products</p>
+          <div className="flex items-center gap-2">
+            <button
+              onClick={() => onPageChange(page - 1)}
+              disabled={page <= 1}
+              className="rounded-md p-1.5 text-slate-400 transition-colors hover:bg-slate-100 hover:text-vega-blue disabled:opacity-30 disabled:cursor-not-allowed"
+            >
+              <ChevronLeft className="h-4 w-4" />
+            </button>
+            {Array.from({ length: totalPages }, (_, i) => i + 1).map((p) => (
+              <button
+                key={p}
+                onClick={() => onPageChange(p)}
+                className={`min-w-[2rem] rounded-md px-2 py-1 text-xs font-medium transition-colors ${
+                  p === page ? "bg-vega-blue text-white" : "text-slate-500 hover:bg-slate-100"
+                }`}
+              >
+                {p}
+              </button>
+            ))}
+            <button
+              onClick={() => onPageChange(page + 1)}
+              disabled={page >= totalPages}
+              className="rounded-md p-1.5 text-slate-400 transition-colors hover:bg-slate-100 hover:text-vega-blue disabled:opacity-30 disabled:cursor-not-allowed"
+            >
+              <ChevronRight className="h-4 w-4" />
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
