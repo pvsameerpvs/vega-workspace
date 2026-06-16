@@ -59,18 +59,16 @@ export function ProductGrid({ products, locale = "en" }: ProductGridProps) {
                   <div className="absolute inset-0 bg-gradient-to-t from-vega-blue/20 via-transparent to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
                 </div>
 
-                {/* SKU Badge */}
-                <div className="absolute left-4 top-4">
-                  <span className="inline-flex items-center rounded-full bg-white/95 backdrop-blur-sm px-3 py-1.5 text-xs font-bold text-vega-blue shadow-md border border-vega-blue/10">
+                {/* Badges */}
+                <div className="absolute left-4 top-4 z-10">
+                  <span title={product.sku || ""} className="inline-flex items-center rounded-full bg-white/95 backdrop-blur-sm px-3 py-1.5 text-xs font-bold text-vega-blue shadow-md border border-vega-blue/10">
                     {product.sku}
                   </span>
                 </div>
-
-                {/* Category badge */}
                 {subcategory && (
-                  <div className="absolute right-4 top-4">
-                    <span className="inline-flex items-center rounded-full bg-vega-yellow/95 backdrop-blur-sm px-3 py-1.5 text-xs font-bold text-vega-blue shadow-md">
-                      {subcategory}
+                  <div className="absolute right-4 top-4 z-10">
+                    <span title={subcategory} className="inline-flex items-center rounded-full bg-vega-yellow/95 backdrop-blur-sm px-3 py-1.5 text-xs font-bold text-vega-blue shadow-md">
+                      {subcategory.length > 11 ? `${subcategory.slice(0, 11).trim()}...` : subcategory}
                     </span>
                   </div>
                 )}
