@@ -99,8 +99,8 @@ export function HeroBanner({ banners, locale = "en" }: HeroBannerProps) {
               </motion.div>
 
               {/* Gradient overlays for readability */}
-              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent" />
-              <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/50 to-transparent" />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-black/20 to-transparent" />
+              <div className="absolute inset-0 bg-gradient-to-r from-black/50 via-black/20 to-transparent" />
 
               {/* Title & Subtitle — start side (left in LTR, right in RTL) */}
               <div className="absolute inset-0 flex flex-col items-center justify-center p-6 md:p-12 lg:p-16 md:items-start">

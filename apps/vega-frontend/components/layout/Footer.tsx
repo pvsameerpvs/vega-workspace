@@ -25,7 +25,7 @@ export function Footer({ categories = [] }: FooterProps) {
   ];
 
   return (
-    <footer className="bg-[#0f172a] text-white/50" dir={isAR ? "rtl" : "ltr"}>
+    <footer className="bg-[#0f172a] text-white/50 font-sans" dir={isAR ? "rtl" : "ltr"}>
       <div className="mx-auto max-w-7xl px-4 py-12">
         <div className={`grid gap-10 md:grid-cols-2 lg:grid-cols-4 ${isAR ? "text-right" : ""}`}>
           {/* Brand */}

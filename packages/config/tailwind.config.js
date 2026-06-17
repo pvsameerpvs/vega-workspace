@@ -58,9 +58,8 @@ module.exports = {
         sm: "calc(var(--radius) - 4px)",
       },
       fontFamily: {
-        sans: ["var(--font-inter)", "var(--font-sans)", "system-ui", "sans-serif"],
+        sans: ["var(--font-poppins)", "var(--font-sans)", "system-ui", "sans-serif"],
         heading: ["var(--font-poppins)", "var(--font-sans)", "system-ui", "sans-serif"],
-        arabic: ["var(--font-cairo)", "var(--font-sans)", "system-ui", "sans-serif"],
         display: ["var(--font-poppins)", "var(--font-sans)", "system-ui", "sans-serif"],
       },
       boxShadow: {
