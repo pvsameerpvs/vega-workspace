@@ -28,8 +28,8 @@ export async function CategoryShowcases({ locale = "en" }: CategoryShowcasesProp
             <div className="h-px w-10 bg-vega-yellow" />
           </div>
           <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-slate-900 font-display leading-tight">
-            {isAR ? "فئاتنا المتميزة" : "Premium Categories"}
-          </h2>
+         {isAR ? "فئة المنتجات المتميزة" : "Premium Product Category"}
+        </h2>
           <div className="w-20 h-1 bg-vega-yellow rounded-full mx-auto mt-4" />
         </div>
 

@@ -15,7 +15,9 @@ export async function PopularCategories({ locale = "en" }: PopularCategoriesProp
   return (
     <section className="py-12 bg-white">
       <div className="mx-auto max-w-7xl px-4">
-        <h2 className="text-center text-xl font-bold text-slate-900 mb-8 font-display">{isAR ? "الفئات الشائعة" : "Popular Categories"}</h2>
+        <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-slate-900 font-display leading-tight text-center mb-8">
+          {isAR ? "فئة المنتجات المتميزة" : "Premium Product Category"}
+        </h2>
         <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-8 gap-6">
           {mapped.slice(0, 8).map((cat) => (
             <Link

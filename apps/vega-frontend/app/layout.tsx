@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Poppins } from "next/font/google";
 import "./globals.css";
-import { Navbar, Footer } from "@/components/layout";
+import { Navbar, Footer, FloatingContact } from "@/components/layout";
 import { getCategories, getProducts, mapCategoryToFrontend, mapProductToFrontend } from "@/lib/api";
 
 const poppins = Poppins({
@@ -67,6 +67,7 @@ export default async function RootLayout({
         <Navbar categories={mappedCategories || []} products={mappedProducts || []} />
         {children}
         <Footer categories={mappedCategories || []} />
+        <FloatingContact />
       </body>
     </html>
   );
