@@ -5,7 +5,7 @@ import Link from "next/link";
 import { usePathname, useParams } from "next/navigation";
 import { ChevronDown, Menu, X, Phone, Mail } from "lucide-react";
 import { WhatsAppIcon } from "@/components/icons/WhatsAppIcon";
-import { SearchBar } from "./SearchBar";
+import { GooeySearchBar } from "./GooeySearchBar";
 import { ProductMegaMenu } from "./ProductMegaMenu";
 import { MobileMenu } from "./MobileMenu";
 
@@ -95,10 +95,6 @@ export function Navbar({ categories = [], products = [] }: NavbarProps) {
             <img src="/images/logo/logo.jpeg" alt="Vega Logo" className="h-16 w-auto rounded-md object-contain" draggable={false} onContextMenu={(e) => e.preventDefault()} />
           </Link>
 
-          <div className="hidden lg:flex flex-1 mx-8 max-w-md">
-            <SearchBar />
-          </div>
-
           <nav className={`hidden lg:flex items-center gap-6 ${isAR ? "flex-row-reverse mr-6" : "ml-6"}`}>
             <Link href={l("/")} className="text-sm font-semibold text-white/80 hover:text-white transition-colors whitespace-nowrap">{isAR ? "الرئيسية" : "Home"}</Link>
             <div className="relative" onMouseEnter={() => setMega("products")} onMouseLeave={() => setMega(null)}>
@@ -112,15 +108,23 @@ export function Navbar({ categories = [], products = [] }: NavbarProps) {
             ))}
           </nav>
 
-          <div className="hidden lg:flex items-center gap-3 shrink-0 ml-auto">
-            <Link href={l("/contact-us")} className="rounded-full bg-[#FFD400] px-5 py-2 text-sm font-bold text-[#1F3A93] hover:bg-white transition-all duration-300 whitespace-nowrap">
+          <div className="flex items-center gap-3 shrink-0">
+            <div className="hidden lg:flex w-56">
+              <GooeySearchBar />
+            </div>
+            <Link href={l("/contact-us")} className="hidden lg:inline-flex rounded-full bg-[#FFD400] px-5 py-2 text-sm font-bold text-[#1F3A93] hover:bg-white transition-all duration-300 whitespace-nowrap">
               {isAR ? "تواصل معنا" : "Contact Us"}
             </Link>
           </div>
 
-          <button onClick={() => setMobile(!mobile)} className="lg:hidden p-2 text-white shrink-0">
-            {mobile ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
-          </button>
+          <div className="flex lg:hidden items-center gap-2">
+            <div className="w-10">
+              <GooeySearchBar />
+            </div>
+            <button onClick={() => setMobile(!mobile)} className="p-2 text-white shrink-0">
+              {mobile ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+            </button>
+          </div>
         </div>
       </div>
 
