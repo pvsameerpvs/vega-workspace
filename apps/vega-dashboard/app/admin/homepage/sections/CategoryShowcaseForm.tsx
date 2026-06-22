@@ -59,8 +59,8 @@ export function CategoryShowcaseForm({ categories, onCreate, onCancel }: Categor
         </div>
       </div>
       <div className="grid grid-cols-2 gap-3">
-        <textarea value={form.description} onChange={(e) => setForm((p) => ({ ...p, description: e.target.value }))} placeholder="Description" rows={2} className="rounded-md border border-slate-200 px-2 py-1.5 text-sm focus:border-vega-blue focus:outline-none" />
-        <textarea value={form.descriptionAr} onChange={(e) => setForm((p) => ({ ...p, descriptionAr: e.target.value }))} placeholder="Arabic description" rows={2} className="rounded-md border border-slate-200 px-2 py-1.5 text-sm focus:border-vega-blue focus:outline-none" />
+        <textarea value={form.description} onChange={(e) => setForm((p) => ({ ...p, description: e.target.value }))} placeholder="Description" rows={4} className="rounded-md border border-slate-200 px-3 py-2 text-sm focus:border-vega-blue focus:outline-none resize-y min-h-[80px]" />
+        <textarea value={form.descriptionAr} onChange={(e) => setForm((p) => ({ ...p, descriptionAr: e.target.value }))} placeholder="Arabic description" rows={4} className="rounded-md border border-slate-200 px-3 py-2 text-sm focus:border-vega-blue focus:outline-none resize-y min-h-[80px]" />
       </div>
       <div className="grid grid-cols-4 gap-3">
         {[0, 1, 2, 3].map((i) => (

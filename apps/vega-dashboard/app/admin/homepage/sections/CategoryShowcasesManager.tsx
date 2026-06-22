@@ -3,24 +3,69 @@
 import { useState } from "react";
 import { useToast } from "@vega/ui";
 import { useCategoryShowcases } from "@/hooks/use-category-showcases";
-import { CategoryShowcaseForm } from "./CategoryShowcaseForm";
+import { FormDialog } from "@/components/admin/FormDialog";
 import { CategoryShowcaseCard } from "./CategoryShowcaseCard";
-import { Plus, Check, LayoutGrid } from "lucide-react";
+import { CategoryShowcaseDialogContent } from "./CategoryShowcaseDialogContent";
+import { Plus, LayoutGrid } from "lucide-react";
 
 interface CategoryShowcasesManagerProps {
   categories: any[];
   loading: boolean;
 }
 
+const EMPTY_FORM = {
+  categoryId: 0,
+  title: "",
+  titleAr: "",
+  description: "",
+  descriptionAr: "",
+  image1: "",
+  image2: "",
+  image3: "",
+  image4: "",
+};
+
 export function CategoryShowcasesManager({ categories, loading: catsLoading }: CategoryShowcasesManagerProps) {
   const { toast } = useToast();
   const { items, loading, create, update, remove } = useCategoryShowcases();
-  const [isAdding, setIsAdding] = useState(false);
+  const [dialogOpen, setDialogOpen] = useState(false);
+  const [editItem, setEditItem] = useState<any>(null);
+  const [form, setForm] = useState<any>({ ...EMPTY_FORM });
 
-  const handleCreate = async (data: any) => {
-    await create({ ...data, displayOrder: items.length });
-    setIsAdding(false);
-    toast({ title: "Added", description: "Category showcase created." });
+  const updateForm = (k: string, v: any) => setForm((p: any) => ({ ...p, [k]: v }));
+
+  const openCreate = () => {
+    setEditItem(null);
+    setForm({ ...EMPTY_FORM });
+    setDialogOpen(true);
+  };
+
+  const openEdit = (item: any) => {
+    setEditItem(item);
+    setForm({
+      categoryId: item.categoryId,
+      title: item.title || "",
+      titleAr: item.titleAr || "",
+      description: item.description || "",
+      descriptionAr: item.descriptionAr || "",
+      image1: item.image1 || "",
+      image2: item.image2 || "",
+      image3: item.image3 || "",
+      image4: item.image4 || "",
+    });
+    setDialogOpen(true);
+  };
+
+  const handleSubmit = async () => {
+    if (!form.categoryId) return;
+    if (editItem) {
+      await update(editItem.id, form);
+      toast({ title: "Updated", description: "Showcase updated." });
+    } else {
+      await create({ ...form, displayOrder: items.length, isActive: true });
+      toast({ title: "Added", description: "Category showcase created." });
+    }
+    setDialogOpen(false);
   };
 
   const moveItem = (index: number, direction: "up" | "down") => {
@@ -34,11 +79,6 @@ export function CategoryShowcasesManager({ categories, loading: catsLoading }: C
     ]);
   };
 
-  const handleUpdateImage = async (id: number, field: string, url: string) => {
-    await update(id, { [field]: url });
-    toast({ title: "Updated", description: "Image saved." });
-  };
-
   const isLoading = loading || catsLoading;
 
   return (
@@ -50,21 +90,23 @@ export function CategoryShowcasesManager({ categories, loading: catsLoading }: C
             <p className="text-sm font-bold text-slate-900">Category Showcases</p>
           </div>
           <button
-            onClick={() => setIsAdding((p) => !p)}
+            onClick={openCreate}
             className="flex items-center gap-1 rounded-md bg-vega-blue px-3 py-1.5 text-xs font-semibold text-white hover:bg-vega-blue-dark"
           >
-            {isAdding ? <Check className="h-3 w-3" /> : <Plus className="h-3 w-3" />}
-            {isAdding ? "Cancel" : "Add New"}
+            <Plus className="h-3 w-3" />
+            Add New
           </button>
         </div>
 
-        {isAdding && (
-          <CategoryShowcaseForm
-            categories={categories}
-            onCreate={handleCreate}
-            onCancel={() => setIsAdding(false)}
-          />
-        )}
+        <FormDialog
+          open={dialogOpen}
+          onClose={() => setDialogOpen(false)}
+          title={editItem ? "Edit Showcase" : "Add Showcase"}
+          onSubmit={handleSubmit}
+          submitLabel={editItem ? "Update" : "Create"}
+        >
+          <CategoryShowcaseDialogContent form={form} update={updateForm} categories={categories} />
+        </FormDialog>
 
         {isLoading ? (
           <div className="space-y-3">{Array.from({ length: 3 }).map((_, i) => <div key={i} className="h-24 animate-pulse rounded-lg bg-slate-200" />)}</div>
@@ -83,7 +125,7 @@ export function CategoryShowcasesManager({ categories, loading: catsLoading }: C
                 categories={categories}
                 onMove={moveItem}
                 onRemove={remove}
-                onUpdateImage={handleUpdateImage}
+                onEdit={openEdit}
               />
             ))}
           </div>
