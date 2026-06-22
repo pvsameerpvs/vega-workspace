@@ -20,6 +20,7 @@ export function Navbar({ categories = [], products = [] }: NavbarProps) {
   const [scrolled, setScrolled] = useState(false);
   const pathname = usePathname();
   const params = useParams();
+  
   const locale = (params?.locale as string) || "en";
   const isAR = locale === "ar";
 
@@ -108,20 +109,12 @@ export function Navbar({ categories = [], products = [] }: NavbarProps) {
             ))}
           </nav>
 
-          <div className="flex items-center gap-3 shrink-0">
-            <div className="hidden lg:flex w-56">
-              <GooeySearchBar />
-            </div>
+          <div className="flex items-center gap-2 shrink-0">
+            <GooeySearchBar />
             <Link href={l("/contact-us")} className="hidden lg:inline-flex rounded-full bg-[#FFD400] px-5 py-2 text-sm font-bold text-[#1F3A93] hover:bg-white transition-all duration-300 whitespace-nowrap">
               {isAR ? "تواصل معنا" : "Contact Us"}
             </Link>
-          </div>
-
-          <div className="flex lg:hidden items-center gap-2">
-            <div className="w-10">
-              <GooeySearchBar />
-            </div>
-            <button onClick={() => setMobile(!mobile)} className="p-2 text-white shrink-0">
+            <button onClick={() => setMobile(!mobile)} className="lg:hidden p-2 text-white shrink-0">
               {mobile ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
             </button>
           </div>

@@ -68,11 +68,11 @@ export function GooeySearchBar() {
           <motion.button
             key="search-trigger"
             onClick={handleOpen}
-            className="flex items-center justify-center w-10 h-10 rounded-full bg-white/10 border border-white/20 text-white hover:bg-white/20 hover:border-white/30 transition-colors"
-            whileHover={{ scale: 1.08 }}
-            whileTap={{ scale: 0.92 }}
+            className="flex items-center justify-center text-white/70 hover:text-white transition-colors p-1"
+            whileHover={{ scale: 1.1 }}
+            whileTap={{ scale: 0.9 }}
             exit={{ opacity: 0, scale: 0.8 }}
-            transition={{ duration: 0.2 }}
+            transition={{ duration: 0.15 }}
             aria-label={isAR ? "بحث" : "Search"}
           >
             <Search className="h-5 w-5" />
