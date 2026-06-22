@@ -1,181 +1,112 @@
 "use client";
 
-import { useState, FormEvent } from "react";
-import { Send, CheckCircle } from "lucide-react";
+import { Clock, ArrowRight } from "lucide-react";
+import { WhatsAppIcon } from "@/components/icons/WhatsAppIcon";
+import { ContactUsForm } from "@/components/forms/ContactUsForm";
 
 interface ContactFormSectionProps {
   locale?: string;
 }
 
-const API_BASE = process.env.NEXT_PUBLIC_API_URL || "http://localhost:4000/api";
-
 export function ContactFormSection({ locale = "en" }: ContactFormSectionProps) {
   const isAR = locale === "ar";
-  const [status, setStatus] = useState<"idle" | "submitting" | "success" | "error">("idle");
-  const [formData, setFormData] = useState({
-    name: "",
-    company: "",
-    email: "",
-    phone: "",
-    message: "",
-  });
-
-  async function handleSubmit(e: FormEvent) {
-    e.preventDefault();
-    setStatus("submitting");
-    try {
-      const res = await fetch(`${API_BASE}/leads`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          name: formData.name,
-          companyName: formData.company,
-          email: formData.email,
-          phone: formData.phone,
-          message: formData.message,
-          location: "Homepage Contact Form",
-          status: "new",
-        }),
-      });
-      if (res.ok) {
-        setStatus("success");
-        setFormData({ name: "", company: "", email: "", phone: "", message: "" });
-      } else {
-        setStatus("error");
-      }
-    } catch {
-      setStatus("error");
-    }
-  }
 
   return (
     <section className="py-20 bg-slate-50">
-      <div className="mx-auto max-w-3xl px-6">
-        <div className="modern-card p-8 md:p-10">
-          <div className="mb-8">
-            <div className={`mb-3 flex items-center gap-3 ${isAR ? "flex-row-reverse" : ""}`}>
-              <div className="h-px w-6 bg-[#FFD400] shrink-0" />
-              <span className="text-xs font-bold uppercase tracking-[0.2em] text-[#FFD400]">
-                {isAR ? "أرسل استفسار" : "Send Enquiry"}
-              </span>
+      <div className="mx-auto max-w-7xl px-6">
+        <div className={`grid gap-12 lg:grid-cols-5 ${isAR ? "direction-rtl" : ""}`}>
+          {/* Left / First: Form */}
+          <div className="lg:col-span-3">
+            <div className="modern-card p-8 md:p-10">
+              <div className="mb-8">
+                <div className={`mb-3 flex items-center gap-3 ${isAR ? "flex-row-reverse" : ""}`}>
+                  <div className="h-px w-6 bg-[#FFD400] shrink-0" />
+                  <span className="text-xs font-bold uppercase tracking-[0.2em] text-[#FFD400]">
+                    {isAR ? "أرسل استفسار" : "Send Enquiry"}
+                  </span>
+                </div>
+                <h2 className="text-2xl font-bold text-[#1F3A93] mb-2">
+                  {isAR ? "اطلب عرض سعر" : "Request a Quote"}
+                </h2>
+                <p className="text-sm text-slate-500 leading-relaxed">
+                  {isAR
+                    ? "املأ النموذج أدناه وسيعود فريقنا إليك خلال 24 ساعة."
+                    : "Fill out the form below and our team will get back to you within 24 hours."}
+                </p>
+              </div>
+              <ContactUsForm isAR={isAR} location="Homepage Contact Form" />
             </div>
-            <h2 className="text-2xl font-bold text-[#1F3A93] mb-2">
-              {isAR ? "اطلب عرض سعر" : "Request a Quote"}
-            </h2>
-            <p className="text-sm text-slate-500 leading-relaxed">
-              {isAR
-                ? "املأ النموذج أدناه وسيعود فريقنا إليك خلال 24 ساعة."
-                : "Fill out the form below and our team will get back to you within 24 hours."}
-            </p>
           </div>
 
-          {status === "success" ? (
-            <div className="flex flex-col items-center justify-center py-12 text-center">
-              <CheckCircle className="h-12 w-12 text-emerald-500 mb-4" />
-              <h3 className="text-lg font-bold text-[#1F3A93] mb-2">
-                {isAR ? "تم الإرسال بنجاح" : "Submitted Successfully"}
-              </h3>
-              <p className="text-sm text-slate-500 max-w-md">
-                {isAR
-                  ? "شكراً لتواصلك معنا. سنتصل بك قريباً."
-                  : "Thank you for reaching out. We will contact you soon."}
-              </p>
+          {/* Right / Second: Company Info */}
+          <div className="lg:col-span-2 space-y-6">
+            {/* Business Hours */}
+            <div className="modern-card p-8">
+              <div className="mb-6 flex items-center gap-3">
+                <div className="h-10 w-10 rounded-xl bg-[#FFD400]/10 flex items-center justify-center text-[#FFD400]">
+                  <Clock className="h-5 w-5" />
+                </div>
+                <h3 className="text-lg font-bold text-[#1F3A93]">
+                  {isAR ? "ساعات العمل" : "Business Hours"}
+                </h3>
+              </div>
+              <div className="space-y-3">
+                {[
+                  { day: isAR ? "الإثنين - الجمعة" : "Monday - Friday", hours: "8:00 AM - 6:00 PM" },
+                  { day: isAR ? "السبت" : "Saturday", hours: "9:00 AM - 3:00 PM" },
+                  { day: isAR ? "الأحد" : "Sunday", hours: isAR ? "مغلق" : "Closed" },
+                ].map((item) => (
+                  <div key={item.day} className="flex items-center justify-between text-sm">
+                    <span className="text-slate-500">{item.day}</span>
+                    <span className="font-semibold text-[#1F3A93]">{item.hours}</span>
+                  </div>
+                ))}
+              </div>
             </div>
-          ) : (
-            <form onSubmit={handleSubmit} className="space-y-5">
-              <div className="grid gap-5 md:grid-cols-2">
-                <div className="space-y-2">
-                  <label className="text-xs font-bold uppercase tracking-wider text-[#1F3A93]">
-                    {isAR ? "الاسم الكامل *" : "Full Name *"}
-                  </label>
-                  <input
-                    name="name"
-                    type="text"
-                    required
-                    value={formData.name}
-                    onChange={(e) => setFormData((s) => ({ ...s, name: e.target.value }))}
-                    placeholder={isAR ? "محمد أحمد" : "John Doe"}
-                    className="flex h-12 w-full rounded-xl border border-slate-200 bg-slate-50 px-4 text-sm text-slate-900 placeholder:text-slate-400 focus:border-[#1F3A93] focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#1F3A93]/10 transition-all"
-                  />
+
+            {/* WhatsApp CTA */}
+            <a
+              href="https://wa.me/971567351095"
+              target="_blank"
+              rel="noreferrer"
+              className="modern-card p-8 block group hover:bg-[#1F3A93] transition-all duration-300"
+            >
+              <div className="flex items-center gap-4">
+                <div className="h-12 w-12 rounded-full bg-[#FFD400] flex items-center justify-center text-[#1F3A93] transition-transform duration-300 group-hover:scale-110">
+                  <WhatsAppIcon className="h-6 w-6" />
                 </div>
-                <div className="space-y-2">
-                  <label className="text-xs font-bold uppercase tracking-wider text-[#1F3A93]">
-                    {isAR ? "الشركة" : "Company"}
-                  </label>
-                  <input
-                    name="company"
-                    type="text"
-                    value={formData.company}
-                    onChange={(e) => setFormData((s) => ({ ...s, company: e.target.value }))}
-                    placeholder={isAR ? "اسم الشركة" : "Company name"}
-                    className="flex h-12 w-full rounded-xl border border-slate-200 bg-slate-50 px-4 text-sm text-slate-900 placeholder:text-slate-400 focus:border-[#1F3A93] focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#1F3A93]/10 transition-all"
-                  />
+                <div>
+                  <h3 className="text-lg font-bold text-[#1F3A93] group-hover:text-white transition-colors">
+                    {isAR ? "دردش على واتساب" : "Chat on WhatsApp"}
+                  </h3>
+                  <p className="text-sm text-slate-500 group-hover:text-white/70 transition-colors">
+                    {isAR ? "رد سريع خلال دقائق" : "Quick response within minutes"}
+                  </p>
                 </div>
+                <ArrowRight className="ml-auto h-5 w-5 text-[#FFD400] transition-transform duration-300 group-hover:translate-x-1" />
               </div>
+            </a>
 
-              <div className="grid gap-5 md:grid-cols-2">
-                <div className="space-y-2">
-                  <label className="text-xs font-bold uppercase tracking-wider text-[#1F3A93]">
-                    {isAR ? "البريد الإلكتروني *" : "Email *"}
-                  </label>
-                  <input
-                    name="email"
-                    type="email"
-                    required
-                    value={formData.email}
-                    onChange={(e) => setFormData((s) => ({ ...s, email: e.target.value }))}
-                    placeholder="you@company.com"
-                    className="flex h-12 w-full rounded-xl border border-slate-200 bg-slate-50 px-4 text-sm text-slate-900 placeholder:text-slate-400 focus:border-[#1F3A93] focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#1F3A93]/10 transition-all"
-                  />
-                </div>
-                <div className="space-y-2">
-                  <label className="text-xs font-bold uppercase tracking-wider text-[#1F3A93]">
-                    {isAR ? "الهاتف *" : "Phone *"}
-                  </label>
-                  <input
-                    name="phone"
-                    type="tel"
-                    required
-                    value={formData.phone}
-                    onChange={(e) => setFormData((s) => ({ ...s, phone: e.target.value }))}
-                    placeholder="+971 5X XXX XXXX"
-                    className="flex h-12 w-full rounded-xl border border-slate-200 bg-slate-50 px-4 text-sm text-slate-900 placeholder:text-slate-400 focus:border-[#1F3A93] focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#1F3A93]/10 transition-all"
-                  />
-                </div>
-              </div>
-
-              <div className="space-y-2">
-                <label className="text-xs font-bold uppercase tracking-wider text-[#1F3A93]">
-                  {isAR ? "الرسالة" : "Message"}
-                </label>
-                <textarea
-                  name="message"
-                  rows={5}
-                  value={formData.message}
-                  onChange={(e) => setFormData((s) => ({ ...s, message: e.target.value }))}
-                  placeholder={isAR ? "أخبرنا بما تحتاجه..." : "Tell us what you need..."}
-                  className="flex w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-900 placeholder:text-slate-400 focus:border-[#1F3A93] focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#1F3A93]/10 transition-all resize-none"
-                />
-              </div>
-
-              {status === "error" && (
-                <p className="text-sm text-rose-500">
-                  {isAR ? "حدث خطأ. يرجى المحاولة مرة أخرى." : "Something went wrong. Please try again."}
-                </p>
-              )}
-
-              <button
-                type="submit"
-                disabled={status === "submitting"}
-                className="pill-btn-yellow w-full text-sm group mt-2 disabled:opacity-60 disabled:cursor-not-allowed"
-              >
-                <Send className={`inline h-4 w-4 transition-transform duration-300 ${isAR ? "ms-2 group-hover:-translate-x-0.5" : "me-2 group-hover:translate-x-0.5"}`} />
-                {status === "submitting"
-                  ? isAR ? "جاري الإرسال..." : "Submitting..."
-                  : isAR ? "إرسال الاستفسار" : "Submit Enquiry"}
-              </button>
-            </form>
-          )}
+            {/* Why Choose Us */}
+            <div className="modern-card p-8">
+              <h3 className="text-sm font-bold uppercase tracking-wider text-[#1F3A93] mb-4">
+                {isAR ? "لماذا تختارنا" : "Why Choose Us"}
+              </h3>
+              <ul className="space-y-3">
+                {[
+                  isAR ? "الطلبات بالجملة والمخصصة مقبولة" : "Bulk & custom orders accepted",
+                  isAR ? "التوصيل في جميع أنحاء الإمارات" : "Delivery across all UAE",
+                  isAR ? "خدمات التركيب متاحة" : "Installation services available",
+                  isAR ? "خبرة تزيد عن 15 عاماً" : "15+ years of experience",
+                ].map((item) => (
+                  <li key={item} className="flex items-center gap-2 text-sm text-slate-500">
+                    <div className="h-1.5 w-1.5 rounded-full bg-[#FFD400]" />
+                    {item}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
         </div>
       </div>
     </section>

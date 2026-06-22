@@ -7,6 +7,7 @@ const API_BASE = process.env.NEXT_PUBLIC_API_URL || "http://localhost:4000/api";
 
 interface ContactUsFormProps {
   isAR: boolean;
+  location?: string;
 }
 
 export function ContactUsForm({ isAR }: ContactUsFormProps) {
@@ -32,7 +33,7 @@ export function ContactUsForm({ isAR }: ContactUsFormProps) {
           email: formData.email,
           phone: formData.phone,
           message: formData.message,
-          location: "Website Contact Form",
+          location: location || "Website Contact Form",
           status: "new",
         }),
       });
