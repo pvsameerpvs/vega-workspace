@@ -22,7 +22,6 @@ export function Navbar({ categories = [], products = [] }: NavbarProps) {
   const params = useParams();
   const locale = (params?.locale as string) || "en";
   const isAR = locale === "ar";
-  const isHome = pathname === `/${locale}` || pathname === `/${locale}/`;
 
   useEffect(() => {
     const h = () => setScrolled(window.scrollY > 50);
@@ -31,7 +30,6 @@ export function Navbar({ categories = [], products = [] }: NavbarProps) {
     return () => window.removeEventListener("scroll", h);
   }, []);
 
-  const topHidden = isHome && scrolled;
   const l = (path: string) => `/${locale}${path}`;
 
   const navItems = [
@@ -47,7 +45,7 @@ export function Navbar({ categories = [], products = [] }: NavbarProps) {
   return (
     <header className="fixed top-0 left-0 right-0 z-50">
       {/* Top Bar */}
-      <div className={`bg-[#1F3A93] transition-all duration-500 ${topHidden ? "h-0 opacity-0 overflow-hidden" : "h-auto opacity-100"}`}>
+      <div className="bg-[#1F3A93]">
         <div className={`mx-auto flex max-w-7xl items-center px-4 py-3.5 text-base text-white/85 ${isAR ? "flex-row-reverse justify-between" : "justify-between"}`}>
           <div className="flex items-center gap-7" dir="ltr">
             <a href="tel:+971567351095" className="flex items-center gap-1.5 hover:text-white transition-colors whitespace-nowrap font-medium">
@@ -107,7 +105,7 @@ export function Navbar({ categories = [], products = [] }: NavbarProps) {
               <button className="flex items-center gap-1 text-sm font-semibold text-white/80 hover:text-white transition-colors whitespace-nowrap">
                 {isAR ? "منتجاتنا" : "Products"} <ChevronDown className="h-3.5 w-3.5" />
               </button>
-              <ProductMegaMenu categories={categories} products={products} isAR={isAR} locale={locale} open={mega === "products"} />
+              <ProductMegaMenu categories={categories} isAR={isAR} locale={locale} open={mega === "products"} />
             </div>
             {navItems.filter((i) => i.path !== "/" && i.path !== "/products").map((item) => (
               <Link key={item.path} href={l(item.path)} className="text-sm font-semibold text-white/80 hover:text-white transition-colors whitespace-nowrap">{item.label}</Link>
