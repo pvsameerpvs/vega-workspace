@@ -48,9 +48,10 @@ export default function ContactPage({ params: { locale } }: { params: { locale: 
         "Unique World Business Centre",
         "Karama, Dubai, UAE",
       ],
+      mapSrc: "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3608.5703954406754!2d55.3086468!3d25.2513908!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3e5f677368454be5%3A0x359bb0f780fd275a!2sTHE%20VEGA%20UAE!5e0!3m2!1sen!2sae!4v1782454127893!5m2!1sen!2sae",
     },
     {
-      icon: Clock,
+      icon: MapPin,
       iconBg: "bg-[#FFD400]/10",
       iconColor: "text-[#FFD400]",
       title: isAR ? "المستودع" : "Warehouse",
@@ -59,6 +60,7 @@ export default function ContactPage({ params: { locale } }: { params: { locale: 
         "BMG Logistic Park",
         "Sharjah Industrial Area 18, UAE",
       ],
+      mapSrc: "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3608.8987115038076!2d55.5557909!3d25.2403363!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3ef58b52f180d43b%3A0x68812cd985f29ad2!2sTHE%20VEGA%20UAE!5e0!3m2!1sen!2sae!4v1782454200327!5m2!1sen!2sae",
     },
   ];
 
@@ -83,9 +85,9 @@ export default function ContactPage({ params: { locale } }: { params: { locale: 
       </div>
 
       {/* Contact Cards Grid */}
-      <div className="mx-auto max-w-7xl px-6 mb-24">
+      <div className="mx-auto max-w-7xl px-6 mb-24 space-y-6">
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {contactCards.map((card, i) => (
+          {contactCards.slice(0, 3).map((card, i) => (
             <div
               key={card.title}
               className="modern-card p-8 animate-fade-in-up group"
@@ -106,6 +108,56 @@ export default function ContactPage({ params: { locale } }: { params: { locale: 
                   </p>
                 ))}
               </div>
+              {card.cta && (
+                <a
+                  href={card.cta.href}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="mt-5 inline-flex items-center gap-1.5 text-sm font-bold text-[#1F3A93] hover:text-[#FFD400] transition-colors"
+                >
+                  {card.cta.text}
+                  <ArrowRight className="h-3.5 w-3.5 transition-transform duration-300 group-hover:translate-x-0.5" />
+                </a>
+              )}
+            </div>
+          ))}
+        </div>
+        <div className="grid gap-6 sm:grid-cols-2">
+          {contactCards.slice(3).map((card, i) => (
+            <div
+              key={card.title}
+              className="modern-card p-8 animate-fade-in-up group"
+              style={{ animationDelay: `${(i + 3) * 0.08}s` }}
+            >
+              <div
+                className={`mb-6 inline-flex h-14 w-14 items-center justify-center rounded-2xl ${card.iconBg} ${card.iconColor} transition-transform duration-300 group-hover:scale-110`}
+              >
+                <card.icon className="h-6 w-6" />
+              </div>
+              <h3 className="text-lg font-bold text-[#1F3A93] mb-3">
+                {card.title}
+              </h3>
+              <div className="space-y-1" dir="ltr">
+                {card.lines.map((line) => (
+                  <p key={line} className="text-sm text-slate-500 leading-relaxed">
+                    {line}
+                  </p>
+                ))}
+              </div>
+              {card.mapSrc && (
+                <div className="mt-4 overflow-hidden rounded-xl">
+                  <iframe
+                    src={card.mapSrc}
+                    width="100%"
+                    height="220"
+                    style={{ border: 0 }}
+                    allowFullScreen
+                    loading="lazy"
+                    referrerPolicy="strict-origin-when-cross-origin"
+                    className="rounded-xl"
+                  />
+                </div>
+              )}
               {card.cta && (
                 <a
                   href={card.cta.href}
