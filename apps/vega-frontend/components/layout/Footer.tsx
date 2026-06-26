@@ -39,7 +39,7 @@ export function Footer({ categories = [] }: FooterProps) {
               <img
                 src="/images/logo/veg-logo-text-white.png"
                 alt="Vega"
-                className="h-16 w-auto object-contain"
+                className="h-10 w-auto object-contain"
               />
             </div>
             <p className="text-lg leading-relaxed text-white/40">
