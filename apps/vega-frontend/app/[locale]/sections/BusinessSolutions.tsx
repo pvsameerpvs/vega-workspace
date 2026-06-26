@@ -46,11 +46,11 @@ export function BusinessSolutions({ locale = "en" }: BusinessSolutionsProps) {
         <h2 className="text-center text-2xl lg:text-3xl font-bold text-white mb-12 lg:mb-14 font-display">
           {isAR ? "نخدم الشركات في جميع أنحاء الإمارات" : "Serving Businesses Across UAE"}
         </h2>
-        <div className="flex flex-wrap justify-center gap-5 lg:gap-8 max-w-6xl mx-auto">
+        <div className="flex flex-wrap justify-center gap-4 lg:gap-6 max-w-7xl mx-auto">
           {solutions.map((s) => (
             <div
               key={s.label}
-              className="group flex flex-col items-center text-center bg-white rounded-2xl border-2 border-[#1F3A93] px-5 py-7 lg:px-7 lg:py-9 transition-all duration-300 hover:shadow-2xl hover:-translate-y-2 hover:shadow-[#1F3A93]/20 w-[calc(50%-10px)] md:w-[calc(25%-15px)] lg:w-[calc(25%-24px)]"
+              className="group flex flex-col items-center text-center bg-white rounded-2xl border-2 border-[#1F3A93] px-4 py-7 lg:px-6 lg:py-9 transition-all duration-300 hover:shadow-2xl hover:-translate-y-2 hover:shadow-[#1F3A93]/20 w-[calc(50%-8px)] md:w-[calc(25%-12px)] lg:w-[calc(25%-18px)]"
             >
               <div className="p-3 lg:p-4 rounded-2xl bg-[#1F3A93]/10 mb-4 lg:mb-5 group-hover:bg-[#1F3A93]/20 transition-colors ring-1 ring-[#1F3A93]/20">
                 <img
