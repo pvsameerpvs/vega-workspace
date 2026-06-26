@@ -123,9 +123,24 @@ export function ProductDetailPage({ product, related, locale }: ProductDetailPag
               </p>
             )}
 
+            {/* Spec Sheet */}
+            {specRows.length > 0 && (
+              <div className="mt-8">
+                <h3 className="text-sm font-bold text-slate-900 uppercase tracking-wider mb-4">{isAR ? "مواصفات المنتج" : "Product Specifications"}</h3>
+                <div className="rounded-2xl border border-slate-200 divide-y divide-slate-200 bg-white">
+                  {specRows.map((row) => (
+                    <div key={row.label} className="px-5 py-3 flex items-baseline justify-between gap-4">
+                      <span className="text-sm text-slate-500 shrink-0">{row.label}</span>
+                      <span className="text-sm text-slate-900 font-semibold text-right">{row.value}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
             {/* Full Description */}
             {displayDesc && (
-              <p className="mt-6 text-lg text-slate-500 leading-relaxed max-w-md font-display">
+              <p className="mt-10 text-lg text-slate-500 leading-relaxed max-w-md font-display">
                 {displayDesc}
               </p>
             )}
@@ -134,23 +149,6 @@ export function ProductDetailPage({ product, related, locale }: ProductDetailPag
               <p className="mt-4 text-base text-slate-500 leading-relaxed max-w-md font-display">
                 {displayFullDesc}
               </p>
-            )}
-
-            {/* Spec Sheet */}
-            {specRows.length > 0 && (
-              <div className="mt-12 overflow-hidden rounded-3xl bg-slate-50">
-                <div className="px-6 py-4 border-b border-slate-100">
-                  <span className="text-sm font-semibold text-slate-900">{isAR ? "مواصفات المنتج" : "Product Specifications"}</span>
-                </div>
-                <div className="divide-y divide-slate-100">
-                  {specRows.map((row) => (
-                    <div key={row.label} className="px-6 py-4 grid grid-cols-3 gap-4">
-                      <span className="text-sm text-slate-400">{row.label}</span>
-                      <span className="text-sm text-slate-900 col-span-2 font-medium">{row.value}</span>
-                    </div>
-                  ))}
-                </div>
-              </div>
             )}
 
             {/* Features */}
