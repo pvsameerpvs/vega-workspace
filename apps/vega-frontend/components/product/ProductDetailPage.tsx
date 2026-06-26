@@ -68,14 +68,14 @@ export function ProductDetailPage({ product, related, locale }: ProductDetailPag
 
         <div className="grid gap-20 lg:grid-cols-2">
           {/* Image Gallery */}
-          <div className="space-y-5">
+          <div className="space-y-5 max-w-lg mx-auto">
             <div className="overflow-hidden rounded-3xl bg-slate-100">
-              <div className="aspect-square overflow-hidden flex items-center justify-center bg-slate-50">
+              <div className="aspect-[4/3] overflow-hidden flex items-center justify-center bg-slate-50">
                 {product.image ? (
                   <ProtectedImage
                     src={product.image}
                     alt={displayName}
-                    className="h-full w-full object-cover transition-transform duration-700 hover:scale-105"
+                    className="h-full w-full object-contain transition-transform duration-700 hover:scale-105"
                   />
                 ) : (
                   <div className="flex flex-col items-center justify-center gap-2 text-slate-300">
