@@ -28,6 +28,7 @@ validateDatabaseUrl(connectionString);
 const client = postgres(connectionString, {
   prepare: false,
   max: 10,
+  ssl: process.env.NODE_ENV === "production" ? "require" : false,
 });
 
 export const db = drizzle(client, { schema });
