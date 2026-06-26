@@ -92,8 +92,9 @@ export function Navbar({ categories = [], products = [] }: NavbarProps) {
       {/* Main Nav */}
       <div className={`border-b transition-all duration-300 ${scrolled ? "bg-[#1F3A93]/95 backdrop-blur-md border-white/10 shadow-lg" : "bg-[#1F3A93] border-white/10"}`}>
         <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3">
-          <Link href={l("/")} className="flex items-center shrink-0">
+          <Link href={l("/")} className="flex items-center shrink-0 gap-2">
             <img src="/images/logo/logo.jpeg" alt="Vega Logo" className="h-16 w-auto rounded-md object-contain" draggable={false} onContextMenu={(e) => e.preventDefault()} />
+            <img src="/images/logo/veg-logo-text.png" alt="Vega" className="h-16 w-auto object-contain" draggable={false} onContextMenu={(e) => e.preventDefault()} />
           </Link>
 
           <nav className={`hidden lg:flex items-center gap-6 ${isAR ? "flex-row-reverse mr-6" : "ml-6"}`}>

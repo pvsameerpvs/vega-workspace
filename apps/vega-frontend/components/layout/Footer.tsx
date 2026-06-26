@@ -30,11 +30,18 @@ export function Footer({ categories = [] }: FooterProps) {
         <div className={`grid gap-10 md:grid-cols-2 lg:grid-cols-4 ${isAR ? "text-right" : ""}`}>
           {/* Brand */}
           <div className="lg:col-span-1">
-            <img
-              src="/images/logo/logo.jpeg"
-              alt="Vega Logo"
-              className={`h-16 w-auto rounded-md object-contain mb-4 ${isAR ? "mr-0 ml-auto" : ""}`}
-            />
+            <div className={`flex items-center gap-3 mb-4 ${isAR ? "justify-end" : ""}`}>
+              <img
+                src="/images/logo/logo.jpeg"
+                alt="Vega Logo"
+                className="h-16 w-auto rounded-md object-contain"
+              />
+              <img
+                src="/images/logo/veg-logo-text.png"
+                alt="Vega"
+                className="h-16 w-auto object-contain"
+              />
+            </div>
             <p className="text-lg leading-relaxed text-white/40">
               {isAR
                 ? "حلول موثوقة للأثاث والحواجز والمستلزمات المخيمات للشركات في الإمارات منذ 2009."
