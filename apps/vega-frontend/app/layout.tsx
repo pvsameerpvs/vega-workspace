@@ -43,7 +43,7 @@ export default async function RootLayout({
   const mappedCategories = (categories || []).map(mapCategoryToFrontend).filter(Boolean) as any[];
   const mappedProducts = (products || []).map(mapProductToFrontend).filter(Boolean) as any[];
   return (
-    <html suppressHydrationWarning>
+    <html suppressHydrationWarning className={`${poppins.variable} font-sans`}>
       <head>
         <script
           dangerouslySetInnerHTML={{

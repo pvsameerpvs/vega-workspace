@@ -38,31 +38,23 @@
     --shadow-elevated: 0 24px 48px -12px rgb(0 0 0 / 0.12);
   }
 
+  * {
+    font-family: var(--font-poppins), system-ui, sans-serif;
+  }
+
   body {
     @apply bg-white text-slate-900 antialiased;
-    font-family: var(--font-poppins), system-ui, -apple-system, sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
   }
 
   h1, h2, h3, h4, h5, h6 {
-    font-family: var(--font-poppins), system-ui, sans-serif;
     font-weight: 700;
     letter-spacing: -0.02em;
     color: #1F3A93;
   }
 
-  h1 + p, h2 + p, h3 + p, h4 + p, h5 + p, h6 + p {
-    font-family: var(--font-poppins), system-ui, sans-serif;
-  }
 
-  button, [role="button"] {
-    font-family: var(--font-poppins), system-ui, sans-serif;
-  }
-
-  nav, nav a, nav button {
-    font-family: var(--font-poppins), system-ui, sans-serif;
-  }
 
   ::selection {
     background: rgba(255, 212, 0, 0.35);
@@ -170,7 +162,6 @@ html {
 
 /* Font display */
 .font-display {
-  font-family: var(--font-poppins), system-ui, sans-serif;
   font-weight: 500;
   letter-spacing: -0.01em;
 }
@@ -178,7 +169,6 @@ html {
 /* Elegant label */
 .label-line {
   @apply flex items-center gap-3 text-xs font-bold uppercase tracking-[0.2em];
-  font-family: var(--font-poppins), system-ui, sans-serif;
   color: #94a3b8;
 }
 .label-line::before {
@@ -190,7 +180,6 @@ html {
 /* Section heading */
 .section-heading {
   @apply text-3xl font-bold leading-tight tracking-tight;
-  font-family: var(--font-poppins), system-ui, sans-serif;
   color: #1F3A93;
 }
 @media (min-width: 768px) {
@@ -213,7 +202,6 @@ html {
 /* Stat number */
 .stat-number {
   @apply text-3xl font-bold tracking-tight;
-  font-family: var(--font-poppins), system-ui, sans-serif;
   color: #1F3A93;
 }
 @media (min-width: 768px) {
@@ -225,7 +213,6 @@ html {
 /* Modern pill button - BLUE primary */
 .pill-btn {
   @apply inline-flex items-center justify-center rounded-full border px-6 py-2.5 text-sm font-semibold transition-all duration-300;
-  font-family: var(--font-poppins), system-ui, sans-serif;
   border-color: #cbd5e1;
   color: #1F3A93;
   background: white;
@@ -241,7 +228,6 @@ html {
 /* YELLOW pill - CTA emphasis */
 .pill-btn-yellow {
   @apply inline-flex items-center justify-center rounded-full px-6 py-2.5 text-sm font-bold transition-all duration-300;
-  font-family: var(--font-poppins), system-ui, sans-serif;
   background: #FFD400;
   color: #1F3A93;
   box-shadow: var(--shadow-md);
@@ -255,7 +241,6 @@ html {
 /* BLUE pill - action buttons */
 .pill-btn-blue {
   @apply inline-flex items-center justify-center rounded-full px-6 py-2.5 text-sm font-semibold text-white transition-all duration-300;
-  font-family: var(--font-poppins), system-ui, sans-serif;
   background: #1F3A93;
   box-shadow: var(--shadow-md);
 }
@@ -265,37 +250,7 @@ html {
   transform: translateY(-1px);
 }
 
-/* Arabic font support */
-[dir="rtl"] body,
-[dir="rtl"] p,
-[dir="rtl"] span,
-[dir="rtl"] a,
-[dir="rtl"] li,
-[dir="rtl"] td,
-[dir="rtl"] th,
-[dir="rtl"] label,
-[dir="rtl"] input,
-[dir="rtl"] textarea,
-[dir="rtl"] select,
-[dir="rtl"] button {
-  font-family: var(--font-poppins), system-ui, sans-serif;
-}
 
-[dir="rtl"] h1,
-[dir="rtl"] h2,
-[dir="rtl"] h3,
-[dir="rtl"] h4,
-[dir="rtl"] h5,
-[dir="rtl"] h6,
-[dir="rtl"] .font-display,
-[dir="rtl"] .label-line,
-[dir="rtl"] .section-heading,
-[dir="rtl"] .stat-number,
-[dir="rtl"] .pill-btn,
-[dir="rtl"] .pill-btn-yellow,
-[dir="rtl"] .pill-btn-blue {
-  font-family: var(--font-poppins), system-ui, sans-serif;
-}
 
 /* Modern card — softer, more minimal */
 .modern-card {
@@ -345,7 +300,6 @@ html {
 .blog-content h4,
 .blog-content h5,
 .blog-content h6 {
-  font-family: var(--font-poppins), system-ui, sans-serif;
   font-weight: 700;
   color: #1F3A93;
   margin-top: 1.5em;

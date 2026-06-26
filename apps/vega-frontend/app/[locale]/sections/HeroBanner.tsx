@@ -112,10 +112,7 @@ export function HeroBanner({ banners, locale = "en" }: HeroBannerProps) {
                       initial="hidden"
                       animate="visible"
                       className="text-3xl md:text-5xl lg:text-6xl font-extrabold text-white leading-tight"
-                      style={{
-                        fontFamily: "var(--font-poppins), Poppins, sans-serif",
-                        textShadow: "0 4px 20px rgba(0,0,0,0.5), 0 2px 4px rgba(0,0,0,0.3)",
-                      }}
+                      style={{ textShadow: "0 4px 20px rgba(0,0,0,0.5), 0 2px 4px rgba(0,0,0,0.3)" }}
                     >
                       {slide.title}
                     </motion.h2>
@@ -128,7 +125,6 @@ export function HeroBanner({ banners, locale = "en" }: HeroBannerProps) {
                       animate="visible"
                       className="text-base md:text-lg text-white/95 leading-relaxed"
                       style={{
-                        fontFamily: "var(--font-poppins), Poppins, sans-serif",
                         fontWeight: 400,
                         textShadow: "0 2px 12px rgba(0,0,0,0.7)",
                       }}
@@ -150,7 +146,6 @@ export function HeroBanner({ banners, locale = "en" }: HeroBannerProps) {
                 <Link
                   href={l(slide.ctaLink)}
                   className="inline-flex items-center justify-center gap-2 rounded-full bg-[#FFD400] px-7 py-3.5 text-sm font-bold text-[#1F3A93] hover:bg-white hover:scale-105 transition-all duration-300 shadow-lg w-full md:w-auto group"
-                  style={{ fontFamily: "var(--font-poppins), Poppins, sans-serif" }}
                 >
                   {slide.ctaText}
                   <ArrowRight className={`h-4 w-4 transition-transform duration-300 group-hover:translate-x-1 ${isAR ? "rotate-180" : ""}`} />
@@ -158,7 +153,6 @@ export function HeroBanner({ banners, locale = "en" }: HeroBannerProps) {
                 <Link
                   href={l(slide.ctaSecondaryLink)}
                   className="inline-flex items-center justify-center gap-2 rounded-full border-2 border-white px-7 py-3.5 text-sm font-bold text-white hover:bg-white hover:text-[#1F3A93] hover:scale-105 transition-all duration-300 shadow-lg w-full md:w-auto"
-                  style={{ fontFamily: "var(--font-poppins), Poppins, sans-serif" }}
                 >
                   {slide.ctaSecondaryText}
                 </Link>

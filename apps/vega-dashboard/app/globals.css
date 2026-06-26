@@ -34,10 +34,10 @@
 @layer base {
   * {
     @apply border-border;
+    font-family: var(--font-poppins), system-ui, sans-serif;
   }
   body {
     @apply bg-slate-50 text-slate-900;
-    font-family: var(--font-poppins), var(--font-sans), system-ui, -apple-system, sans-serif;
   }
 }
 
