@@ -68,7 +68,7 @@ export function GooeySearchBar() {
           <motion.button
             key="search-trigger"
             onClick={handleOpen}
-            className="flex items-center justify-center text-white/70 hover:text-white transition-colors p-1"
+            className="flex items-center justify-center text-gray-500 hover:text-[#1F3A93] transition-colors p-1"
             whileHover={{ scale: 1.1 }}
             whileTap={{ scale: 0.9 }}
             exit={{ opacity: 0, scale: 0.8 }}
@@ -87,11 +87,11 @@ export function GooeySearchBar() {
             className="relative"
           >
             <div className="relative" style={{ filter: "url(#goo-filter)" }}>
-              <div className="absolute inset-0 rounded-full bg-white/15 border border-white/25 backdrop-blur-sm" />
+              <div className="absolute inset-0 rounded-full bg-gray-100 border border-gray-200" />
             </div>
             <div className="relative flex items-center">
               <div className={`absolute ${isAR ? "right-3" : "left-3"} flex items-center`}>
-                {loading ? <Loader2 className="h-5 w-5 text-white/70 animate-spin" /> : <Search className="h-5 w-5 text-white/70" />}
+                {loading ? <Loader2 className="h-5 w-5 text-gray-400 animate-spin" /> : <Search className="h-5 w-5 text-gray-400" />}
               </div>
               <input
                 ref={inputRef}
@@ -100,14 +100,14 @@ export function GooeySearchBar() {
                 onChange={(e) => setQuery(e.target.value)}
                 onKeyDown={handleKeyDown}
                 placeholder={isAR ? "ابحث عن المنتجات..." : "Search products..."}
-                className={`w-full rounded-full bg-transparent py-2.5 text-sm text-white placeholder:text-white/50 focus:outline-none ${isAR ? "pr-12 pl-10" : "pl-12 pr-10"}`}
+                className={`w-full rounded-full bg-transparent py-2.5 text-sm text-gray-700 placeholder:text-gray-400 focus:outline-none ${isAR ? "pr-12 pl-10" : "pl-12 pr-10"}`}
               />
               {query && (
                 <button
                   onClick={handleClose}
-                  className={`absolute ${isAR ? "left-3" : "right-3"} p-0.5 rounded-full hover:bg-white/10 transition-colors`}
+                  className={`absolute ${isAR ? "left-3" : "right-3"} p-0.5 rounded-full hover:bg-gray-200 transition-colors`}
                 >
-                  <X className="h-4 w-4 text-white/60 hover:text-white" />
+                  <X className="h-4 w-4 text-gray-400 hover:text-gray-600" />
                 </button>
               )}
             </div>

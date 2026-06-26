@@ -89,33 +89,33 @@ export function Navbar({ categories = [], products = [] }: NavbarProps) {
         </div>
       </div>
 
-      {/* Main Nav */}
-      <div className={`border-b transition-all duration-300 ${scrolled ? "bg-[#1F3A93]/95 backdrop-blur-md border-white/10 shadow-lg" : "bg-[#1F3A93] border-white/10"}`}>
+      {/* Main Nav — White background with dark text */}
+      <div className={`border-b transition-all duration-300 ${scrolled ? "bg-white/95 backdrop-blur-md border-gray-200 shadow-lg" : "bg-white border-gray-100"}`}>
         <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3">
           <Link href={l("/")} className="flex items-center shrink-0 gap-2">
             <img src="/images/logo/logo.jpeg" alt="Vega Logo" className="h-16 w-auto rounded-md object-contain" draggable={false} onContextMenu={(e) => e.preventDefault()} />
-            <img src="/images/logo/veg-logo-text.png" alt="Vega" className="h-16 w-auto object-contain" draggable={false} onContextMenu={(e) => e.preventDefault()} />
+            <img src="/images/logo/veg-logo-text.png" alt="Vega" className="h-12 w-auto object-contain" draggable={false} onContextMenu={(e) => e.preventDefault()} />
           </Link>
 
           <nav className={`hidden lg:flex items-center gap-6 ${isAR ? "flex-row-reverse mr-6" : "ml-6"}`}>
-            <Link href={l("/")} className="text-sm font-semibold text-white/80 hover:text-white transition-colors whitespace-nowrap">{isAR ? "الرئيسية" : "Home"}</Link>
+            <Link href={l("/")} className={`text-sm font-semibold whitespace-nowrap transition-colors ${pathname === l("/") ? "text-[#1F3A93]" : "text-gray-600 hover:text-[#1F3A93]"}`}>{isAR ? "الرئيسية" : "Home"}</Link>
             <div className="relative" onMouseEnter={() => setMega("products")} onMouseLeave={() => setMega(null)}>
-              <button className="flex items-center gap-1 text-sm font-semibold text-white/80 hover:text-white transition-colors whitespace-nowrap">
+              <button className={`flex items-center gap-1 text-sm font-semibold whitespace-nowrap transition-colors ${pathname.startsWith(l("/products")) ? "text-[#1F3A93]" : "text-gray-600 hover:text-[#1F3A93]"}`}>
                 {isAR ? "منتجاتنا" : "Products"} <ChevronDown className="h-3.5 w-3.5" />
               </button>
               <ProductMegaMenu categories={categories} isAR={isAR} locale={locale} open={mega === "products"} />
             </div>
             {navItems.filter((i) => i.path !== "/" && i.path !== "/products").map((item) => (
-              <Link key={item.path} href={l(item.path)} className="text-sm font-semibold text-white/80 hover:text-white transition-colors whitespace-nowrap">{item.label}</Link>
+              <Link key={item.path} href={l(item.path)} className={`text-sm font-semibold whitespace-nowrap transition-colors ${pathname === l(item.path) ? "text-[#1F3A93]" : "text-gray-600 hover:text-[#1F3A93]"}`}>{item.label}</Link>
             ))}
           </nav>
 
           <div className="flex items-center gap-2 shrink-0">
             <GooeySearchBar />
-            <Link href={l("/contact-us")} className="hidden lg:inline-flex rounded-full bg-[#FFD400] px-5 py-2 text-sm font-bold text-[#1F3A93] hover:bg-white transition-all duration-300 whitespace-nowrap">
+            <Link href={l("/contact-us")} className="hidden lg:inline-flex rounded-full bg-[#FFD400] px-5 py-2 text-sm font-bold text-[#1F3A93] hover:brightness-95 hover:shadow-md transition-all duration-300 whitespace-nowrap">
               {isAR ? "تواصل معنا" : "Contact Us"}
             </Link>
-            <button onClick={() => setMobile(!mobile)} className="lg:hidden p-2 text-white shrink-0">
+            <button onClick={() => setMobile(!mobile)} className="lg:hidden p-2 text-gray-600 hover:text-[#1F3A93] shrink-0 transition-colors">
               {mobile ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
             </button>
           </div>
