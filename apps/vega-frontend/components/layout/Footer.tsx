@@ -37,7 +37,7 @@ export function Footer({ categories = [] }: FooterProps) {
                 className="h-16 w-auto rounded-md object-contain"
               />
               <img
-                src="/images/logo/veg-logo-text.png"
+                src="/images/logo/veg-logo-text-white.png"
                 alt="Vega"
                 className="h-16 w-auto object-contain"
               />

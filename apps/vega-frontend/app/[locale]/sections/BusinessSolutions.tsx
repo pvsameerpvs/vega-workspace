@@ -1,40 +1,40 @@
-import Image from "next/image";
-
 interface BusinessSolutionsProps {
   locale?: string;
 }
+
+const ICON_COLOR = "%231F3A93";
 
 export function BusinessSolutions({ locale = "en" }: BusinessSolutionsProps) {
   const isAR = locale === "ar";
 
   const solutions = [
     {
-      image: "/images/business-solutions/construction.png",
+      icon: "mdi/crane",
       label: isAR ? "البناء" : "Construction",
       desc: isAR ? "مخيمات العمال والمواقع" : "Labor camps & sites",
     },
     {
-      image: "/images/business-solutions/worker-housing.png",
+      icon: "fa6-solid/house-chimney-user",
       label: isAR ? "سكن العمال" : "Worker Housing",
       desc: isAR ? "أثاث المخيمات" : "Camp furniture",
     },
     {
-      image: "/images/business-solutions/offices.png",
+      icon: "fa6-solid/building",
       label: isAR ? "المكاتب" : "Offices",
       desc: isAR ? "مساحات عمل حديثة" : "Modern workspaces",
     },
     {
-      image: "/images/business-solutions/events.png",
+      icon: "fa6-solid/calendar-check",
       label: isAR ? "الفعاليات" : "Events",
       desc: isAR ? "حواجز وVIP" : "Barriers & VIP",
     },
     {
-      image: "/images/business-solutions/hotels.png",
+      icon: "fa6-solid/bed",
       label: isAR ? "الفنادق" : "Hotels",
       desc: isAR ? "معدات الضيافة" : "Hospitality gear",
     },
     {
-      image: "/images/business-solutions/government.png",
+      icon: "fa6-solid/building-columns",
       label: isAR ? "الحكومة" : "Government",
       desc: isAR ? "أعلام وأعمدة" : "Flags & poles",
     },
@@ -42,23 +42,30 @@ export function BusinessSolutions({ locale = "en" }: BusinessSolutionsProps) {
 
   return (
     <section className="bg-[#0f172a]">
-      <div className="mx-auto max-w-7xl px-4 py-12 lg:py-16">
-        <h2 className="text-center text-xl lg:text-2xl font-bold text-white mb-10 font-display">{isAR ? "نخدم الشركات في جميع أنحاء الإمارات" : "Serving Businesses Across UAE"}</h2>
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-8">
+      <div className="mx-auto max-w-7xl px-4 py-12 lg:py-20">
+        <h2 className="text-center text-2xl lg:text-3xl font-bold text-white mb-12 lg:mb-14 font-display">
+          {isAR ? "نخدم الشركات في جميع أنحاء الإمارات" : "Serving Businesses Across UAE"}
+        </h2>
+        <div className="flex flex-wrap justify-center gap-5 lg:gap-8 max-w-6xl mx-auto">
           {solutions.map((s) => (
-            <div key={s.label} className="flex flex-col items-center text-center group">
-              <div className="relative h-20 w-20 lg:h-24 lg:w-24 mb-4 shrink-0">
-                <Image
-                  src={s.image}
+            <div
+              key={s.label}
+              className="group flex flex-col items-center text-center bg-white rounded-2xl border-2 border-[#1F3A93] px-5 py-7 lg:px-7 lg:py-9 transition-all duration-300 hover:shadow-2xl hover:-translate-y-2 hover:shadow-[#1F3A93]/20 w-[calc(50%-10px)] md:w-[calc(25%-15px)] lg:w-[calc(25%-24px)]"
+            >
+              <div className="p-3 lg:p-4 rounded-2xl bg-[#1F3A93]/10 mb-4 lg:mb-5 group-hover:bg-[#1F3A93]/20 transition-colors ring-1 ring-[#1F3A93]/20">
+                <img
+                  src={`https://api.iconify.design/${s.icon}.svg?color=${ICON_COLOR}`}
                   alt={s.label}
-                  fill
-                  className="object-contain"
+                  className="h-12 w-12 lg:h-14 lg:w-14"
                   draggable={false}
-                  sizes="96px"
                 />
               </div>
-              <div className="text-base font-semibold text-white">{s.label}</div>
-              <div className="text-xs text-white/40">{s.desc}</div>
+              <div className="text-base lg:text-lg font-bold text-[#1F3A93] leading-tight">
+                {s.label}
+              </div>
+              <div className="text-sm lg:text-base text-[#1F3A93]/60 mt-1.5 leading-tight">
+                {s.desc}
+              </div>
             </div>
           ))}
         </div>
