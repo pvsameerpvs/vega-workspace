@@ -1,70 +1,52 @@
+"use client";
+
 interface BusinessSolutionsProps {
   locale?: string;
 }
 
-const ICON_COLOR = "%231F3A93";
+const IMG_PATH = "/images/serving-businesses-across-uae";
+
+const solutions = [
+  { image: "construction", labelEn: "Construction", labelAr: "البناء", descEn: "Labor camps & sites", descAr: "مخيمات العمال والمواقع" },
+  { image: "worker-housing", labelEn: "Worker Housing", labelAr: "سكن العمال", descEn: "Camp furniture", descAr: "أثاث المخيمات" },
+  { image: "offices", labelEn: "Offices", labelAr: "المكاتب", descEn: "Modern workspaces", descAr: "مساحات عمل حديثة" },
+  { image: "events", labelEn: "Events", labelAr: "الفعاليات", descEn: "Barriers & VIP", descAr: "حواجز وVIP" },
+  { image: "hotels", labelEn: "Hotels", labelAr: "الفنادق", descEn: "Hospitality gear", descAr: "معدات الضيافة" },
+  { image: "government", labelEn: "Government", labelAr: "الحكومة", descEn: "Flags & poles", descAr: "أعلام وأعمدة" },
+  { image: "real-estatedevelopers", labelEn: "Real Estate Developers", labelAr: "مطورو العقارات", descEn: "Contracting Companies", descAr: "شركات المقاولات" },
+  { image: "industries-fabrication", labelEn: "Industries", labelAr: "الصناعات", descEn: "Fabrication / Manufacturing / Processing", descAr: "التصنيع / الإنتاج / المعالجة" },
+];
 
 export function BusinessSolutions({ locale = "en" }: BusinessSolutionsProps) {
   const isAR = locale === "ar";
 
-  const solutions = [
-    {
-      icon: "mdi/crane",
-      label: isAR ? "البناء" : "Construction",
-      desc: isAR ? "مخيمات العمال والمواقع" : "Labor camps & sites",
-    },
-    {
-      icon: "fa6-solid/house-chimney-user",
-      label: isAR ? "سكن العمال" : "Worker Housing",
-      desc: isAR ? "أثاث المخيمات" : "Camp furniture",
-    },
-    {
-      icon: "fa6-solid/building",
-      label: isAR ? "المكاتب" : "Offices",
-      desc: isAR ? "مساحات عمل حديثة" : "Modern workspaces",
-    },
-    {
-      icon: "fa6-solid/calendar-check",
-      label: isAR ? "الفعاليات" : "Events",
-      desc: isAR ? "حواجز وVIP" : "Barriers & VIP",
-    },
-    {
-      icon: "fa6-solid/bed",
-      label: isAR ? "الفنادق" : "Hotels",
-      desc: isAR ? "معدات الضيافة" : "Hospitality gear",
-    },
-    {
-      icon: "fa6-solid/building-columns",
-      label: isAR ? "الحكومة" : "Government",
-      desc: isAR ? "أعلام وأعمدة" : "Flags & poles",
-    },
-  ];
-
   return (
     <section className="bg-[#0f172a]">
-      <div className="mx-auto max-w-7xl px-4 py-8">
+      <div className="mx-auto max-w-7xl px-4 py-12 lg:py-16">
         <h2 className="text-center text-2xl lg:text-3xl font-bold text-white mb-12 lg:mb-14 font-display">
           {isAR ? "نخدم الشركات في جميع أنحاء الإمارات" : "Serving Businesses Across UAE"}
         </h2>
-        <div className="flex flex-wrap justify-center gap-4 lg:gap-6 max-w-7xl mx-auto">
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 lg:gap-6">
           {solutions.map((s) => (
             <div
-              key={s.label}
-              className="group flex flex-col items-center text-center bg-white rounded-2xl border-2 border-[#1F3A93] px-4 py-7 lg:px-6 lg:py-9 transition-all duration-300 hover:shadow-2xl hover:-translate-y-2 hover:shadow-[#1F3A93]/20 w-[calc(50%-8px)] md:w-[calc(25%-12px)] lg:w-[calc(25%-18px)]"
+              key={s.image}
+              className="group relative overflow-hidden rounded-2xl aspect-[4/3] cursor-pointer"
             >
-              <div className="p-3 lg:p-4 rounded-2xl bg-[#1F3A93]/10 mb-4 lg:mb-5 group-hover:bg-[#1F3A93]/20 transition-colors ring-1 ring-[#1F3A93]/20">
-                <img
-                  src={`https://api.iconify.design/${s.icon}.svg?color=${ICON_COLOR}`}
-                  alt={s.label}
-                  className="h-12 w-12 lg:h-14 lg:w-14"
-                  draggable={false}
-                />
-              </div>
-              <div className="text-base lg:text-lg font-bold text-[#1F3A93] leading-tight">
-                {s.label}
-              </div>
-              <div className="text-sm lg:text-base text-[#1F3A93]/60 mt-1.5 leading-tight">
-                {s.desc}
+              <img
+                src={`${IMG_PATH}/${s.image}.jpeg`}
+                alt={isAR ? s.labelAr : s.labelEn}
+                className="h-full w-full object-cover transition-all duration-500 group-hover:scale-110"
+                draggable={false}
+                onContextMenu={(e) => e.preventDefault()}
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-[#0f172a]/95 via-[#0f172a]/40 to-transparent" />
+              <div className="absolute bottom-0 left-0 right-0 p-4 lg:p-5">
+                <h3 className="text-sm lg:text-lg font-bold text-white leading-tight">
+                  {isAR ? s.labelAr : s.labelEn}
+                </h3>
+                <p className="text-xs lg:text-sm text-white/70 mt-1 leading-tight">
+                  {isAR ? s.descAr : s.descEn}
+                </p>
               </div>
             </div>
           ))}

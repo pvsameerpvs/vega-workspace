@@ -40,12 +40,12 @@ const features: Feature[] = [
 
 function FeatureCard({ f, isAR }: { f: Feature; isAR: boolean }) {
   return (
-    <div className="group flex flex-col items-center rounded-3xl border border-slate-100 bg-white px-12 py-10 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-[#FFD400]/30 hover:shadow-xl hover:shadow-[#FFD400]/5">
+    <div className="group flex flex-col items-center rounded-3xl border border-slate-100 bg-white px-4 py-8 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-[#FFD400]/30 hover:shadow-xl hover:shadow-[#FFD400]/5">
       <span className="flex h-20 w-20 items-center justify-center rounded-2xl bg-[#FFD400]/15 text-[#1F3A93] transition-colors duration-300 group-hover:bg-[#1F3A93] group-hover:text-white">
         {f.icon}
       </span>
-      <div className="mt-5 h-1 w-10 rounded-full bg-[#FFD400] transition-all duration-300 group-hover:w-14" />
-      <span className="mt-5 text-center text-lg font-bold text-[#1F3A93] whitespace-nowrap">
+      <div className="mt-4 h-1 w-8 rounded-full bg-[#FFD400] transition-all duration-300 group-hover:w-12" />
+      <span className="mt-4 text-center text-base font-bold text-[#1F3A93]">
         {isAR ? f.titleAr : f.title}
       </span>
     </div>
@@ -61,18 +61,11 @@ export function FeaturesSection({ locale = "en" }: FeaturesSectionProps) {
         <div className="absolute -top-32 -right-32 h-96 w-96 rounded-full bg-[#1F3A93]/[0.02]" />
         <div className="absolute -bottom-32 -left-32 h-96 w-96 rounded-full bg-[#FFD400]/[0.05]" />
       </div>
-      <div className="mx-auto max-w-6xl px-4 relative">
-        <div className="flex flex-col items-center gap-6">
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 w-full max-w-5xl">
-            {features.slice(0, 3).map((f) => (
-              <FeatureCard key={f.title} f={f} isAR={isAR} />
-            ))}
-          </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 w-full max-w-[38rem]">
-            {features.slice(3).map((f) => (
-              <FeatureCard key={f.title} f={f} isAR={isAR} />
-            ))}
-          </div>
+      <div className="mx-auto max-w-[90rem] px-4 relative">
+        <div className="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-5 gap-6">
+          {features.map((f) => (
+            <FeatureCard key={f.title} f={f} isAR={isAR} />
+          ))}
         </div>
       </div>
     </section>

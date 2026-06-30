@@ -32,7 +32,7 @@ export async function PopularCategories({ locale = "en" }: PopularCategoriesProp
                   className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
                 />
               </div>
-              <span className="text-xs font-semibold text-slate-700 transition-colors group-hover:text-[#1F3A93]">
+              <span className="text-sm font-semibold text-slate-700 transition-colors group-hover:text-[#1F3A93]">
                 {isAR && cat.nameAr ? cat.nameAr : cat.name}
               </span>
             </Link>
