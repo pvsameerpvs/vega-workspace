@@ -23,10 +23,31 @@ export const metadata: Metadata = {
     "Flag pole supplier UAE",
     "Bulk furniture supplier UAE",
   ],
+  icons: {
+    icon: "/images/logo/fevic.jpeg",
+    shortcut: "/images/logo/fevic.jpeg",
+    apple: "/images/logo/fevic.jpeg",
+  },
   openGraph: {
     title: "Vega - B2B Product Catalogue UAE",
     description: "Reliable Furniture, Barriers & Camp Supply Solutions Across UAE",
     type: "website",
+    url: "https://www.thevegauae.com",
+    siteName: "Vega UAE",
+    images: [
+      {
+        url: "/images/logo/logo.jpeg",
+        width: 1200,
+        height: 630,
+        alt: "Vega UAE - Furniture, Barriers & Camp Supply Solutions",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Vega - B2B Product Catalogue UAE",
+    description: "Reliable Furniture, Barriers & Camp Supply Solutions Across UAE",
+    images: ["/images/logo/logo.jpeg"],
   },
 };
 
