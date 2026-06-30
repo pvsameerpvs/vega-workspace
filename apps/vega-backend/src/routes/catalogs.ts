@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { db, catalogs, catalogCategories, categories, products, subcategories } from "@vega/db";
+import { db, catalogs, catalogCategories, categories, products } from "@vega/db";
 import { eq, desc, asc, like, and, inArray } from "drizzle-orm";
 import { authenticate } from "../middleware/auth";
 import { cleanBody } from "../lib/utils";
