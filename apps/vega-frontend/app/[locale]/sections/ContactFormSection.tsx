@@ -12,7 +12,7 @@ export function ContactFormSection({ locale = "en" }: ContactFormSectionProps) {
   const isAR = locale === "ar";
 
   return (
-    <section className="py-20 bg-slate-50">
+    <section className="py-8 bg-slate-50">
       <div className="mx-auto max-w-7xl px-6">
         <div className={`grid gap-12 lg:grid-cols-5 ${isAR ? "direction-rtl" : ""}`}>
           {/* Left / First: Form */}

@@ -57,7 +57,7 @@ export function TrustBar({ locale = "en" }: TrustBarProps) {
   const isAR = locale === "ar";
 
   return (
-    <section className="relative overflow-hidden bg-white py-8 sm:py-10 lg:py-12 border-b border-slate-100">
+    <section className="relative overflow-hidden bg-white py-8 border-b border-slate-100">
       <div className="mx-auto max-w-7xl px-4 relative">
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4 sm:gap-6 md:gap-8">
           {stats.map((stat, i) => (

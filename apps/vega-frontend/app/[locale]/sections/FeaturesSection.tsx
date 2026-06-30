@@ -56,7 +56,7 @@ export function FeaturesSection({ locale = "en" }: FeaturesSectionProps) {
   const isAR = locale === "ar";
 
   return (
-    <section className="relative overflow-hidden bg-white py-20 lg:py-24 border-b border-slate-100">
+    <section className="relative overflow-hidden bg-white py-8 border-b border-slate-100">
       <div className="absolute inset-0 pointer-events-none">
         <div className="absolute -top-32 -right-32 h-96 w-96 rounded-full bg-[#1F3A93]/[0.02]" />
         <div className="absolute -bottom-32 -left-32 h-96 w-96 rounded-full bg-[#FFD400]/[0.05]" />

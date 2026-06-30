@@ -18,7 +18,7 @@ export async function CategoryShowcases({ locale = "en" }: CategoryShowcasesProp
         <div className="absolute bottom-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-slate-200 to-transparent" />
       </div>
 
-      <div className="relative mx-auto max-w-7xl px-6 py-16 lg:py-24 xl:px-8">
+      <div className="relative mx-auto max-w-7xl px-6 py-8 xl:px-8">
         <div className="text-center mb-14 lg:mb-20">
           <div className="flex items-center justify-center gap-4 mb-4">
             <div className="h-px w-12 bg-vega-yellow" />

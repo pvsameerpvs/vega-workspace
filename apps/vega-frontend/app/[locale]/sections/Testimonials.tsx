@@ -44,7 +44,7 @@ export function Testimonials({ reviews = [], locale = "en" }: TestimonialsProps)
   const nextClass = isAR ? ".test-prev" : ".test-next";
 
   return (
-    <section className="py-16 bg-slate-50">
+    <section className="py-8 bg-slate-50">
       <div className="mx-auto max-w-7xl px-4">
         {/* Header */}
         <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-4 mb-10">
