@@ -16,10 +16,16 @@ export function PromoBanner({ locale = "en" }: PromoBannerProps) {
           <div className="flex h-12 w-12 items-center justify-center rounded-full bg-[#FFD400] shrink-0">
             <Percent className="h-6 w-6 text-[#1F3A93]" />
           </div>
-          <div>
-            <h3 className="text-sm md:text-base font-bold text-white">{isAR ? "عرض خاص للطلبات بالجملة" : "Bulk Order Special Offer"}</h3>
-            <p className="text-xs text-white/60">{isAR ? "احصل على خصومات حصرية على طلبات 50+ وحدة. تواصل معنا اليوم." : "Get exclusive discounts on orders of 50+ units. Contact us today."}</p>
-          </div>
+        <div>
+  <h3 className="text-sm md:text-base font-bold text-white">
+    {isAR ? "تواصل معنا للحصول على عرض سعر" : "Contact Us For A Quotation"}
+  </h3>
+  <p className="text-xs text-white/60">
+    {isAR
+      ? "استفد من خبرتنا واحصل على أفضل الأسعار لطلبات الجملة. يسعدنا التعاون معك!"
+      : "Access our expertise and best pricing on bulk requirements. Let’s work together!"}
+  </p>
+</div>
         </div>
         <Link href={l("/contact-us")} className="inline-flex items-center gap-2 rounded-full bg-[#FFD400] px-6 py-2.5 text-sm font-bold text-[#1F3A93] hover:bg-white transition-all shrink-0">
           {isAR ? "اطلب عرض سعر" : "Request a Quote"} <ArrowRight className={`h-4 w-4 ${isAR ? "rotate-180" : ""}`} />
