@@ -39,7 +39,7 @@ export function OurClients({ locale = "en" }: OurClientsProps) {
             {[...LOGOS, ...LOGOS].map((logo, i) => (
               <div
                 key={i}
-                className="flex h-20 w-44 flex-shrink-0 items-center justify-center grayscale transition-all duration-500 hover:grayscale-0"
+                className="flex h-20 w-44 flex-shrink-0 items-center justify-center"
               >
                 <Image
                   src={logo.src}
