@@ -28,6 +28,7 @@ export const metadata: Metadata = {
     shortcut: "/images/logo/fevic.jpeg",
     apple: "/images/logo/fevic.jpeg",
   },
+  metadataBase: new URL("https://www.thevegauae.com"),
   openGraph: {
     title: "Vega - B2B Product Catalogue UAE",
     description: "Reliable Furniture, Barriers & Camp Supply Solutions Across UAE",
