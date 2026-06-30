@@ -1,4 +1,6 @@
-const API_BASE = process.env.NEXT_PUBLIC_API_URL || "http://localhost:4000/api";
+const API_BASE = typeof window === 'undefined' && process.env.API_URL_INTERNAL
+  ? process.env.API_URL_INTERNAL
+  : (process.env.NEXT_PUBLIC_API_URL || "http://localhost:4000/api");
 
 async function fetcher<T>(path: string, options?: RequestInit & { next?: any }): Promise<T | null> {
   try {
