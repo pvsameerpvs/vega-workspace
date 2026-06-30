@@ -63,13 +63,13 @@ export function TrustBar({ locale = "en" }: TrustBarProps) {
           {stats.map((stat, i) => (
             <div key={stat.label} className={`flex flex-col items-center text-center group ${i === stats.length - 1 ? "col-span-2 sm:col-span-1" : ""}`}>
               <div className="relative">
-                <span className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-[#1F3A93] tabular-nums leading-none">
+                <span className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-[#1F3A93] tabular-nums leading-none whitespace-nowrap">
                   <AnimatedNumber target={stat.value} />
                   {stat.suffix}
                 </span>
               </div>
               <div className="mt-1.5 sm:mt-2 h-0.5 w-6 sm:w-8 rounded-full bg-[#FFD400]/60 group-hover:w-10 sm:group-hover:w-12 transition-all duration-500" />
-              <div className="mt-1.5 sm:mt-2 text-[11px] sm:text-xs lg:text-sm font-semibold text-[#1F3A93]">
+              <div className="mt-1.5 sm:mt-2 text-xs sm:text-sm lg:text-base font-semibold text-[#1F3A93]">
                 {isAR ? stat.labelAr : stat.label}
               </div>
             </div>
