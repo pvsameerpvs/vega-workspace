@@ -17,6 +17,7 @@ import {
   SeoContent,
   FaqSection,
   FeaturesSection,
+  OurClients,
 } from "./sections";
 import { getBanners, getHomepageConfig } from "@/lib/api";
 import { isValidLocale } from "@/lib/i18n";
@@ -41,7 +42,8 @@ export default async function HomePage({ params: { locale } }: { params: { local
       {isVisible("spotlight") && <SpotlightSection locale={locale} />}
       
       {isVisible("categoryShowcases") && <CategoryShowcases locale={locale} />}
-      <FeaturesSection locale={locale} />
+       <FeaturesSection locale={locale} />
+      {isVisible("ourClients") && <OurClients locale={locale} />}
       {isVisible("bestSellers") && <BestSellers locale={locale} />}
       {isVisible("newArrivals") && <NewArrivals locale={locale} />}
       {isVisible("productRanges") && <ProductRanges locale={locale} />}

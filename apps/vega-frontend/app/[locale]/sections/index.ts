@@ -17,3 +17,4 @@ export { SeoContent } from "./SeoContent";
 export { FaqSection } from "./FaqSection";
 export { ContactFormSection } from "./ContactFormSection";
 export { FeaturesSection } from "./FeaturesSection";
+export { OurClients } from "./OurClients";
