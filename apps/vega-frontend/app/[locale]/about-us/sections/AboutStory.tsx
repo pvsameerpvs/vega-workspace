@@ -12,19 +12,36 @@ export function AboutStory({ isAR }: AboutStoryProps) {
     <section className="py-24 md:py-32 bg-white" dir={isAR ? "rtl" : "ltr"}>
       <div className="mx-auto max-w-7xl px-6">
         <div className="grid gap-16 lg:grid-cols-2 items-center">
-          {/* Image */}
+          {/* Image Collage */}
           <motion.div
             initial={{ opacity: 0, x: isAR ? 40 : -40 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true, margin: "-100px" }}
             transition={{ duration: 0.8, ease: "easeOut" }}
+            className="relative"
           >
-            <div className="img-rounded aspect-[4/3] overflow-hidden shadow-2xl shadow-slate-200/50">
+            <div className="img-rounded overflow-hidden shadow-2xl shadow-slate-200/50 mb-4 aspect-video">
               <ProtectedImage
-                src="/images/gallery/warehouse-interior.jpg"
-                alt="Vega Warehouse"
+                src="/images/about/about1.jpeg"
+                alt="Vega"
                 className="h-full w-full object-cover"
               />
+            </div>
+            <div className="grid grid-cols-2 gap-4">
+              <div className="img-rounded overflow-hidden shadow-xl shadow-slate-200/50 aspect-[4/3]">
+                <ProtectedImage
+                  src="/images/about/about2.jpeg"
+                  alt="Vega"
+                  className="h-full w-full object-cover"
+                />
+              </div>
+              <div className="img-rounded overflow-hidden shadow-xl shadow-slate-200/50 aspect-[4/3]">
+                <ProtectedImage
+                  src="/images/about/about3.jpeg"
+                  alt="Vega"
+                  className="h-full w-full object-cover"
+                />
+              </div>
             </div>
           </motion.div>
 
