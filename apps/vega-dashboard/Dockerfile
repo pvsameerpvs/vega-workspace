@@ -20,6 +20,9 @@ ENV NEXT_PUBLIC_APP_URL=$NEXT_PUBLIC_APP_URL
 
 # Copy source and build
 COPY . .
+RUN if [ -z "$NEXT_PUBLIC_API_URL" ] && [ -f apps/vega-dashboard/.env.production ]; then \
+      cp apps/vega-dashboard/.env.production apps/vega-dashboard/.env; \
+    fi
 RUN pnpm --filter vega-dashboard build
 
 # Production runtime

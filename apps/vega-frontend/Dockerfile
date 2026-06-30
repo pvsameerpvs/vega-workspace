@@ -12,7 +12,7 @@ COPY packages/utils/package.json ./packages/utils/
 COPY packages/config/package.json ./packages/config/
 RUN pnpm install --frozen-lockfile
 
-# Accept public env vars at build time
+# Fallback to .env.production if build args aren't provided
 ARG NEXT_PUBLIC_API_URL
 ARG NEXT_PUBLIC_APP_URL
 ENV NEXT_PUBLIC_API_URL=$NEXT_PUBLIC_API_URL
@@ -20,6 +20,9 @@ ENV NEXT_PUBLIC_APP_URL=$NEXT_PUBLIC_APP_URL
 
 # Copy source and build
 COPY . .
+RUN if [ -z "$NEXT_PUBLIC_API_URL" ] && [ -f apps/vega-frontend/.env.production ]; then \
+      cp apps/vega-frontend/.env.production apps/vega-frontend/.env; \
+    fi
 RUN pnpm --filter vega-frontend build
 
 # Production runtime

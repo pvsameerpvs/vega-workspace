@@ -45,6 +45,7 @@ const isAllowedOrigin = (origin: string | undefined) => {
   if (!origin) return true;
   if (allowedOrigins.includes(origin)) return true;
   if (origin.endsWith(".up.railway.app")) return true;
+  if (origin.endsWith(".thevegauae.com") || origin === "https://thevegauae.com") return true;
   if (process.env.NODE_ENV === "development") return true;
   return false;
 };
