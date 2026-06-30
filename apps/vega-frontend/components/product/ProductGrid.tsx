@@ -48,7 +48,7 @@ export function ProductGrid({ products, locale = "en" }: ProductGridProps) {
             {/* Card Container */}
             <div className="modern-card overflow-hidden transition-all duration-500 hover:shadow-card-hover hover:-translate-y-2">
               {/* Image Section */}
-              <Link href={getProductUrl(product, locale)} className="block relative overflow-hidden">
+              <Link href={getProductUrl(product, locale)} className="block relative">
                 <div className="aspect-[4/3] overflow-hidden bg-slate-100">
                   <ProtectedImage
                     src={product.image || ""}
@@ -61,7 +61,7 @@ export function ProductGrid({ products, locale = "en" }: ProductGridProps) {
 
                 {/* Badges */}
                 <div className="absolute left-4 top-4 z-10">
-                  <span title={product.sku || ""} className="inline-flex items-center rounded-full bg-white/95 backdrop-blur-sm px-3 py-1.5 text-xs font-bold text-vega-blue shadow-md border border-vega-blue/10">
+                  <span title={product.sku || ""} className="inline-flex items-center rounded-full bg-white/95 backdrop-blur-sm px-3 py-1.5 text-xs font-bold text-vega-blue shadow-md border border-vega-blue/10 max-w-[80px] truncate">
                     {product.sku}
                   </span>
                 </div>
@@ -81,9 +81,10 @@ export function ProductGrid({ products, locale = "en" }: ProductGridProps) {
                       e.stopPropagation();
                       router.push(getProductUrl(product, locale));
                     }}
-                    className="inline-flex items-center gap-1.5 rounded-full bg-white px-4 py-2 text-xs font-bold text-vega-blue shadow-lg transition-all duration-300 hover:bg-vega-blue hover:text-white hover:scale-105 font-heading"
+                    className="inline-flex items-center gap-1.5 rounded-full bg-white px-4 py-2 text-xs font-bold text-vega-blue shadow-lg transition-all duration-300 hover:bg-vega-blue hover:text-white hover:scale-105 font-heading whitespace-nowrap"
                   >
-                    <Eye className="h-3.5 w-3.5" /> {isAR ? "عرض" : "View"}
+                    <Eye className="h-3.5 w-3.5 shrink-0" />
+                    {isAR ? "عرض" : "View"}
                   </button>
                   <button
                     type="button"
@@ -92,9 +93,10 @@ export function ProductGrid({ products, locale = "en" }: ProductGridProps) {
                       e.preventDefault();
                       window.open(getWhatsAppLink(product, locale), "_blank");
                     }}
-                    className="inline-flex items-center gap-1.5 rounded-full bg-vega-yellow px-4 py-2 text-xs font-bold text-vega-blue shadow-lg transition-all duration-300 hover:bg-white hover:scale-105"
+                    className="inline-flex items-center gap-1.5 rounded-full bg-vega-yellow px-4 py-2 text-xs font-bold text-vega-blue shadow-lg transition-all duration-300 hover:bg-white hover:scale-105 whitespace-nowrap"
                   >
-                    <WhatsAppIcon className="h-3.5 w-3.5" /> {isAR ? "استفسار" : "Enquire"}
+                    <WhatsAppIcon className="h-3.5 w-3.5 shrink-0" />
+                    {isAR ? "استفسار" : "Enquire"}
                   </button>
                 </div>
               </Link>
@@ -102,7 +104,7 @@ export function ProductGrid({ products, locale = "en" }: ProductGridProps) {
               {/* Content Section */}
               <div className="p-5">
                 {/* Category label */}
-                <div className="mb-2 flex items-center gap-2">
+                <div className="mb-3 flex items-center gap-2">
                   <span className="text-[10px] font-bold uppercase tracking-[0.15em] text-vega-yellow">
                     {category}
                   </span>
@@ -110,31 +112,33 @@ export function ProductGrid({ products, locale = "en" }: ProductGridProps) {
                 </div>
 
                 {/* Product Name */}
-                <h3 className="text-base font-bold text-vega-blue leading-tight tracking-tight mb-2 group-hover:text-vega-blue transition-colors">
+                <h3 className="text-base font-bold text-vega-blue leading-tight tracking-tight mb-3 group-hover:text-vega-blue transition-colors">
                   {name}
                 </h3>
 
                 {/* Description */}
-                <p className="text-sm text-slate-500 line-clamp-2 leading-relaxed mb-4 min-h-[2.5rem]">
+                <p className="text-sm text-slate-500 line-clamp-2 leading-relaxed mb-3 min-h-[2.5rem]">
                   {desc}
                 </p>
 
                 {/* Divider */}
-                <div className="mb-4 h-px bg-slate-100" />
+                <div className="mb-3 h-px bg-slate-100" />
 
                 {/* Action Buttons */}
                 <div className="flex flex-col sm:flex-row items-stretch gap-3">
                   <Link
                     href={getProductUrl(product, locale)}
-                    className="flex-1 inline-flex items-center justify-center gap-1.5 rounded-full border border-slate-200 px-4 py-2.5 text-xs font-bold text-vega-blue transition-all duration-300 hover:border-vega-blue hover:bg-vega-blue hover:text-white hover:shadow-md font-heading"
+                    className="flex-1 inline-flex items-center justify-center gap-1.5 rounded-full border border-slate-200 px-3 py-2.5 text-xs font-bold text-vega-blue transition-all duration-300 hover:border-vega-blue hover:bg-vega-blue hover:text-white hover:shadow-md font-heading whitespace-nowrap"
                   >
-                    <Eye className="h-3.5 w-3.5" /> {isAR ? "التفاصيل" : "Details"}
+                    <Eye className="h-3.5 w-3.5 shrink-0" />
+                    {isAR ? "التفاصيل" : "Details"}
                   </Link>
                   <button
                      onClick={() => window.open(getWhatsAppLink(product, locale), "_blank")}
-                    className="flex-1 inline-flex items-center justify-center gap-1.5 rounded-full bg-vega-yellow px-4 py-2.5 text-xs font-bold text-vega-blue transition-all duration-300 hover:bg-vega-yellow-dark hover:shadow-yellow hover:-translate-y-0.5"
+                    className="flex-1 inline-flex items-center justify-center gap-1.5 rounded-full bg-vega-yellow px-3 py-2.5 text-xs font-bold text-vega-blue transition-all duration-300 hover:bg-vega-yellow-dark hover:shadow-yellow hover:-translate-y-0.5 whitespace-nowrap"
                   >
-                    {isAR ? "استفسار" : "Enquire"} <ArrowUpRight className="h-3.5 w-3.5" />
+                    {isAR ? "استفسار" : "Enquire"}
+                    <ArrowUpRight className="h-3.5 w-3.5 shrink-0" />
                   </button>
                 </div>
               </div>

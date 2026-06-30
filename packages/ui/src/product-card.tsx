@@ -34,7 +34,7 @@ const ProductCard = React.forwardRef<HTMLDivElement, ProductCardProps>(
         </div>
         <div className="p-5">
           <div className="mb-2.5 flex items-center gap-2">
-            <Badge variant="outline" className="text-[11px] font-bold tracking-wide text-vega-blue border-vega-blue/20 bg-vega-blue/5">
+            <Badge variant="outline" className="text-[11px] font-bold tracking-wide text-vega-blue border-vega-blue/20 bg-vega-blue/5 max-w-[80px] truncate">
               {sku}
             </Badge>
           </div>
