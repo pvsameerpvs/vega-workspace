@@ -11,7 +11,7 @@ const poppins = Poppins({
 });
 
 export const metadata: Metadata = {
-  title: "Vega - Reliable Furniture, Barriers & Camp Supply Solutions UAE",
+  title: "THE VEGA UAE - Reliable Camp Furniture Supplier in UAE",
   description:
     "Supplying durable camp furniture, queue barriers, office furniture, flag poles, and industrial supply products for businesses across the UAE.",
   keywords: [
@@ -30,7 +30,7 @@ export const metadata: Metadata = {
   },
   metadataBase: new URL("https://www.thevegauae.com"),
   openGraph: {
-    title: "Vega - B2B Product Catalogue UAE",
+    title: "THE VEGA UAE - Reliable Camp Furniture Supplier in UAE",
     description: "Reliable Furniture, Barriers & Camp Supply Solutions Across UAE",
     type: "website",
     url: "https://www.thevegauae.com",
@@ -40,7 +40,7 @@ export const metadata: Metadata = {
         url: "/images/logo/logo.jpeg",
         width: 1200,
         height: 630,
-        alt: "Vega UAE - Furniture, Barriers & Camp Supply Solutions",
+        alt: "THE VEGA UAE - Reliable Camp Furniture Supplier in UAE",
       },
     ],
   },
