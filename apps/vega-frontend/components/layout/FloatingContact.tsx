@@ -1,7 +1,4 @@
-"use client";
-
-import { useState } from "react";
-import { Plus, Phone, Mail } from "lucide-react";
+import { Phone, Mail } from "lucide-react";
 import { WhatsAppIcon } from "@/components/icons/WhatsAppIcon";
 
 const items = [
@@ -28,39 +25,24 @@ const items = [
 ];
 
 export function FloatingContact() {
-  const [open, setOpen] = useState(false);
-
   return (
     <div className="fixed bottom-6 left-6 z-50 flex flex-col items-center gap-3">
-      {open && (
-        <div className="flex flex-col items-center gap-3">
-          {items.map((item) => (
-            <a
-              key={item.label}
-              href={item.href}
-              target={item.target}
-              rel={item.rel}
-              className={`group relative flex h-12 w-12 items-center justify-center rounded-full ${item.color} text-white shadow-lg transition-all duration-300 hover:scale-110 hover:shadow-xl`}
-              onClick={() => setOpen(false)}
-            >
-              <item.icon className="h-5 w-5" />
-              <span className="absolute left-14 whitespace-nowrap rounded-md bg-gray-900/90 px-3 py-1.5 text-xs font-semibold text-white opacity-0 transition-all duration-200 group-hover:opacity-100">
-                {item.label}
-              </span>
-            </a>
-          ))}
-        </div>
-      )}
-
-      <button
-        onClick={() => setOpen(!open)}
-        className={`flex h-14 w-14 items-center justify-center rounded-full bg-[#FFD400] text-[#1F3A93] shadow-xl transition-all duration-300 hover:scale-110 hover:shadow-2xl ${
-          open ? "rotate-45" : "rotate-0"
-        }`}
-        aria-label={open ? "Close contact menu" : "Open contact menu"}
-      >
-        <Plus className="h-7 w-7" />
-      </button>
+      <div className="flex flex-col items-center gap-3">
+        {items.map((item) => (
+          <a
+            key={item.label}
+            href={item.href}
+            target={item.target}
+            rel={item.rel}
+            className={`group relative flex h-12 w-12 items-center justify-center rounded-full ${item.color} text-white shadow-lg transition-all duration-300 hover:scale-110 hover:shadow-xl`}
+          >
+            <item.icon className="h-5 w-5" />
+            <span className="absolute left-14 whitespace-nowrap rounded-md bg-gray-900/90 px-3 py-1.5 text-xs font-semibold text-white opacity-0 transition-all duration-200 group-hover:opacity-100">
+              {item.label}
+            </span>
+          </a>
+        ))}
+      </div>
     </div>
   );
 }
