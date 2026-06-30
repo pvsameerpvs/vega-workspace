@@ -47,7 +47,7 @@ export function Navbar({ categories = [], products = [] }: NavbarProps) {
     <header className="fixed top-0 left-0 right-0 z-50">
       {/* Top Bar */}
       <div className="bg-[#1F3A93]">
-        <div className={`mx-auto flex max-w-7xl items-center px-4 py-3.5 text-base text-white/85 ${isAR ? "flex-row-reverse justify-between" : "justify-between"}`}>
+        <div className={`mx-auto flex  items-center px-4 py-3.5 text-base text-white/85 ${isAR ? "flex-row-reverse justify-between" : "justify-between"}`}>
           <div className="flex items-center gap-7" dir="ltr">
             <a href="tel:+971567351095" className="flex items-center gap-1.5 hover:text-white transition-colors whitespace-nowrap font-medium">
               <Phone className="h-5 w-5 shrink-0" />
@@ -72,13 +72,13 @@ export function Navbar({ categories = [], products = [] }: NavbarProps) {
                 <rect x="75" y="50" width="225" height="50" fill="#FFFFFF" />
                 <rect x="75" y="100" width="225" height="50" fill="#000000" />
               </svg>
-              <span className="hidden sm:inline font-semibold text-white/80 text-[10px] uppercase tracking-wider whitespace-nowrap">
+              <span className="hidden sm:flex items-center gap-1.5 hover:text-white transition-colors whitespace-nowrap font-medium">
                 {isAR ? "فخورون بالإمارات" : "Proud of UAE"}
               </span>
             </div>
             <span className="text-white/30">|</span>
             <div className="flex items-center gap-1" dir="ltr">
-              <a href={`/en${pathname.replace(/^\/ar/, "").replace(/^\/en/, "") || "/"}`} className={`text-[10px] font-bold px-2 py-0.5 rounded transition-colors ${!isAR ? "text-[#1F3A93] bg-[#FFD400]" : "text-white/70 hover:text-white"}`} onClick={(e) => { e.preventDefault(); window.location.href = `/en${pathname.replace(/^\/ar/, "").replace(/^\/en/, "") || "/"}`; }}>
+              <a href={`/en${pathname.replace(/^\/ar/, "").replace(/^\/en/, "") || "/"}`} className={`text-[10px] font-bold px-2 py-0.5 rounded transition-colors  ${!isAR ? "text-[#1F3A93] bg-[#FFD400]" : "text-white/70 hover:text-white"}`} onClick={(e) => { e.preventDefault(); window.location.href = `/en${pathname.replace(/^\/ar/, "").replace(/^\/en/, "") || "/"}`; }}>
                 EN
               </a>
               <a href={`/ar${pathname.replace(/^\/en/, "").replace(/^\/ar/, "") || "/"}`} className={`text-[10px] font-bold px-2 py-0.5 rounded transition-colors ${isAR ? "text-[#1F3A93] bg-[#FFD400]" : "text-white/70 hover:text-white"}`} onClick={(e) => { e.preventDefault(); window.location.href = `/ar${pathname.replace(/^\/en/, "").replace(/^\/ar/, "") || "/"}`; }}>
