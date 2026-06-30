@@ -36,6 +36,13 @@
       "when": 1780592692716,
       "tag": "0004_broad_elektra",
       "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "6",
+      "when": 1782808916251,
+      "tag": "0005_curly_lord_tyger",
+      "breakpoints": true
     }
   ]
 }

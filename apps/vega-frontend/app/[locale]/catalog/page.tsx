@@ -1,5 +1,5 @@
 import { Metadata } from "next";
-import { BookOpen } from "lucide-react";
+import { BookOpen, Layers } from "lucide-react";
 import { getCatalogs, mapCatalogToFrontend } from "@/lib/api";
 import Link from "next/link";
 import { CatalogGrid } from "./sections/CatalogGrid";
@@ -19,11 +19,14 @@ export default async function CatalogPage({ params: { locale } }: { params: { lo
 
   const rawCatalogs = await getCatalogs();
   const catalogs = rawCatalogs.map(mapCatalogToFrontend).filter(Boolean);
-  const categories = Array.from(new Set(catalogs.map((c: any) => c.category)));
+  const allCategories = Array.from(
+    new Map(
+      catalogs.flatMap((c: any) => c.categories || []).map((cat: any) => [cat.slug, cat])
+    ).values()
+  );
 
   return (
     <main className="pt-20 pb-16">
-      {/* Hero */}
       <div className="mx-auto max-w-7xl px-6 mb-20">
         <div className="mb-6 flex items-center gap-3">
           <div className="h-px w-8 bg-[#FFD400]" />
@@ -41,7 +44,6 @@ export default async function CatalogPage({ params: { locale } }: { params: { lo
         </p>
       </div>
 
-      {/* Category Chips */}
       <div className="mx-auto max-w-7xl px-6 mb-12">
         <div className="flex flex-wrap gap-3">
           <Link
@@ -50,24 +52,22 @@ export default async function CatalogPage({ params: { locale } }: { params: { lo
           >
             <BookOpen className="h-4 w-4" /> {isAR ? "جميع الكتالوجات" : "All Catalogs"}
           </Link>
-          {categories.map((cat) => (
+          {allCategories.map((cat: any) => (
             <Link
-              key={cat}
-              href={l(`/catalog#${cat?.toLowerCase().replace(/\s+/g, "-")}`)}
+              key={cat.slug}
+              href={l(`/products/${cat.slug}`)}
               className="inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white px-5 py-2.5 text-sm font-semibold text-slate-500 transition-all hover:border-[#FFD400] hover:text-[#1F3A93]"
             >
-              {cat}
+              <Layers className="h-3.5 w-3.5" /> {isAR && cat.nameAr ? cat.nameAr : cat.name}
             </Link>
           ))}
         </div>
       </div>
 
-      {/* Catalog Grid */}
       <div className="mx-auto max-w-7xl px-6">
         <CatalogGrid catalogs={catalogs} locale={locale} />
       </div>
 
-      {/* Bottom CTA */}
       <div className="mx-auto max-w-7xl px-6 mt-24">
         <CatalogCTA locale={locale} />
       </div>

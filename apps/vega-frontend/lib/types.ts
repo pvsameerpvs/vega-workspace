@@ -5,6 +5,7 @@ export interface Product {
   slug: string;
   sku: string;
   category: string;
+  categoryId?: number;
   categorySlug?: string;
   categoryAr?: string;
   subcategory: string;

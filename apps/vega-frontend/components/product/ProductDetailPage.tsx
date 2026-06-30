@@ -2,7 +2,7 @@ import { Product } from "@/lib/types";
 import { ProtectedImage } from "@/components/ProtectedImage";
 import { getWhatsAppLink } from "@/lib/whatsapp";
 import Link from "next/link";
-import { ArrowLeft, Check, Truck, Package, BadgePercent, MapPin, ArrowRight } from "lucide-react";
+import { ArrowLeft, Check, Truck, Package, BadgePercent, MapPin, BookOpen } from "lucide-react";
 import { WhatsAppIcon } from "@/components/icons/WhatsAppIcon";
 import { ProductGrid } from "./ProductGrid";
 import { getCategoryUrl, getSubcategoryUrl } from "@/lib/url";
@@ -10,10 +10,11 @@ import { getCategoryUrl, getSubcategoryUrl } from "@/lib/url";
 interface ProductDetailPageProps {
   product: Product;
   related: Product[];
+  catalogs?: any[];
   locale: string;
 }
 
-export function ProductDetailPage({ product, related, locale }: ProductDetailPageProps) {
+export function ProductDetailPage({ product, related, catalogs = [], locale }: ProductDetailPageProps) {
   const isAR = locale === "ar";
   const l = (path: string) => `/${locale}${path}`;
 
@@ -197,11 +198,36 @@ export function ProductDetailPage({ product, related, locale }: ProductDetailPag
               )}
             </div>
 
+            {/* Catalog section */}
+            {catalogs.length > 0 && (
+              <div className="mt-10">
+                <span className="mb-3 block text-sm font-semibold text-slate-700 uppercase tracking-wider">
+                  {isAR ? "متوفر في الكتالوج" : "Available in Catalog"}
+                </span>
+                <div className="flex flex-wrap gap-2">
+                  {catalogs.map((cat: any) => (
+                    <a
+                      key={cat.id}
+                      href={cat.pdfFile}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="inline-flex items-center gap-2 rounded-full bg-slate-100 px-4 py-2 text-xs font-semibold text-slate-600 transition-all hover:bg-vega-yellow hover:text-vega-blue"
+                    >
+                      <BookOpen className="h-3.5 w-3.5" />
+                      {isAR && cat.titleAr ? cat.titleAr : cat.title}
+                    </a>
+                  ))}
+                </div>
+              </div>
+            )}
+
             {/* Actions */}
-            <div className="mt-12 flex flex-wrap gap-4">
-              <Link href={l("/catalog")} className="inline-flex items-center gap-2 text-sm font-semibold text-slate-600 hover:text-vega-blue transition-all">
-                {isAR ? "تحميل الكتالوج" : "Download Catalog"} <ArrowRight className="h-4 w-4" />
-              </Link>
+            <div className="mt-8 flex flex-wrap gap-4">
+              {catalogs.length === 0 && (
+                <Link href={l("/catalog")} className="inline-flex items-center gap-2 text-sm font-semibold text-slate-600 hover:text-vega-blue transition-all">
+                  <BookOpen className="h-4 w-4" /> {isAR ? "تصفح الكتالوجات" : "Browse Catalogs"}
+                </Link>
+              )}
               <Link href={getWhatsAppLink(product, locale)} target="_blank" className="pill-btn-yellow text-sm group">
                 {isAR ? "استفسار عبر واتساب" : "Enquire on WhatsApp"} <WhatsAppIcon className="ml-2 h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5" />
               </Link>

@@ -8,6 +8,7 @@ export * from "./careers";
 export * from "./blogs";
 export * from "./gallery";
 export * from "./catalogs";
+export * from "./catalogCategories";
 export * from "./teamMembers";
 export * from "./faqs";
 export * from "./industries";

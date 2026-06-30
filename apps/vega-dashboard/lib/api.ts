@@ -82,9 +82,13 @@ export const api = {
 
   // Catalogs
   getCatalogs: () => fetcher<any[]>("/catalogs"),
+  getCatalog: (id: number) => fetcher<any>(`/catalogs/${id}`),
   createCatalog: (data: any) => fetcher<any>("/catalogs", { method: "POST", body: JSON.stringify(data) }),
   updateCatalog: (id: number, data: any) => fetcher<any>(`/catalogs/${id}`, { method: "PUT", body: JSON.stringify(data) }),
   deleteCatalog: (id: number) => fetcher<any>(`/catalogs/${id}`, { method: "DELETE" }),
+  getCatalogCategories: (catalogId: number) => fetcher<any[]>(`/catalogs/${catalogId}/categories`),
+  linkCategoryToCatalog: (catalogId: number, categoryId: number) => fetcher<any>(`/catalogs/${catalogId}/categories`, { method: "POST", body: JSON.stringify({ categoryId }) }),
+  unlinkCategoryFromCatalog: (catalogId: number, categoryId: number) => fetcher<any>(`/catalogs/${catalogId}/categories/${categoryId}`, { method: "DELETE" }),
 
   // Team
   getTeam: () => fetcher<any[]>("/team"),

@@ -102,6 +102,10 @@ export async function getCatalogs() {
   return fetcherList<any>("/catalogs");
 }
 
+export async function getCatalogsByCategory(categoryId: number) {
+  return fetcherList<any>(`/catalogs/by-category/${categoryId}`);
+}
+
 export async function getSpotlightItems() {
   return fetcherList<any>("/homepage/spotlight", { next: { revalidate: 0 } });
 }
@@ -304,5 +308,11 @@ export function mapCatalogToFrontend(c: any) {
     coverImage: c.coverImage || c.image || "",
     pdfFile: c.pdfFile || c.pdf || "",
     category: c.category || "",
+    categories: Array.isArray(c.categories) ? c.categories.map((cat: any) => ({
+      id: cat.id || cat.categoryId,
+      name: cat.name || "",
+      nameAr: cat.nameAr || "",
+      slug: cat.slug || "",
+    })) : [],
   };
 }

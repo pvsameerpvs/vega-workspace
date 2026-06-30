@@ -83,7 +83,7 @@ export function Footer({ categories = [] }: FooterProps) {
             <ul className="space-y-3" dir="ltr">
               <li className="flex items-center gap-2 text-lg">
                 <Mail className="h-4 w-4 text-[#FFD400] shrink-0" />
-                <span className="whitespace-nowrap">Sales@thevegauae.com</span>
+                <span className="whitespace-nowrap">sales@thevegauae.com</span>
               </li>
               <li className="flex items-center gap-2 text-lg">
                 <Phone className="h-4 w-4 text-[#FFD400] shrink-0" />
