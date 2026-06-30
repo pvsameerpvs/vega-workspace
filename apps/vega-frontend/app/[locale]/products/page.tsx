@@ -29,7 +29,7 @@ export default async function ProductsPage({ params: { locale } }: { params: { l
   const mappedCategories = (categories || []).map(mapCategoryToFrontend).filter(Boolean) as any[];
 
   return (
-    <main className="pt-36 pb-32">
+    <main className="pt-20 pb-16">
       <div className="mx-auto max-w-7xl px-6">
         <div className="mb-20">
           <span className="mb-6 block text-sm text-slate-400">{isAR ? "الكتالوج" : "Catalogue"}</span>

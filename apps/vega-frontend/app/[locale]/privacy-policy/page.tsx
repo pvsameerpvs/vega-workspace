@@ -12,7 +12,7 @@ export default function PrivacyPolicyPage({ params: { locale } }: { params: { lo
   const isAR = locale === "ar";
 
   return (
-    <main className="pt-36 pb-32">
+    <main className="pt-20 pb-16">
       <div className="mx-auto max-w-4xl px-6">
         <div className="mb-16">
           <span className="mb-6 block text-sm text-slate-400">{isAR ? "قانوني" : "Legal"}</span>

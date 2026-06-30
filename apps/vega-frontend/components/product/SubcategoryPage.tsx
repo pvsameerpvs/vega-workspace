@@ -25,7 +25,7 @@ export function SubcategoryPage({ subcategory, products, locale }: SubcategoryPa
   const categoryDisplayName = isAR && subcategory.categoryNameAr ? subcategory.categoryNameAr : subcategory.categoryName || "";
 
   return (
-    <main className="pt-36 pb-32">
+    <main className="pt-20 pb-16">
       <div className="mx-auto max-w-7xl px-6">
         <Link href={l("/products")} className="mb-8 inline-flex items-center gap-2 text-sm font-semibold text-slate-400 hover:text-vega-blue transition-colors">
           <ArrowLeft className="h-4 w-4" /> {isAR ? "العودة إلى المنتجات" : "Back to Products"}

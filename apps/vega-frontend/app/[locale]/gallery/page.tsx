@@ -17,7 +17,7 @@ export default async function GalleryPage({ params: { locale } }: { params: { lo
   const mapped = (items || []).map(mapGalleryToFrontend).filter(Boolean) as any[];
 
   return (
-    <main className="pt-36 pb-32">
+    <main className="pt-20 pb-16">
       <div className="mx-auto max-w-7xl px-6">
         {/* Hero */}
         <div className="mb-6 flex items-center gap-3">

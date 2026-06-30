@@ -22,7 +22,7 @@ export default async function CatalogPage({ params: { locale } }: { params: { lo
   const categories = Array.from(new Set(catalogs.map((c: any) => c.category)));
 
   return (
-    <main className="pt-36 pb-32">
+    <main className="pt-20 pb-16">
       {/* Hero */}
       <div className="mx-auto max-w-7xl px-6 mb-20">
         <div className="mb-6 flex items-center gap-3">
