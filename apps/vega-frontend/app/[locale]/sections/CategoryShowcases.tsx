@@ -22,7 +22,7 @@ export async function CategoryShowcases({ locale = "en" }: CategoryShowcasesProp
         <div className="text-center mb-14 lg:mb-20">
           <div className="flex items-center justify-center gap-4 mb-4">
             <div className="h-px w-12 bg-vega-yellow" />
-            <span className="text-xs font-bold uppercase tracking-[0.25em] text-vega-blue/60">
+            <span className="text-sm font-bold uppercase tracking-[0.25em] text-vega-blue/60">
               {isAR ? "استكشف مجموعاتنا" : "Explore Our Collections"}
             </span>
             <div className="h-px w-12 bg-vega-yellow" />

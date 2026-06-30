@@ -18,14 +18,14 @@ export async function PopularCategories({ locale = "en" }: PopularCategoriesProp
         <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-slate-900 font-display leading-tight text-center mb-8">
           {isAR ? "الفئات الشائعة" : "Popular Categories"}
         </h2>
-        <div className="flex flex-wrap justify-center gap-6">
+        <div className="flex flex-wrap justify-center gap-14">
           {mapped.slice(0, 8).map((cat) => (
             <Link
               key={cat.id}
               href={getCategoryUrl(cat.slug, locale)}
-              className="group flex flex-col items-center text-center max-w-[120px]"
+              className="group flex flex-col items-center text-center max-w-[200px]"
             >
-              <div className="relative mb-3 aspect-square w-full max-w-[120px] overflow-hidden rounded-full border-2 border-slate-100 transition-all duration-300 group-hover:border-[#FFD400] group-hover:shadow-md">
+              <div className="relative mb-4 aspect-square w-full max-w-[200px] overflow-hidden rounded-full border-2 border-slate-100 transition-all duration-300 group-hover:border-[#FFD400] group-hover:shadow-md">
                 <ProtectedImage
                   src={cat.image}
                   alt={isAR && cat.nameAr ? cat.nameAr : cat.name}
