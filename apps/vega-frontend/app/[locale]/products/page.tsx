@@ -3,13 +3,10 @@ import {
   getProducts,
   getCategories,
   mapProductToFrontend,
-  mapCategoryToFrontend,
 } from "@/lib/api";
-import { ProductGrid } from "@/components/product/ProductGrid";
-import { ArrowRight } from "lucide-react";
+import { ProductsPageClient } from "@/components/product/ProductsPageClient";
 import { isValidLocale } from "@/lib/i18n";
 import { notFound } from "next/navigation";
-import { getCategoryUrl } from "@/lib/url";
 
 export const metadata: Metadata = {
   title: "Products | Vega UAE",
@@ -26,12 +23,11 @@ export default async function ProductsPage({ params: { locale } }: { params: { l
   ]);
 
   const mappedProducts = (products || []).map(mapProductToFrontend).filter(Boolean) as any[];
-  const mappedCategories = (categories || []).map(mapCategoryToFrontend).filter(Boolean) as any[];
 
   return (
     <main className="pt-20 pb-16">
       <div className="mx-auto max-w-7xl px-6">
-        <div className="mb-20">
+        <div className="mb-12">
           <span className="mb-6 block text-sm text-slate-400">{isAR ? "الكتالوج" : "Catalogue"}</span>
           <h1 className="section-heading text-4xl md:text-5xl">{isAR ? "منتجاتنا" : "Our Products"}</h1>
           <p className="mt-6 text-lg text-slate-500 max-w-lg leading-relaxed">
@@ -40,18 +36,11 @@ export default async function ProductsPage({ params: { locale } }: { params: { l
               : "Explore our complete catalogue of camp furniture, queue barriers, metal barriers, and office furniture."}
           </p>
         </div>
-        <div className="mb-16 flex flex-wrap gap-3">
-          {mappedCategories.map((cat) => (
-            <a
-              key={cat.id}
-              href={getCategoryUrl(cat.slug, locale)}
-              className="group inline-flex items-center gap-2 text-sm font-semibold text-slate-500 hover:text-vega-blue transition-all duration-300"
-            >
-              {isAR && cat.nameAr ? cat.nameAr : cat.name} <ArrowRight className="h-3.5 w-3.5 transition-transform duration-300 group-hover:translate-x-0.5" />
-            </a>
-          ))}
-        </div>
-        <ProductGrid products={mappedProducts} locale={locale} />
+        <ProductsPageClient
+          initialProducts={mappedProducts}
+          categories={categories || []}
+          locale={locale}
+        />
       </div>
     </main>
   );

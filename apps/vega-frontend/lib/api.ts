@@ -139,6 +139,15 @@ export async function resolveProductPath(path: string) {
   return fetcher<{ type: string; data: any }>(`/products/resolve?path=${encodeURIComponent(path)}`);
 }
 
+export async function getProductsFiltered(params: { search?: string; category?: string; subcategory?: string }) {
+  const query = new URLSearchParams();
+  query.set("limit", "1000");
+  if (params.search) query.set("search", params.search);
+  if (params.category) query.set("category", params.category);
+  if (params.subcategory) query.set("subcategory", params.subcategory);
+  return fetcherList<any>(`/products?${query.toString()}`);
+}
+
 export async function getProductsByCategory(categoryId: number) {
   return fetcherList<any>(`/products?category=${categoryId}&limit=1000`);
 }
