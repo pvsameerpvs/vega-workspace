@@ -1,9 +1,10 @@
 "use client";
 
+import { useState } from "react";
 import { Download, FileText, Eye, Layers } from "lucide-react";
 import { ProtectedImage } from "@/components/ProtectedImage";
-import { downloadFile } from "@/lib/download";
 import Link from "next/link";
+import { CatalogDownloadDialog } from "./CatalogDownloadDialog";
 
 interface CatalogGridProps {
   catalogs: any[];
@@ -13,8 +14,14 @@ interface CatalogGridProps {
 export function CatalogGrid({ catalogs, locale = "en" }: CatalogGridProps) {
   const isAR = locale === "ar";
   const l = (path: string) => `/${locale}${path}`;
+  const [downloadTarget, setDownloadTarget] = useState<{
+    name: string;
+    category: string;
+    pdfUrl: string;
+  } | null>(null);
 
   return (
+    <>
     <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
       {catalogs.map((cat, i) => {
         const name = isAR && cat.nameAr ? cat.nameAr : cat.name;
@@ -37,14 +44,13 @@ export function CatalogGrid({ catalogs, locale = "en" }: CatalogGridProps) {
                 className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
               />
               <div className="absolute inset-0 flex items-center justify-center gap-3 bg-black/30 opacity-0 transition-all duration-500 group-hover:opacity-100">
-                <a
-                  href={cat.pdfFile}
-                  target="_blank"
-                  rel="noreferrer"
+                <button
+                  type="button"
+                  onClick={() => setDownloadTarget({ name: cat.name, category: cat.category || "", pdfUrl: cat.pdfFile })}
                   className="inline-flex items-center gap-1.5 rounded-full bg-white px-5 py-2.5 text-xs font-bold text-[#1F3A93] shadow-lg transition-all duration-300 hover:bg-[#1F3A93] hover:text-white hover:scale-105"
                 >
                   <Eye className="h-3.5 w-3.5" /> {isAR ? "معاينة" : "Preview"}
-                </a>
+                </button>
               </div>
 
               {cat.category && (
@@ -94,24 +100,33 @@ export function CatalogGrid({ catalogs, locale = "en" }: CatalogGridProps) {
 
               <div className="flex items-center gap-2">
                 <button
-                  onClick={() => downloadFile(cat.pdfFile, `${cat.name}.pdf`)}
+                  onClick={() => setDownloadTarget({ name: cat.name, category: cat.category || "", pdfUrl: cat.pdfFile })}
                   className="flex-1 inline-flex items-center justify-center gap-1.5 rounded-full bg-[#FFD400] px-4 py-2.5 text-xs font-bold text-[#1F3A93] transition-all duration-300 hover:bg-[#e6bf00] hover:shadow-md hover:-translate-y-0.5"
                 >
                   <Download className="h-3.5 w-3.5" /> {isAR ? "تحميل" : "Download"}
                 </button>
-                <a
-                  href={cat.pdfFile}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="inline-flex items-center justify-center gap-1 rounded-full border border-slate-200 px-4 py-2.5 text-xs font-bold text-slate-500 transition-all duration-300 hover:border-[#1F3A93] hover:bg-[#1F3A93] hover:text-white"
+                <button
+                  type="button"
+                  onClick={() => setDownloadTarget({ name: cat.name, category: cat.category || "", pdfUrl: cat.pdfFile })}
+                  className="flex-1 inline-flex items-center justify-center gap-1 rounded-full border border-slate-200 px-4 py-2.5 text-xs font-bold text-slate-500 transition-all duration-300 hover:border-[#1F3A93] hover:bg-[#1F3A93] hover:text-white"
                 >
                   <Eye className="h-3.5 w-3.5" /> {isAR ? "عرض" : "View"}
-                </a>
+                </button>
               </div>
             </div>
           </div>
         );
       })}
     </div>
+
+      <CatalogDownloadDialog
+        catalogName={downloadTarget?.name || ""}
+        catalogCategory={downloadTarget?.category || ""}
+        pdfUrl={downloadTarget?.pdfUrl || ""}
+        locale={locale}
+        open={!!downloadTarget}
+        onClose={() => setDownloadTarget(null)}
+      />
+    </>
   );
 }
