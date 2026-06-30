@@ -31,17 +31,18 @@ export function ProductMegaMenu({ categories, isAR, locale, open }: ProductMegaM
         {/* Categories */}
         <div className="w-56 shrink-0 border-r border-slate-100 p-3 space-y-1 max-h-[70vh] overflow-y-auto">
           {categories.map((cat) => (
-            <button
+            <Link
               key={cat.id}
+              href={getCategoryUrl(cat.slug, locale)}
               onMouseEnter={() => { setActiveCategory(cat.slug); setActiveSubcategory(null); }}
-              className={`w-full text-left px-3 py-2.5 rounded-lg text-sm transition-colors ${
+              className={`block px-3 py-2.5 rounded-lg text-sm transition-colors ${
                 activeCategory === cat.slug
                   ? "bg-[#1F3A93] text-white font-semibold"
                   : "text-slate-600 hover:bg-slate-50"
               }`}
             >
               {isAR && cat.nameAr ? cat.nameAr : cat.name}
-            </button>
+            </Link>
           ))}
         </div>
 
