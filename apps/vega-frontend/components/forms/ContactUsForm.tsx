@@ -10,8 +10,9 @@ interface ContactUsFormProps {
   location?: string;
 }
 
-export function ContactUsForm({ isAR }: ContactUsFormProps) {
+export function ContactUsForm({ isAR, location = "Website Contact Form" }: ContactUsFormProps) {
   const [status, setStatus] = useState<"idle" | "submitting" | "success" | "error">("idle");
+  const [submittedName, setSubmittedName] = useState("");
   const [formData, setFormData] = useState({
     name: "",
     company: "",
@@ -39,6 +40,7 @@ export function ContactUsForm({ isAR }: ContactUsFormProps) {
       });
       if (res.ok) {
         setStatus("success");
+        setSubmittedName(formData.name);
         setFormData({ name: "", company: "", email: "", phone: "", message: "" });
       } else {
         setStatus("error");
@@ -50,16 +52,22 @@ export function ContactUsForm({ isAR }: ContactUsFormProps) {
 
   if (status === "success") {
     return (
-      <div className="flex flex-col items-center justify-center py-12 text-center">
-        <CheckCircle className="mb-4 h-12 w-12 text-emerald-500" />
-        <h3 className="mb-2 text-lg font-bold text-[#1F3A93]">
-          {isAR ? "تم الإرسال بنجاح" : "Submitted Successfully"}
+      <div className="flex flex-col items-center justify-center py-16 text-center">
+        <div className="mb-6 flex h-16 w-16 items-center justify-center rounded-full bg-emerald-50">
+          <CheckCircle className="h-8 w-8 text-emerald-500" />
+        </div>
+        <h3 className="mb-3 text-xl font-bold text-[#1F3A93]">
+          {isAR ? "شكراً لك" : "Thank You"}
+          {!isAR && submittedName && <span className="text-[#FFD400]">, {submittedName}</span>}
+          {isAR && submittedName && <span className="text-[#FFD400]">، {submittedName}</span>}
         </h3>
-        <p className="max-w-md text-sm text-slate-500">
-          {isAR
-            ? "شكراً لتواصلك معنا. سنتصل بك قريباً."
-            : "Thank you for reaching out. We will contact you soon."}
-        </p>
+        <div className="mx-auto max-w-md space-y-2">
+          <p className="text-sm leading-relaxed text-slate-600">
+            {isAR
+              ? "نقدر لك تواصلك معنا. تم إرسال رسالتك بنجاح، وسيتواصل معك فريقنا قريباً."
+              : "We appreciate you taking the time to contact us. Your message has been sent successfully, and our executives will contact you shortly."}
+          </p>
+        </div>
       </div>
     );
   }
