@@ -14,6 +14,18 @@ RUN pnpm install --frozen-lockfile
 
 # Copy source and build
 COPY . .
+
+# Build-time ARGs for Next.js public env vars (inlined at build time)
+ARG NEXT_PUBLIC_API_URL
+ARG NEXT_PUBLIC_APP_URL
+ENV NEXT_PUBLIC_API_URL=$NEXT_PUBLIC_API_URL
+ENV NEXT_PUBLIC_APP_URL=$NEXT_PUBLIC_APP_URL
+
+# Fallback to .env.production if ARGs aren't provided
+RUN if [ -z "$NEXT_PUBLIC_API_URL" ] && [ -f apps/vega-frontend/.env.production ]; then \
+      grep NEXT_PUBLIC_ apps/vega-frontend/.env.production > apps/vega-frontend/.env; \
+    fi
+
 ENV NODE_ENV=production
 ENV NEXT_TELEMETRY_DISABLED=1
 RUN pnpm --filter vega-frontend build
