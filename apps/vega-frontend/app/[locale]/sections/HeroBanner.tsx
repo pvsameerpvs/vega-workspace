@@ -63,7 +63,7 @@ export function HeroBanner({ banners: initialBanners, locale = "en" }: HeroBanne
     if (!initialBanners || initialBanners.length === 0) {
       getBanners().then((d) => { if (d) setBanners(d as Banner[]); });
     }
-  }, []);
+  }, [initialBanners]);
 
   const activeBanners = banners?.filter((b) => b.isActive && b.image) || [];
   const slides = activeBanners.map((b) => ({
