@@ -1,5 +1,5 @@
-# Stage 1: Build
-FROM node:20-alpine AS builder
+# Vega Dashboard - Railway Production Dockerfile
+FROM node:20-alpine AS base
 RUN corepack enable && corepack prepare pnpm@9.0.0 --activate
 WORKDIR /app
 
@@ -12,29 +12,20 @@ COPY packages/utils/package.json ./packages/utils/
 COPY packages/config/package.json ./packages/config/
 RUN pnpm install --frozen-lockfile
 
+# Fallback to .env.production if build args aren't provided
+ARG NEXT_PUBLIC_API_URL
+ARG NEXT_PUBLIC_APP_URL
+ENV NEXT_PUBLIC_API_URL=$NEXT_PUBLIC_API_URL
+ENV NEXT_PUBLIC_APP_URL=$NEXT_PUBLIC_APP_URL
+
 # Copy source and build
 COPY . .
-ENV NODE_ENV=production
-ENV NEXT_TELEMETRY_DISABLED=1
+RUN if [ -z "$NEXT_PUBLIC_API_URL" ] && [ -f apps/vega-dashboard/.env.production ]; then \
+      cp apps/vega-dashboard/.env.production apps/vega-dashboard/.env; \
+    fi
 RUN pnpm --filter vega-dashboard build
 
-# Stage 2: Production runner
-FROM node:20-alpine AS runner
-RUN corepack enable && corepack prepare pnpm@9.0.0 --activate
-WORKDIR /app
-
+# Production runtime
 ENV NODE_ENV=production
-ENV NEXT_TELEMETRY_DISABLED=1
-ENV PORT=3001
 EXPOSE 3001
-
-COPY --from=builder /app/package.json ./package.json
-COPY --from=builder /app/pnpm-workspace.yaml ./pnpm-workspace.yaml
-COPY --from=builder /app/pnpm-lock.yaml ./pnpm-lock.yaml
-COPY --from=builder /app/apps/vega-dashboard ./apps/vega-dashboard
-COPY --from=builder /app/packages ./packages
-COPY --from=builder /app/node_modules ./node_modules
-COPY --from=builder /app/apps/vega-dashboard/.next ./apps/vega-dashboard/.next
-COPY --from=builder /app/apps/vega-dashboard/public ./apps/vega-dashboard/public
-
 CMD ["pnpm", "--filter", "vega-dashboard", "start"]
