@@ -45,8 +45,8 @@ const stats: Stat[] = [
   { value: 5000, suffix: "+", label: "Customers", labelAr: "عميل" },
   { value: 300, suffix: "+", label: "Products in stock", labelAr: "منتج في المخزون" },
   { value: 15, suffix: "+", label: "Years in Business", labelAr: "سنة في العمل" },
-  { value: 10000, suffix: "+ sq ft", label: "Storage Facility", labelAr: "مستودع تخزين" },
   { value: 25, suffix: "+", label: "Team Members", labelAr: "فريق العمل" },
+  { value: 10000, suffix: "+ sq ft", label: "Storage Facility", labelAr: "مستودع تخزين" },
 ];
 
 interface TrustBarProps {
