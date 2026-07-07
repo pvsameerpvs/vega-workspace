@@ -2,12 +2,12 @@ import type { Metadata } from "next";
 import { Poppins } from "next/font/google";
 import "./globals.css";
 import { Navbar, Footer, FloatingContact } from "@/components/layout";
-import { getCategories, getProducts, mapCategoryToFrontend, mapProductToFrontend } from "@/lib/api";
 
 const poppins = Poppins({
   subsets: ["latin"],
   weight: ["400", "500", "600", "700", "800"],
   variable: "--font-poppins",
+  display: "swap",
 });
 
 export const metadata: Metadata = {
@@ -52,18 +52,11 @@ export const metadata: Metadata = {
   },
 };
 
-export default async function RootLayout({
+export default function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  const [categories, products] = await Promise.all([
-    getCategories(),
-    getProducts(),
-  ]);
-
-  const mappedCategories = (categories || []).map(mapCategoryToFrontend).filter(Boolean) as any[];
-  const mappedProducts = (products || []).map(mapProductToFrontend).filter(Boolean) as any[];
   return (
     <html suppressHydrationWarning className={`${poppins.variable} font-sans`}>
       <head>
@@ -86,9 +79,9 @@ export default async function RootLayout({
         />
       </head>
       <body className={`${poppins.variable} font-sans antialiased pt-28`}>
-        <Navbar categories={mappedCategories || []} products={mappedProducts || []} />
+        <Navbar />
         {children}
-        <Footer categories={mappedCategories || []} />
+        <Footer />
         <FloatingContact />
       </body>
     </html>

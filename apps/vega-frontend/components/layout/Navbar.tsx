@@ -8,18 +8,21 @@ import { WhatsAppIcon } from "@/components/icons/WhatsAppIcon";
 import { GooeySearchBar } from "./GooeySearchBar";
 import { ProductMegaMenu } from "./ProductMegaMenu";
 import { MobileMenu } from "./MobileMenu";
+import { getCategories, getProducts, mapCategoryToFrontend, mapProductToFrontend } from "@/lib/api";
 
-interface NavbarProps {
-  categories?: { id: string; name: string; nameAr?: string; slug: string; subcategories?: { id: string; name: string; nameAr?: string; slug: string }[] }[];
-  products?: { id: string; name: string; nameAr?: string; slug: string; image: string; category: string; categorySlug?: string; subcategorySlug?: string }[];
-}
-
-export function Navbar({ categories = [], products = [] }: NavbarProps) {
+export function Navbar() {
+  const [categories, setCategories] = useState<any[]>([]);
+  const [products, setProducts] = useState<any[]>([]);
   const [mega, setMega] = useState<string | null>(null);
   const [mobile, setMobile] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const pathname = usePathname();
   const params = useParams();
+
+  useEffect(() => {
+    getCategories().then((d) => setCategories((d || []).map(mapCategoryToFrontend).filter(Boolean) as any[]));
+    getProducts().then((d) => setProducts((d || []).map(mapProductToFrontend).filter(Boolean) as any[]));
+  }, []);
   
   const locale = (params?.locale as string) || "en";
   const isAR = locale === "ar";

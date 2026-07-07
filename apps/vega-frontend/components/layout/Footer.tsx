@@ -1,18 +1,21 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import { useParams } from "next/navigation";
 import { Mail, Phone, MapPin, Globe } from "lucide-react";
 import { getCategoryUrl } from "@/lib/url";
+import { getCategories, mapCategoryToFrontend } from "@/lib/api";
 
-interface FooterProps {
-  categories?: { id: string; name: string; nameAr?: string; slug: string }[];
-}
-
-export function Footer({ categories = [] }: FooterProps) {
+export function Footer() {
+  const [categories, setCategories] = useState<any[]>([]);
   const params = useParams();
   const locale = (params?.locale as string) || "en";
   const isAR = locale === "ar";
+
+  useEffect(() => {
+    getCategories().then((d) => setCategories((d || []).map(mapCategoryToFrontend).filter(Boolean) as any[]));
+  }, []);
   const l = (path: string) => `/${locale}${path}`;
   const year = new Date().getFullYear();
 

@@ -2,10 +2,8 @@ import { Metadata } from "next";
 import { notFound } from "next/navigation";
 import {
   resolveProductPath,
-  getProducts,
   getProductsByCategory,
   getProductsBySubcategory,
-  getCatalogsByCategory,
   mapProductToFrontend,
   mapCategoryToFrontend,
 } from "@/lib/api";
@@ -77,24 +75,9 @@ export default async function ProductsCatchAllPage({
     const product = mapProductToFrontend(data);
     if (!product) notFound();
 
-    const allProducts = await getProducts();
-    const mappedProducts = (allProducts || [])
-      .map(mapProductToFrontend)
-      .filter(Boolean) as any[];
-
-    const related = mappedProducts.filter(
-      (p) => p.category === product.category && p.id !== product.id
-    ).slice(0, 4);
-
-    const catalogs = product.categoryId
-      ? await getCatalogsByCategory(product.categoryId)
-      : [];
-
     return (
       <ProductDetailPage
         product={product}
-        related={related}
-        catalogs={catalogs}
         locale={params.locale}
       />
     );

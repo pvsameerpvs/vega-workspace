@@ -1,6 +1,10 @@
+"use client";
+
+import { useState, useEffect } from "react";
 import { Product } from "@/lib/types";
 import { ProtectedImage } from "@/components/ProtectedImage";
 import { getWhatsAppLink } from "@/lib/whatsapp";
+import { getProducts, getCatalogsByCategory, mapProductToFrontend } from "@/lib/api";
 import Link from "next/link";
 import { ArrowLeft, Check, Truck, Package, BadgePercent, MapPin, BookOpen } from "lucide-react";
 import { WhatsAppIcon } from "@/components/icons/WhatsAppIcon";
@@ -9,14 +13,24 @@ import { getCategoryUrl, getSubcategoryUrl } from "@/lib/url";
 
 interface ProductDetailPageProps {
   product: Product;
-  related: Product[];
-  catalogs?: any[];
   locale: string;
 }
 
-export function ProductDetailPage({ product, related, catalogs = [], locale }: ProductDetailPageProps) {
+export function ProductDetailPage({ product, locale }: ProductDetailPageProps) {
+  const [related, setRelated] = useState<Product[]>([]);
+  const [catalogs, setCatalogs] = useState<any[]>([]);
   const isAR = locale === "ar";
   const l = (path: string) => `/${locale}${path}`;
+
+  useEffect(() => {
+    getProducts().then((data) => {
+      const mapped = (data || []).map(mapProductToFrontend).filter(Boolean) as Product[];
+      setRelated(mapped.filter((p) => p.category === product.category && p.id !== product.id).slice(0, 4));
+    });
+    if (product.categoryId) {
+      getCatalogsByCategory(product.categoryId).then(setCatalogs);
+    }
+  }, [product.id, product.category, product.categoryId]);
 
   const displayName = isAR && product.nameAr ? product.nameAr : product.name;
   const displayDesc = isAR && product.shortDescriptionAr ? product.shortDescriptionAr : product.shortDescription || product.fullDescription || product.description || "";

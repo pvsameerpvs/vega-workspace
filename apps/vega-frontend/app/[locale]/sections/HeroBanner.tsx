@@ -1,10 +1,12 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay, Pagination } from "swiper/modules";
 import { motion } from "framer-motion";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
+import { getBanners } from "@/lib/api";
 import "swiper/css";
 import "swiper/css/pagination";
 
@@ -52,9 +54,17 @@ const scaleIn = {
   },
 };
 
-export function HeroBanner({ banners, locale = "en" }: HeroBannerProps) {
+export function HeroBanner({ banners: initialBanners, locale = "en" }: HeroBannerProps) {
+  const [banners, setBanners] = useState<Banner[]>(initialBanners || []);
   const isAR = locale === "ar";
   const l = (path: string) => `/${locale}${path}`;
+
+  useEffect(() => {
+    if (!initialBanners || initialBanners.length === 0) {
+      getBanners().then((d) => { if (d) setBanners(d as Banner[]); });
+    }
+  }, []);
+
   const activeBanners = banners?.filter((b) => b.isActive && b.image) || [];
   const slides = activeBanners.map((b) => ({
     id: String(b.id),
