@@ -45,8 +45,8 @@ export async function getCategoryShowcases() {
 }
 
 export async function getBanners() {
-  const data = await fetcher<any>("/settings");
-  return data?.banners || [];
+  const data = await fetcher<any[]>("/settings/banners", { next: { revalidate: 300 } });
+  return data || [];
 }
 
 export async function getCounters() {
@@ -194,8 +194,8 @@ export function mapProductToFrontend(p: any) {
     design: p.design || "",
     material: p.material || "",
     fittingType: p.fittingType || "",
-    features: Array.isArray(p.features) ? p.features : (p.features ? p.features.split(",").map((s: string) => s.trim()).filter(Boolean) : []),
-    featuresAr: Array.isArray(p.featuresAr) ? p.featuresAr : (p.featuresAr ? p.featuresAr.split(",").map((s: string) => s.trim()).filter(Boolean) : []),
+    features: Array.isArray(p.features) ? p.features : (typeof p.features === "string" ? p.features.split(",").map((s: string) => s.trim()).filter(Boolean) : []),
+    featuresAr: Array.isArray(p.featuresAr) ? p.featuresAr : (typeof p.featuresAr === "string" ? p.featuresAr.split(",").map((s: string) => s.trim()).filter(Boolean) : []),
     warranty: p.warranty || "",
     brand: p.brand || "",
     country: p.country || "",

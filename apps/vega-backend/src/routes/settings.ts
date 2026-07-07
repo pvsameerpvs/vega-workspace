@@ -29,6 +29,17 @@ router.get("/", async (_req, res) => {
   }
 });
 
+// Dedicated banners endpoint (lightweight, no extra data)
+router.get("/banners", async (_req, res) => {
+  try {
+    const banners = await db.select().from(homeBanners);
+    res.set("Cache-Control", "public, max-age=300, s-maxage=600");
+    return res.json(banners);
+  } catch (error) {
+    res.status(500).json({ error: "Failed to fetch banners" });
+  }
+});
+
 // Homepage config — single JSON blob stored in settings table
 router.get("/homepage-config", async (_req, res) => {
   try {

@@ -4,8 +4,7 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation } from "swiper/modules";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { ProductCard } from "@/components/product/ProductCard";
-import { getProducts, mapProductToFrontend } from "@/lib/api";
-import { useEffect, useState } from "react";
+import { useProducts } from "@/hooks/use-products";
 import "swiper/css";
 
 interface BestSellersProps {
@@ -14,14 +13,8 @@ interface BestSellersProps {
 
 export function BestSellers({ locale = "en" }: BestSellersProps) {
   const isAR = locale === "ar";
-  const [items, setItems] = useState<any[]>([]);
-
-  useEffect(() => {
-    getProducts().then((data) => {
-      const mapped = (data || []).map(mapProductToFrontend).filter(Boolean) as any[];
-      setItems(mapped.filter((p: any) => p.isPopular).slice(0, 8));
-    });
-  }, []);
+  const allProducts = useProducts();
+  const items = allProducts.filter((p: any) => p.isPopular).slice(0, 8);
 
   const prevClass = isAR ? ".bs-next" : ".bs-prev";
   const nextClass = isAR ? ".bs-prev" : ".bs-next";

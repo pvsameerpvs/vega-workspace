@@ -21,20 +21,16 @@ router.get("/", async (req, res) => {
     if (search) conditions.push(like(gallery.title, `%${search}%`));
     if (category) conditions.push(eq(gallery.category, category));
 
-    if (conditions.length === 0) {
-      const all = await db
-        .select()
-        .from(gallery)
-        .orderBy(asc(gallery.displayOrder));
-      return res.json(paginateResponse(all, page, limit));
+    const offset = (page - 1) * limit;
+    const query = db.select().from(gallery).orderBy(asc(gallery.displayOrder)).limit(limit).offset(offset);
+
+    if (conditions.length > 0) {
+      query.where(and(...conditions));
     }
 
-    const all = await db
-      .select()
-      .from(gallery)
-      .where(and(...conditions))
-      .orderBy(asc(gallery.displayOrder));
-    return res.json(paginateResponse(all, page, limit));
+    const rows = await query;
+    res.set("Cache-Control", "public, max-age=300, s-maxage=600");
+    return res.json({ data: rows, page, limit });
   } catch (error) {
     res.status(500).json({ error: "Failed to fetch gallery" });
   }

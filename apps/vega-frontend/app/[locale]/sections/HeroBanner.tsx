@@ -56,12 +56,18 @@ const scaleIn = {
 
 export function HeroBanner({ banners: initialBanners, locale = "en" }: HeroBannerProps) {
   const [banners, setBanners] = useState<Banner[]>(initialBanners || []);
+  const [loading, setLoading] = useState(!initialBanners || initialBanners.length === 0);
   const isAR = locale === "ar";
   const l = (path: string) => `/${locale}${path}`;
 
   useEffect(() => {
     if (!initialBanners || initialBanners.length === 0) {
-      getBanners().then((d) => { if (d) setBanners(d as Banner[]); });
+      getBanners().then((d) => {
+        if (d && d.length > 0) setBanners(d as Banner[]);
+        setLoading(false);
+      });
+    } else {
+      setLoading(false);
     }
   }, [initialBanners]);
 
@@ -77,6 +83,12 @@ export function HeroBanner({ banners: initialBanners, locale = "en" }: HeroBanne
     image: b.image,
     slideDuration: b.slideDuration || 6000,
   }));
+
+  if (loading) {
+    return (
+      <section className="relative overflow-hidden w-full h-[calc(100vh-7rem)] bg-slate-200 animate-pulse" />
+    );
+  }
 
   if (slides.length === 0) return null;
 

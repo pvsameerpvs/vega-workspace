@@ -4,8 +4,7 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation } from "swiper/modules";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { ProductCard } from "@/components/product/ProductCard";
-import { getProducts, mapProductToFrontend } from "@/lib/api";
-import { useEffect, useState } from "react";
+import { useProducts } from "@/hooks/use-products";
 import "swiper/css";
 import "swiper/css/navigation";
 
@@ -15,16 +14,8 @@ interface FeaturedProductsProps {
 
 export function FeaturedProducts({ locale = "en" }: FeaturedProductsProps) {
   const isAR = locale === "ar";
-  const [products, setProducts] = useState<any[]>([]);
-
-  useEffect(() => {
-    getProducts().then((data) => {
-      const mapped = (data || []).map(mapProductToFrontend).filter(Boolean) as any[];
-      setProducts(mapped.filter((p: any) => p.isFeatured).slice(0, 8));
-    });
-  }, []);
-
-  const featured = products.length > 0 ? products : [];
+  const allProducts = useProducts();
+  const featured = allProducts.filter((p: any) => p.isFeatured).slice(0, 8);
 
   const prevClass = isAR ? ".featured-next" : ".featured-prev";
   const nextClass = isAR ? ".featured-prev" : ".featured-next";

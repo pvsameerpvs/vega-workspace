@@ -49,7 +49,7 @@ router.post("/refresh", async (req, res) => {
   try {
     const { refreshToken } = req.body;
     if (!refreshToken) return res.status(400).json({ error: "Refresh token required" });
-    const result = refreshAccessToken(refreshToken);
+    const result = await refreshAccessToken(refreshToken);
     res.json(result);
   } catch (error: any) {
     res.status(401).json({ error: error.message || "Invalid refresh token" });

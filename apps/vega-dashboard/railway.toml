@@ -3,7 +3,7 @@ builder = "DOCKERFILE"
 dockerfilePath = "apps/vega-dashboard/Dockerfile"
 
 [deploy]
-healthcheckPath = "/admin"
+healthcheckPath = "/api/health"
 healthcheckTimeout = 30
 restartPolicyType = "on_failure"
 restartPolicyMaxRetries = 3

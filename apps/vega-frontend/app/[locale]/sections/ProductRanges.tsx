@@ -1,23 +1,23 @@
+"use client";
+
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import { ProtectedImage } from "@/components/ProtectedImage";
 import { getCategoryUrl } from "@/lib/url";
-
-interface Category {
-  id: string;
-  name: string;
-  nameAr?: string;
-  slug: string;
-  image: string;
-  subcategories?: string[];
-}
+import { getCategories, mapCategoryToFrontend } from "@/lib/api";
 
 interface ProductRangesProps {
-  categories?: Category[];
   locale?: string;
 }
 
-export function ProductRanges({ categories = [], locale = "en" }: ProductRangesProps) {
+export function ProductRanges({ locale = "en" }: ProductRangesProps) {
+  const [categories, setCategories] = useState<any[]>([]);
   const isAR = locale === "ar";
+
+  useEffect(() => {
+    getCategories().then((d) => setCategories((d || []).map(mapCategoryToFrontend).filter(Boolean) as any[]));
+  }, []);
+
   if (categories.length === 0) return null;
 
   return (
