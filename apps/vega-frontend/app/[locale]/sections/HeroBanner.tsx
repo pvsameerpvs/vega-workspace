@@ -115,7 +115,7 @@ export function HeroBanner({ banners: initialBanners, locale = "en" }: HeroBanne
                 <ProtectedImage
                   src={slide.image || ""}
                   alt={slide.title}
-                  className="w-full h-full"
+                  className="object-cover"
                   priority
                 />
               </motion.div>
