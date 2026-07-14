@@ -2,8 +2,13 @@
   "extends": "../../packages/config/tsconfig.json",
   "compilerOptions": {
     "outDir": "./dist",
+    "rootDir": "../..",
     "noEmit": false,
+    "declaration": false,
+    "ignoreDeprecations": "5.0",
     "baseUrl": ".",
+    "module": "commonjs",
+    "moduleResolution": "node",
     "paths": {
       "@vega/db": ["../../packages/db/src"],
       "@vega/utils": ["../../packages/utils/src"]
