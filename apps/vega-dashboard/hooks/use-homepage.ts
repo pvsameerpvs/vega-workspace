@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import { api } from "@/lib/api";
 
 export interface HomepageConfig {
@@ -19,6 +19,8 @@ export function useHomepage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [saving, setSaving] = useState(false);
+  const configRef = useRef(config);
+  configRef.current = config;
 
   const fetchConfig = useCallback(async () => {
     setLoading(true);
@@ -39,7 +41,7 @@ export function useHomepage() {
     async (partial: Partial<HomepageConfig>) => {
       setSaving(true);
       try {
-        const next = { ...config, ...partial };
+        const next = { ...configRef.current, ...partial };
         await api.updateHomepageConfig(next);
         setConfig(next);
         return true;
@@ -50,7 +52,7 @@ export function useHomepage() {
         setSaving(false);
       }
     },
-    [config]
+    []
   );
 
   return { config, loading, error, saving, refresh: fetchConfig, saveConfig };

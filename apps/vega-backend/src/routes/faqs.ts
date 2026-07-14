@@ -22,6 +22,7 @@ router.get("/", async (req, res) => {
         .from(faqs)
         .where(like(faqs.question, `%${search}%`))
         .orderBy(asc(faqs.displayOrder));
+      res.set("Cache-Control", "public, max-age=60, s-maxage=120");
       return res.json(paginateResponse(all, page, limit));
     }
 
@@ -29,6 +30,7 @@ router.get("/", async (req, res) => {
       .select()
       .from(faqs)
       .orderBy(asc(faqs.displayOrder));
+    res.set("Cache-Control", "public, max-age=300, s-maxage=600");
     return res.json(paginateResponse(all, page, limit));
   } catch (error) {
     res.status(500).json({ error: "Failed to fetch FAQs" });

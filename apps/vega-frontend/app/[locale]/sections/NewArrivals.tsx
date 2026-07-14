@@ -1,10 +1,11 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation } from "swiper/modules";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { ProductCard } from "@/components/product/ProductCard";
-import { useProducts } from "@/hooks/use-products";
+import { getNewArrivals, mapProductToFrontend } from "@/lib/api";
 import "swiper/css";
 
 interface NewArrivalsProps {
@@ -13,8 +14,14 @@ interface NewArrivalsProps {
 
 export function NewArrivals({ locale = "en" }: NewArrivalsProps) {
   const isAR = locale === "ar";
-  const allProducts = useProducts();
-  const items = allProducts.slice(0, 8);
+  const [items, setItems] = useState<any[]>([]);
+
+  useEffect(() => {
+    getNewArrivals().then((data) => {
+      const mapped = (data || []).map(mapProductToFrontend).filter(Boolean);
+      setItems(mapped as any[]);
+    });
+  }, []);
 
   const prevClass = isAR ? ".na-next" : ".na-prev";
   const nextClass = isAR ? ".na-prev" : ".na-next";

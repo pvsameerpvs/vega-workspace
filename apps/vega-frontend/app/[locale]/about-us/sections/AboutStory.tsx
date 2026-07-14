@@ -20,22 +20,22 @@ export function AboutStory({ isAR }: AboutStoryProps) {
             transition={{ duration: 0.8, ease: "easeOut" }}
             className="relative"
           >
-            <div className="img-rounded overflow-hidden shadow-2xl shadow-slate-200/50 mb-4 aspect-video">
-              <ProtectedImage
+              <div className="img-rounded relative overflow-hidden shadow-2xl shadow-slate-200/50 mb-4 aspect-video">
+                <ProtectedImage
                 src="/images/about/about1.jpeg"
                 alt="Vega"
                 className="h-full w-full object-cover"
               />
             </div>
             <div className="grid grid-cols-2 gap-4">
-              <div className="img-rounded overflow-hidden shadow-xl shadow-slate-200/50 aspect-[4/3]">
+              <div className="img-rounded relative overflow-hidden shadow-xl shadow-slate-200/50 aspect-[4/3]">
                 <ProtectedImage
                   src="/images/about/about2.jpeg"
                   alt="Vega"
                   className="h-full w-full object-cover"
                 />
               </div>
-              <div className="img-rounded overflow-hidden shadow-xl shadow-slate-200/50 aspect-[4/3]">
+              <div className="img-rounded relative overflow-hidden shadow-xl shadow-slate-200/50 aspect-[4/3]">
                 <ProtectedImage
                   src="/images/about/about3.jpeg"
                   alt="Vega"

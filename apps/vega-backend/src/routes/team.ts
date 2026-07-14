@@ -22,6 +22,7 @@ router.get("/", async (req, res) => {
         .from(teamMembers)
         .where(like(teamMembers.name, `%${search}%`))
         .orderBy(asc(teamMembers.displayOrder));
+      res.set("Cache-Control", "public, max-age=60, s-maxage=120");
       return res.json(paginateResponse(all, page, limit));
     }
 
@@ -29,6 +30,7 @@ router.get("/", async (req, res) => {
       .select()
       .from(teamMembers)
       .orderBy(asc(teamMembers.displayOrder));
+    res.set("Cache-Control", "public, max-age=300, s-maxage=600");
     return res.json(paginateResponse(all, page, limit));
   } catch (error) {
     res.status(500).json({ error: "Failed to fetch team members" });

@@ -55,6 +55,7 @@ router.get("/", async (req, res) => {
       }
     }
 
+    res.set("Cache-Control", "public, max-age=300, s-maxage=600");
     return res.json(paginateResponse(all, page, limit));
   } catch (error) {
     console.error("Fetch catalogs error:", error);

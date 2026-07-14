@@ -1,37 +1,30 @@
-import {
-  HeroBanner,
-  TrustBar,
-  PromoBanner,
-  PopularCategories,
-  FeaturedProducts,
-  SpotlightSection,
-  BusinessSolutions,
-  CategoryShowcases,
-  BestSellers,
-  NewArrivals,
-  ProductRanges,
-  LimitedDeals,
-  RecentViewed,
-  GoogleReviews,
-  ContactFormSection,
-  SeoContent,
-  FaqSection,
-  FeaturesSection,
-  OurClients,
-} from "./sections";
+import dynamic from "next/dynamic";
 import { isValidLocale } from "@/lib/i18n";
 import { notFound } from "next/navigation";
-import { getHomepageConfig } from "@/lib/api";
+import { getHomepageConfig, getBanners } from "@/lib/api";
+
+import { HeroBanner, TrustBar, PromoBanner, PopularCategories, FeaturedProducts, SpotlightSection, BusinessSolutions, CategoryShowcases, BestSellers, NewArrivals, ProductRanges, FeaturesSection } from "./sections";
+
+const LimitedDeals = dynamic(() => import("./sections").then((m) => ({ default: m.LimitedDeals })));
+const RecentViewed = dynamic(() => import("./sections").then((m) => ({ default: m.RecentViewed })));
+const GoogleReviews = dynamic(() => import("./sections").then((m) => ({ default: m.GoogleReviews })));
+const ContactFormSection = dynamic(() => import("./sections").then((m) => ({ default: m.ContactFormSection })));
+const SeoContent = dynamic(() => import("./sections").then((m) => ({ default: m.SeoContent })));
+const FaqSection = dynamic(() => import("./sections").then((m) => ({ default: m.FaqSection })));
+const OurClients = dynamic(() => import("./sections").then((m) => ({ default: m.OurClients })));
 
 export default async function HomePage({ params: { locale } }: { params: { locale: string } }) {
   if (!isValidLocale(locale)) notFound();
 
-  const config = await getHomepageConfig();
+  const [config, banners] = await Promise.all([
+    getHomepageConfig(),
+    getBanners(),
+  ]);
   const visibility = config?.sectionVisibility ?? {};
 
   return (
     <main>
-      {visibility.heroBanner !== false && <HeroBanner locale={locale} />}
+      {visibility.heroBanner !== false && <HeroBanner banners={banners} locale={locale} />}
       <TrustBar locale={locale} />
       <PromoBanner locale={locale} />
       {visibility.popularCategories !== false && <PopularCategories locale={locale} />}

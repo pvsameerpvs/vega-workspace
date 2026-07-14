@@ -18,6 +18,8 @@ ARG NEXT_PUBLIC_APP_URL
 ENV NEXT_PUBLIC_API_URL=$NEXT_PUBLIC_API_URL
 ENV NEXT_PUBLIC_APP_URL=$NEXT_PUBLIC_APP_URL
 
+ENV NODE_ENV=production
+
 # Copy source and build
 COPY . .
 RUN if [ -z "$NEXT_PUBLIC_API_URL" ] && [ -f apps/vega-dashboard/.env.production ]; then \
@@ -26,6 +28,5 @@ RUN if [ -z "$NEXT_PUBLIC_API_URL" ] && [ -f apps/vega-dashboard/.env.production
 RUN pnpm --filter vega-dashboard build
 
 # Production runtime
-ENV NODE_ENV=production
 EXPOSE 3001
 CMD ["pnpm", "--filter", "vega-dashboard", "start"]

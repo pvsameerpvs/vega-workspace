@@ -6,6 +6,7 @@ import { Autoplay, Pagination } from "swiper/modules";
 import { motion } from "framer-motion";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
+import { ProtectedImage } from "@/components/ProtectedImage";
 import { getBanners } from "@/lib/api";
 import "swiper/css";
 import "swiper/css/pagination";
@@ -111,12 +112,11 @@ export function HeroBanner({ banners: initialBanners, locale = "en" }: HeroBanne
                 initial="hidden"
                 animate="visible"
               >
-                <img
-                  src={slide.image}
+                <ProtectedImage
+                  src={slide.image || ""}
                   alt={slide.title}
-                  className="w-full h-full object-cover"
-                  draggable={false}
-                  onContextMenu={(e) => e.preventDefault()}
+                  className="w-full h-full"
+                  priority
                 />
               </motion.div>
 

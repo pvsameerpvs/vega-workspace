@@ -1,6 +1,6 @@
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { getBlogPosts } from "@/lib/api";
+import { getBlogPost } from "@/lib/api";
 import { isValidLocale } from "@/lib/i18n";
 import { BlogPostClient } from "./BlogPostClient";
 
@@ -10,8 +10,7 @@ export async function generateMetadata({
   params: { slug: string; locale: string };
 }): Promise<Metadata> {
   try {
-    const blogs = await getBlogPosts();
-    const blog = blogs.find((b: any) => b.slug === params.slug);
+    const blog = await getBlogPost(params.slug);
     const isAR = params.locale === "ar";
     const title =
       (isAR && blog?.titleAr ? blog.titleAr : blog?.title) ||

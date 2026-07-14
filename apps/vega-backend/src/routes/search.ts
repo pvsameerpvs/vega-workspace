@@ -50,6 +50,7 @@ router.get("/", async (req, res) => {
       .where(categoryConditions)
       .limit(4);
 
+    res.set("Cache-Control", "public, max-age=60, s-maxage=120");
     return res.json({ products: productRows, categories: categoryRows });
   } catch (error) {
     res.status(500).json({ error: "Search failed" });

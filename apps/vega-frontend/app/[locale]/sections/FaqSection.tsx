@@ -26,7 +26,7 @@ export function FaqSection({ locale = "en" }: FaqSectionProps) {
         <h2 className="text-center text-xl font-bold text-slate-900 mb-8 font-display">{isAR ? "الأسئلة الشائعة" : "Frequently Asked Questions"}</h2>
         <div className="space-y-2">
           {faqs.map((faq, i) => (
-            <div key={i} className="rounded-xl border border-slate-100 bg-white overflow-hidden">
+            <div key={faq.q || i} className="rounded-xl border border-slate-100 bg-white overflow-hidden">
               <button
                 onClick={() => setOpen(open === i ? null : i)}
                 className="flex w-full items-center justify-between px-4 py-3 text-start"

@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { db, categories, subcategories, products } from "@vega/db";
-import { eq, asc, desc } from "drizzle-orm";
+import { eq, asc, desc, sql } from "drizzle-orm";
 import { slugify } from "@vega/utils";
 import { authenticate } from "../middleware/auth";
 import { cleanBody } from "../lib/utils";
@@ -35,6 +35,7 @@ router.get("/", async (req, res) => {
         .map((s) => ({ id: s.id, name: s.name, nameAr: s.nameAr, slug: s.slug })),
     }));
 
+    res.set("Cache-Control", "public, max-age=300, s-maxage=600");
     return res.json(paginateResponse(withSubs, page, limit));
   } catch (error) {
     res.status(500).json({ error: "Failed to fetch categories" });
@@ -50,27 +51,38 @@ router.get("/with-products", async (req, res) => {
       .where(eq(categories.isActive, true))
       .orderBy(asc(categories.displayOrder));
 
-    const allProducts = await db
-      .select({
-        id: products.id,
-        name: products.name,
-        nameAr: products.nameAr,
-        slug: products.slug,
-        sku: products.sku,
-        mainImage: products.mainImage,
-        categoryId: products.categoryId,
-      })
-      .from(products)
-      .where(eq(products.status, "published"))
-      .orderBy(desc(products.createdAt));
+    const categoryIds = allCategories.map((c) => c.id);
+    let productsByCategory: Record<number, any[]> = {};
+    if (categoryIds.length > 0) {
+      const allProducts = await db
+        .select({
+          id: products.id,
+          name: products.name,
+          nameAr: products.nameAr,
+          slug: products.slug,
+          sku: products.sku,
+          mainImage: products.mainImage,
+          categoryId: products.categoryId,
+        })
+        .from(products)
+        .where(eq(products.status, "published"))
+        .orderBy(desc(products.createdAt));
+      for (const p of allProducts) {
+        if (p.categoryId && !productsByCategory[p.categoryId]) {
+          productsByCategory[p.categoryId] = [];
+        }
+        if (p.categoryId && productsByCategory[p.categoryId].length < 4) {
+          productsByCategory[p.categoryId].push(p);
+        }
+      }
+    }
 
     const result = allCategories.map((cat) => ({
       ...cat,
-      products: allProducts
-        .filter((p) => p.categoryId === cat.id)
-        .slice(0, 4),
+      products: productsByCategory[cat.id] || [],
     }));
 
+    res.set("Cache-Control", "public, max-age=300, s-maxage=600");
     return res.json(result);
   } catch (error) {
     console.error("Fetch categories with products error:", error);

@@ -3,16 +3,15 @@
 import { useState, useEffect } from "react";
 
 export function FullPageLoader({ children }: { children: React.ReactNode }) {
-  const [loading, setLoading] = useState(true);
+  const [ready, setReady] = useState(false);
 
   useEffect(() => {
-    const timer = setTimeout(() => setLoading(false), 400);
-    return () => clearTimeout(timer);
+    setReady(true);
   }, []);
 
   return (
     <>
-      {loading && (
+      {!ready && (
         <div className="fixed inset-0 z-[100] flex flex-col items-center justify-center bg-gradient-to-br from-white via-slate-50 to-white">
           <div className="relative flex flex-col items-center">
             <div className="relative">
@@ -33,9 +32,7 @@ export function FullPageLoader({ children }: { children: React.ReactNode }) {
           </div>
         </div>
       )}
-      <div
-        className={`transition-all duration-700 ${loading ? "invisible opacity-0" : "visible opacity-100"}`}
-      >
+      <div className={`transition-opacity duration-300 ${!ready ? "invisible opacity-0" : "visible opacity-100"}`}>
         {children}
       </div>
     </>

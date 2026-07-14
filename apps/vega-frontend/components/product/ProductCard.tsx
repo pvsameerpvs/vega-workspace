@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { memo } from "react";
 import { useParams } from "next/navigation";
 import { Eye } from "lucide-react";
 import { WhatsAppIcon } from "@/components/icons/WhatsAppIcon";
@@ -15,7 +16,7 @@ interface ProductCardProps {
   tagColor?: string;
 }
 
-export function ProductCard({ product, tag, tagColor = "bg-[#1F3A93]" }: ProductCardProps) {
+export const ProductCard = memo(function ProductCard({ product, tag, tagColor = "bg-[#1F3A93]" }: ProductCardProps) {
   const params = useParams();
   const locale = (params?.locale as string) || "en";
   const isAR = locale === "ar";
@@ -35,7 +36,7 @@ export function ProductCard({ product, tag, tagColor = "bg-[#1F3A93]" }: Product
           <ProtectedImage
             src={product.image || ""}
             alt={name}
-            className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+            className="h-full w-full transition-transform duration-500 group-hover:scale-105"
           />
         </div>
       </Link>
@@ -55,4 +56,4 @@ export function ProductCard({ product, tag, tagColor = "bg-[#1F3A93]" }: Product
       </div>
     </div>
   );
-}
+});

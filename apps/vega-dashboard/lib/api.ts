@@ -1,4 +1,11 @@
-const API_BASE = process.env.NEXT_PUBLIC_API_URL || "http://localhost:4000/api";
+const API_BASE = (() => {
+  if (typeof window === 'undefined') {
+    if (process.env.API_URL_INTERNAL) return process.env.API_URL_INTERNAL;
+    if (process.env.NEXT_PUBLIC_API_URL) return process.env.NEXT_PUBLIC_API_URL;
+    return "http://localhost:4000/api";
+  }
+  return process.env.NEXT_PUBLIC_API_URL || "http://localhost:4000/api";
+})();
 
 function getAuthHeaders(): Record<string, string> {
   const token = typeof window !== "undefined" ? localStorage.getItem("token") : null;
@@ -15,18 +22,28 @@ function handleUnauthorized(status: number) {
 
 async function fetcher<T>(path: string, options?: RequestInit): Promise<T> {
   const isFormData = options?.body instanceof FormData;
-  const res = await fetch(`${API_BASE}${path}`, {
-    headers: isFormData
-      ? { ...getAuthHeaders() }
-      : { "Content-Type": "application/json", ...getAuthHeaders() },
-    ...options,
-  });
-  if (!res.ok) {
-    const err = await res.json().catch(() => ({}));
-    handleUnauthorized(res.status);
-    throw new Error(err.error || `Request failed: ${res.status}`);
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), 30000);
+  try {
+    const res = await fetch(`${API_BASE}${path}`, {
+      ...options,
+      signal: controller.signal,
+      headers: isFormData
+        ? { ...getAuthHeaders() }
+        : { "Content-Type": "application/json", ...getAuthHeaders(), ...((options?.headers as Record<string,string>) || {}) },
+    });
+    clearTimeout(timeout);
+    if (!res.ok) {
+      const err = await res.json().catch(() => ({ error: `Request failed with status ${res.status}` }));
+      handleUnauthorized(res.status);
+      throw new Error(err.error || `Request failed: ${res.status}`);
+    }
+    return res.json() as Promise<T>;
+  } catch (e: any) {
+    clearTimeout(timeout);
+    if (e.name === 'AbortError') throw new Error('Request timed out. Please check your connection and try again.');
+    throw e;
   }
-  return res.json() as Promise<T>;
 }
 
 export const api = {

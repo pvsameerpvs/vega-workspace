@@ -41,8 +41,8 @@ export async function BlogSidebar({
                 href={l(`/blog/${post.slug}`)}
                 className="group flex gap-3 items-start"
               >
-                <div className="h-12 w-12 shrink-0 overflow-hidden rounded-lg bg-slate-100">
-                  <ProtectedImage
+                    <div className="relative h-12 w-12 shrink-0 overflow-hidden rounded-lg bg-slate-100">
+                      <ProtectedImage
                     src={
                       post.featuredImage ||
                       `https://placehold.co/120x120/e5e7eb/1f2937?text=${encodeURIComponent(

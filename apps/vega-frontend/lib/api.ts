@@ -1,15 +1,24 @@
-const API_BASE = typeof window === 'undefined' && process.env.API_URL_INTERNAL
-  ? process.env.API_URL_INTERNAL
-  : (process.env.NEXT_PUBLIC_API_URL || "http://localhost:4000/api");
+const API_BASE = (() => {
+  if (typeof window === 'undefined') {
+    if (process.env.API_URL_INTERNAL) return process.env.API_URL_INTERNAL;
+    if (process.env.NEXT_PUBLIC_API_URL) return process.env.NEXT_PUBLIC_API_URL;
+    console.warn("[API] No API_URL_INTERNAL or NEXT_PUBLIC_API_URL set. Server-side fetches will fail.");
+    return "http://localhost:4000/api";
+  }
+  return process.env.NEXT_PUBLIC_API_URL || "http://localhost:4000/api";
+})();
 
 async function fetcher<T>(path: string, options?: RequestInit & { next?: any }): Promise<T | null> {
   try {
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), 20000);
     const res = await fetch(`${API_BASE}${path}`, {
       ...options,
       headers: { "Content-Type": "application/json", ...(options?.headers || {}) },
       next: { revalidate: 60, ...(options?.next || {}) },
-      signal: AbortSignal.timeout(8000),
+      signal: controller.signal,
     });
+    clearTimeout(timeout);
     if (!res.ok) {
       console.error(`[API Error] ${res.status} ${path}`);
       return null;
@@ -29,7 +38,19 @@ async function fetcherList<T>(path: string, options?: RequestInit): Promise<T[]>
 }
 
 export async function getProducts() {
-  return fetcherList<any>("/products?limit=1000");
+  return fetcherList<any>("/products?limit=100");
+}
+
+export async function getFeaturedProducts() {
+  return fetcherList<any>("/products/featured", { next: { revalidate: 300 } });
+}
+
+export async function getBestSellers() {
+  return fetcherList<any>("/products/popular", { next: { revalidate: 300 } });
+}
+
+export async function getNewArrivals() {
+  return fetcherList<any>("/products/new-arrivals", { next: { revalidate: 300 } });
 }
 
 export async function getProduct(slug: string) {
@@ -59,7 +80,15 @@ export async function getFaqs() {
 }
 
 export async function getBlogPosts() {
-  return fetcherList<any>("/blog");
+  return fetcherList<any>("/blog", { next: { revalidate: 300 } });
+}
+
+export async function getBlogPost(slug: string) {
+  return fetcher<any>(`/blog/${slug}`, { next: { revalidate: 300 } });
+}
+
+export async function getBlogPostsByCategory(category: string, excludeSlug?: string) {
+  return fetcherList<any>(`/blog?category=${encodeURIComponent(category)}&limit=10`, { next: { revalidate: 300 } });
 }
 
 export async function getGallery() {
@@ -139,9 +168,10 @@ export async function resolveProductPath(path: string) {
   return fetcher<{ type: string; data: any }>(`/products/resolve?path=${encodeURIComponent(path)}`);
 }
 
-export async function getProductsFiltered(params: { search?: string; category?: string; subcategory?: string }) {
+export async function getProductsFiltered(params: { search?: string; category?: string; subcategory?: string; page?: number; limit?: number }) {
   const query = new URLSearchParams();
-  query.set("limit", "1000");
+  query.set("limit", String(params.limit || 12));
+  if (params.page) query.set("page", String(params.page));
   if (params.search) query.set("search", params.search);
   if (params.category) query.set("category", params.category);
   if (params.subcategory) query.set("subcategory", params.subcategory);
@@ -149,11 +179,11 @@ export async function getProductsFiltered(params: { search?: string; category?: 
 }
 
 export async function getProductsByCategory(categoryId: number) {
-  return fetcherList<any>(`/products?category=${categoryId}&limit=1000`);
+  return fetcherList<any>(`/products?category=${categoryId}&limit=12`);
 }
 
 export async function getProductsBySubcategory(subcategoryId: number) {
-  return fetcherList<any>(`/products?subcategory=${subcategoryId}&limit=1000`);
+  return fetcherList<any>(`/products?subcategory=${subcategoryId}&limit=12`);
 }
 
 export async function getHomepageConfig() {

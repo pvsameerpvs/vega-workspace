@@ -3,12 +3,12 @@ const nextConfig = {
   reactStrictMode: true,
   images: {
     remotePatterns: [
-      {
-        protocol: "https",
-        hostname: "**",
-      },
+      { protocol: "https", hostname: "**" },
     ],
-    unoptimized: true,
+    formats: ["image/webp", "image/avif"],
+    imageSizes: [256, 384, 512],
+    deviceSizes: [640, 750, 1080, 1920],
+    minimumCacheTTL: 86400,
   },
 
   transpilePackages: ["@vega/ui", "@vega/utils"],

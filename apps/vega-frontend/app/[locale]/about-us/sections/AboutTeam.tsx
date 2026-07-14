@@ -51,8 +51,8 @@ export function AboutTeam({ isAR, team }: AboutTeamProps) {
               transition={{ delay: i * 0.1, duration: 0.6 }}
               className="modern-card p-8 text-center group"
             >
-              <div className="mx-auto mb-5 h-24 w-24 overflow-hidden rounded-full border-4 border-[#FFD400]/20 bg-slate-100">
-                <ProtectedImage
+                  <div className="relative mx-auto mb-5 h-24 w-24 overflow-hidden rounded-full border-4 border-[#FFD400]/20 bg-slate-100">
+                    <ProtectedImage
                   src={member.photo || ""}
                   alt={isAR && member.nameAr ? member.nameAr : member.name}
                   className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"

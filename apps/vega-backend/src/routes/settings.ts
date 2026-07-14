@@ -45,6 +45,9 @@ router.get("/homepage-config", async (_req, res) => {
   try {
     const result = await db.select().from(settings).where(eq(settings.key, HOMEPAGE_CONFIG_KEY)).limit(1);
     const config = result.length ? parseHomepageConfig(result[0].value) : null;
+    res.set("Cache-Control", "no-cache, no-store, must-revalidate");
+    res.set("Pragma", "no-cache");
+    res.set("Expires", "0");
     return res.json(config || {});
   } catch (error: any) {
     console.error("Get homepage config error:", error);

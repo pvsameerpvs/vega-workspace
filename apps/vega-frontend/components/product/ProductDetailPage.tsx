@@ -85,7 +85,7 @@ export function ProductDetailPage({ product, locale }: ProductDetailPageProps) {
           {/* Image Gallery */}
           <div className="space-y-5 max-w-lg mx-auto">
             <div className="overflow-hidden rounded-3xl bg-slate-100">
-              <div className="aspect-[4/3] overflow-hidden flex items-center justify-center bg-slate-50">
+              <div className="relative aspect-[4/3] overflow-hidden flex items-center justify-center bg-slate-50">
                 {product.image ? (
                   <ProtectedImage
                     src={product.image}
@@ -105,7 +105,7 @@ export function ProductDetailPage({ product, locale }: ProductDetailPageProps) {
             {product.images.filter(Boolean).length > 0 && (
               <div className="grid grid-cols-4 gap-4">
                 {product.images.filter(Boolean).map((img: string, i: number) => (
-                  <div key={i} className="aspect-square overflow-hidden rounded-2xl bg-slate-100">
+                  <div key={i} className="relative aspect-square overflow-hidden rounded-2xl bg-slate-100">
                     <ProtectedImage
                       src={img}
                       alt={`${displayName} ${i + 1}`}

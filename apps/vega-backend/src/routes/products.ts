@@ -65,9 +65,97 @@ router.get("/", async (req, res) => {
       subcategorySlug: row.subcategorySlug,
     }));
 
+    res.set("Cache-Control", "public, max-age=60, s-maxage=120");
     return res.json(paginateResponse(mapped, page, limit, countResult.total));
   } catch (error) {
     res.status(500).json({ error: "Failed to fetch products" });
+  }
+});
+
+// GET /api/products/featured — lightweight, only 8 items
+router.get("/featured", async (_req, res) => {
+  try {
+    const rows = await db
+      .select({
+        id: products.id,
+        name: products.name,
+        nameAr: products.nameAr,
+        slug: products.slug,
+        sku: products.sku,
+        mainImage: products.mainImage,
+        categoryId: products.categoryId,
+        isFeatured: products.isFeatured,
+        isPopular: products.isPopular,
+        categoryName: categories.name,
+        categorySlug: categories.slug,
+      })
+      .from(products)
+      .leftJoin(categories, eq(products.categoryId, categories.id))
+      .where(eq(products.isFeatured, true))
+      .orderBy(desc(products.createdAt))
+      .limit(8);
+    res.set("Cache-Control", "public, max-age=300, s-maxage=600");
+    return res.json(rows);
+  } catch (error) {
+    res.status(500).json({ error: "Failed to fetch featured products" });
+  }
+});
+
+// GET /api/products/popular — lightweight, only 8 items
+router.get("/popular", async (_req, res) => {
+  try {
+    const rows = await db
+      .select({
+        id: products.id,
+        name: products.name,
+        nameAr: products.nameAr,
+        slug: products.slug,
+        sku: products.sku,
+        mainImage: products.mainImage,
+        categoryId: products.categoryId,
+        isFeatured: products.isFeatured,
+        isPopular: products.isPopular,
+        categoryName: categories.name,
+        categorySlug: categories.slug,
+      })
+      .from(products)
+      .leftJoin(categories, eq(products.categoryId, categories.id))
+      .where(eq(products.isPopular, true))
+      .orderBy(desc(products.createdAt))
+      .limit(8);
+    res.set("Cache-Control", "public, max-age=300, s-maxage=600");
+    return res.json(rows);
+  } catch (error) {
+    res.status(500).json({ error: "Failed to fetch popular products" });
+  }
+});
+
+// GET /api/products/new-arrivals — lightweight, only 8 items
+router.get("/new-arrivals", async (_req, res) => {
+  try {
+    const rows = await db
+      .select({
+        id: products.id,
+        name: products.name,
+        nameAr: products.nameAr,
+        slug: products.slug,
+        sku: products.sku,
+        mainImage: products.mainImage,
+        categoryId: products.categoryId,
+        isFeatured: products.isFeatured,
+        isPopular: products.isPopular,
+        categoryName: categories.name,
+        categorySlug: categories.slug,
+      })
+      .from(products)
+      .leftJoin(categories, eq(products.categoryId, categories.id))
+      .where(eq(products.status, "published"))
+      .orderBy(desc(products.createdAt))
+      .limit(8);
+    res.set("Cache-Control", "public, max-age=300, s-maxage=600");
+    return res.json(rows);
+  } catch (error) {
+    res.status(500).json({ error: "Failed to fetch new arrivals" });
   }
 });
 
@@ -297,6 +385,7 @@ router.get("/:slug", async (req, res) => {
       subcategorySlug: result[0].subcategorySlug,
     };
 
+    res.set("Cache-Control", "public, max-age=60, s-maxage=120");
     return res.json(mapped);
   } catch (error) {
     res.status(500).json({ error: "Failed to fetch product" });

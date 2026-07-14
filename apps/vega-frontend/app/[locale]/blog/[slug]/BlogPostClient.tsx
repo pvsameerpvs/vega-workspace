@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { getBlogPosts, mapBlogToFrontend } from "@/lib/api";
+import { getBlogPost, getBlogPostsByCategory, mapBlogToFrontend } from "@/lib/api";
 import { BlogPostHeader } from "./sections/BlogPostHeader";
 import { BlogContent } from "./sections/BlogContent";
 import { BlogSidebar } from "./sections/BlogSidebar";
@@ -21,16 +21,18 @@ export function BlogPostClient({ slug, locale }: BlogPostClientProps) {
   const isAR = locale === "ar";
 
   useEffect(() => {
-    getBlogPosts().then((data) => {
-      const found = data.find((b: any) => b.slug === slug);
-      if (found) {
-        setBlog(found);
-        const related = data
-          .filter((b: any) => b.category === found.category && b.slug !== slug)
-          .slice(0, 3)
-          .map(mapBlogToFrontend)
-          .filter(Boolean);
-        setRelatedPosts(related as any[]);
+    getBlogPost(slug).then((post) => {
+      if (post) {
+        setBlog(post);
+        getBlogPostsByCategory(post.category, slug).then((related) => {
+          setRelatedPosts(
+            (related || [])
+              .filter((b: any) => b.slug !== slug)
+              .slice(0, 3)
+              .map(mapBlogToFrontend)
+              .filter(Boolean) as any[]
+          );
+        });
       }
       setLoading(false);
     });

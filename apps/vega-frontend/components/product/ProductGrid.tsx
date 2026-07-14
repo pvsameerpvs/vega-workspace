@@ -49,7 +49,7 @@ export function ProductGrid({ products, locale = "en" }: ProductGridProps) {
             <div className="modern-card overflow-hidden transition-all duration-500 hover:shadow-card-hover hover:-translate-y-2">
               {/* Image Section */}
               <Link href={getProductUrl(product, locale)} className="block relative">
-                <div className="aspect-[4/3] overflow-hidden bg-slate-100">
+                <div className="relative aspect-[4/3] overflow-hidden bg-slate-100">
                   <ProtectedImage
                     src={product.image || ""}
                     alt={name}

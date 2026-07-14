@@ -13,6 +13,7 @@ router.get("/", async (req, res) => {
   try {
     const { page, limit, search, status } = getPaginationParams(req);
     const conditions = [];
+    const category = req.query.category as string | undefined;
 
     if (search) {
       conditions.push(
@@ -25,6 +26,7 @@ router.get("/", async (req, res) => {
     }
 
     if (status) conditions.push(eq(blogs.status, status as any));
+    if (category) conditions.push(eq(blogs.category, category));
 
     const offset = (page - 1) * limit;
     const query = db.select().from(blogs).orderBy(desc(blogs.createdAt)).limit(limit).offset(offset);
