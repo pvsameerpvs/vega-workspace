@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Poppins } from "next/font/google";
 import "./globals.css";
+import "swiper/swiper-bundle.css";
 import { Navbar, Footer, FloatingContact } from "@/components/layout";
 import { FullPageLoader } from "@/components/FullPageLoader";
 

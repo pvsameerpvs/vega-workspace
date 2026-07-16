@@ -5,7 +5,6 @@ import { Navigation } from "swiper/modules";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { ProductCard } from "@/components/product/ProductCard";
 import { Product } from "@/lib/types";
-import "swiper/css";
 
 interface RecentViewedProps {
   products?: Product[];

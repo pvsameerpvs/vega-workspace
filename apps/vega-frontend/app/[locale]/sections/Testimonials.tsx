@@ -3,7 +3,6 @@
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation } from "swiper/modules";
 import { ChevronLeft, ChevronRight, Star, Quote } from "lucide-react";
-import "swiper/css";
 
 function getInitials(name: string) {
   return name

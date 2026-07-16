@@ -9,6 +9,7 @@ const nextConfig = {
     imageSizes: [256, 384, 512],
     deviceSizes: [640, 750, 1080, 1920, 2560, 3840],
     minimumCacheTTL: 86400,
+    unoptimized: true,
   },
 
   transpilePackages: ["@vega/ui", "@vega/utils"],

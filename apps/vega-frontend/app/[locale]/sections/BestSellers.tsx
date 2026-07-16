@@ -6,7 +6,6 @@ import { Navigation } from "swiper/modules";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { ProductCard } from "@/components/product/ProductCard";
 import { getBestSellers, mapProductToFrontend } from "@/lib/api";
-import "swiper/css";
 
 interface BestSellersProps {
   locale?: string;
