@@ -32,6 +32,7 @@ export function CategoryPage({ category, products, locale }: CategoryPageProps) 
               src={heroImage}
               alt={displayName}
               className="absolute inset-0 h-full w-full object-cover"
+              sizes="100vw"
             />
             <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent" />
             <div className="absolute inset-0 bg-gradient-to-r from-black/30 to-transparent" />

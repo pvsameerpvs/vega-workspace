@@ -117,6 +117,8 @@ export function HeroBanner({ banners: initialBanners, locale = "en" }: HeroBanne
                   alt={slide.title}
                   className="object-cover"
                   priority
+                  quality={100}
+                  sizes="100vw"
                 />
               </motion.div>
 
