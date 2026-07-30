@@ -6,6 +6,9 @@ interface ProtectedImageProps {
   src: string;
   alt: string;
   className?: string;
+  priority?: boolean;
+  quality?: number;
+  sizes?: string;
 }
 
 export function ProtectedImage({ className, alt, src }: ProtectedImageProps) {
@@ -29,6 +32,7 @@ export function ProtectedImage({ className, alt, src }: ProtectedImageProps) {
       draggable={false}
       onContextMenu={(e) => e.preventDefault()}
       onError={() => setError(true)}
+      style={{ width: "100%", height: "100%" }}
     />
   );
 }

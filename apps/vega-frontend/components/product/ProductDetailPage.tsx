@@ -83,7 +83,7 @@ export function ProductDetailPage({ product, locale }: ProductDetailPageProps) {
 
         <div className="grid gap-20 lg:grid-cols-2">
           {/* Image Gallery */}
-          <div className="space-y-5 max-w-lg mx-auto">
+          <div className="space-y-5">
             <div className="overflow-hidden rounded-3xl bg-slate-100">
               <div className="relative aspect-[4/3] overflow-hidden flex items-center justify-center bg-slate-50">
                 {product.image ? (
