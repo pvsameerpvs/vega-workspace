@@ -1,18 +1,14 @@
 "use client";
 
 import { useState } from "react";
-import Image from "next/image";
 
 interface ProtectedImageProps {
   src: string;
   alt: string;
   className?: string;
-  priority?: boolean;
-  quality?: number;
-  sizes?: string;
 }
 
-export function ProtectedImage({ className, alt, src, priority, quality = 90, sizes }: ProtectedImageProps) {
+export function ProtectedImage({ className, alt, src }: ProtectedImageProps) {
   const [error, setError] = useState(false);
 
   if (!src || error) {
@@ -26,18 +22,13 @@ export function ProtectedImage({ className, alt, src, priority, quality = 90, si
   }
 
   return (
-    <Image
+    <img
       src={src}
       alt={alt}
-      fill
-      sizes={sizes || "(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"}
       className={className}
       draggable={false}
-      priority={priority}
-      quality={quality}
-      loading={priority ? undefined : "lazy"}
+      onContextMenu={(e) => e.preventDefault()}
       onError={() => setError(true)}
-      unoptimized={src.startsWith("data:")}
     />
   );
 }
