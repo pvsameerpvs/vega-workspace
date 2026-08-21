@@ -3,6 +3,7 @@ import { db, leads } from "@vega/db";
 import { eq, desc, like, and, or, count } from "drizzle-orm";
 import { authenticate } from "../middleware/auth";
 import { cleanBody } from "../lib/utils";
+import { sendLeadNotification } from "../lib/email";
 import {
   getPaginationParams,
   paginateResponse,
@@ -54,7 +55,9 @@ router.get("/", authenticate, async (req, res) => {
 router.post("/", async (req, res) => {
   try {
     const result = await db.insert(leads).values(cleanBody(req.body)).returning();
-    return res.status(201).json(result[0]);
+    const lead = result[0];
+    sendLeadNotification(lead as any);
+    return res.status(201).json(lead);
   } catch (error) {
     res.status(500).json({ error: "Failed to create lead" });
   }
