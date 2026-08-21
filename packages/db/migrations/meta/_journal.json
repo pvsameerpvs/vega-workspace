@@ -43,6 +43,13 @@
       "when": 1782808916251,
       "tag": "0005_curly_lord_tyger",
       "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "6",
+      "when": 1787306126632,
+      "tag": "0006_ambiguous_iron_monger",
+      "breakpoints": true
     }
   ]
 }

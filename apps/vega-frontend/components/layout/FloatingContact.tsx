@@ -26,7 +26,7 @@ const items = [
 
 export function FloatingContact() {
   return (
-    <div className="fixed bottom-6 left-6 z-50 flex flex-col items-center gap-3">
+    <div className="floating-contact fixed bottom-6 left-6 z-50 flex flex-col items-center gap-3">
       <div className="flex flex-col items-center gap-3">
         {items.map((item) => (
           <a

@@ -49,7 +49,7 @@ export function LeadTable({ leads, loading, onStatusChange, onView, onEdit, onDe
             <th className="px-4 py-3 text-left font-semibold text-slate-500">Company</th>
             <th className="px-4 py-3 text-left font-semibold text-slate-500">Product</th>
             <th className="px-4 py-3 text-left font-semibold text-slate-500">Qty</th>
-            <th className="px-4 py-3 text-left font-semibold text-slate-500">Location</th>
+            <th className="px-4 py-3 text-left font-semibold text-slate-500">Source</th>
             <th className="px-4 py-3 text-left font-semibold text-slate-500">Status</th>
             <th className="px-4 py-3 text-right font-semibold text-slate-500">Actions</th>
           </tr>
@@ -64,7 +64,15 @@ export function LeadTable({ leads, loading, onStatusChange, onView, onEdit, onDe
               <td className="px-4 py-3 text-slate-600">{l.companyName}</td>
               <td className="px-4 py-3 text-slate-600">{l.productName}</td>
               <td className="px-4 py-3 text-slate-600">{l.quantity}</td>
-              <td className="px-4 py-3 text-slate-600">{l.location}</td>
+              <td className="px-4 py-3 text-slate-600">
+                {l.utmCampaign || l.utmSource ? (
+                  <span className="inline-flex max-w-[180px] items-center gap-1 truncate rounded-md bg-slate-100 px-2 py-1 text-xs text-slate-600">
+                    {l.utmCampaign || l.utmSource}
+                  </span>
+                ) : (
+                  <span className="text-xs text-slate-400">{l.location || l.sourcePage || "—"}</span>
+                )}
+              </td>
               <td className="px-4 py-3">
                 <select
                   value={l.status}

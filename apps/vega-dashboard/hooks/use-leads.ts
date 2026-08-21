@@ -16,6 +16,13 @@ export type Lead = {
   message?: string;
   status: string;
   sourcePage?: string;
+  landingPage?: string;
+  utmSource?: string;
+  utmMedium?: string;
+  utmCampaign?: string;
+  utmTerm?: string;
+  utmContent?: string;
+  gclid?: string;
   createdAt?: string;
   updatedAt?: string;
 };

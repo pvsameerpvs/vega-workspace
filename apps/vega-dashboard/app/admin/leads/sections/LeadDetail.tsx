@@ -1,6 +1,6 @@
 import { Dialog, DialogContent, DialogTitle } from "@vega/ui";
 import { StatusBadge } from "@/components/admin/StatusBadge";
-import { Mail, Phone, MapPin, Link, Calendar } from "lucide-react";
+import { Mail, Phone, MapPin, Link, Calendar, Megaphone } from "lucide-react";
 
 interface LeadDetailProps {
   lead: any;
@@ -9,6 +9,11 @@ interface LeadDetailProps {
 
 export function LeadDetail({ lead, onClose }: LeadDetailProps) {
   if (!lead) return null;
+
+  const campaignSource = [lead.utmSource, lead.utmMedium, lead.utmCampaign, lead.utmTerm, lead.utmContent]
+    .filter(Boolean)
+    .join(" / ");
+  const landingUrl = lead.landingPage || lead.sourcePage;
 
   return (
     <Dialog open={!!lead} onOpenChange={onClose}>
@@ -50,8 +55,26 @@ export function LeadDetail({ lead, onClose }: LeadDetailProps) {
 
           <div>
             <p className="text-xs font-semibold text-slate-500 mb-1">Message</p>
-            <p className="text-sm text-slate-700 leading-relaxed">{lead.message}</p>
+            <p className="text-sm text-slate-700 leading-relaxed">{lead.message || "—"}</p>
           </div>
+
+          <div className="grid grid-cols-2 gap-3 text-sm">
+            <div className="flex items-center gap-2 text-slate-600">
+              <Link className="h-4 w-4 text-slate-400 shrink-0" />
+              <span className="truncate">Landing: {landingUrl || "N/A"}</span>
+            </div>
+            <div className="flex items-center gap-2 text-slate-600">
+              <Megaphone className="h-4 w-4 text-slate-400 shrink-0" />
+              <span className="truncate">Source: {campaignSource || "Direct / Organic"}</span>
+            </div>
+          </div>
+
+          {lead.gclid && (
+            <div className="flex items-center gap-2 text-xs text-slate-400">
+              <Megaphone className="h-3 w-3" />
+              gclid: {lead.gclid}
+            </div>
+          )}
 
           {lead.sourcePage && (
             <div className="flex items-center gap-2 text-xs text-slate-400">

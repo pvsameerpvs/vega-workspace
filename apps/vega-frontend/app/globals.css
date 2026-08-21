@@ -86,6 +86,14 @@ html {
   scroll-behavior: smooth;
 }
 
+/* Keep floating WhatsApp/Call/Email buttons visible on landing pages;
+   lift them above the sticky quote bar on mobile instead of hiding them */
+@media (max-width: 767px) {
+  body:has(.lp-sticky-bar) .floating-contact {
+    bottom: 96px;
+  }
+}
+
 /* Custom scrollbar */
 ::-webkit-scrollbar {
   width: 5px;

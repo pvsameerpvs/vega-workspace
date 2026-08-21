@@ -9,9 +9,10 @@ interface ProtectedImageProps {
   priority?: boolean;
   quality?: number;
   sizes?: string;
+  loading?: "lazy" | "eager";
 }
 
-export function ProtectedImage({ className, alt, src }: ProtectedImageProps) {
+export function ProtectedImage({ className, alt, src, priority, loading }: ProtectedImageProps) {
   const [error, setError] = useState(false);
 
   if (!src || error) {
@@ -30,6 +31,8 @@ export function ProtectedImage({ className, alt, src }: ProtectedImageProps) {
       alt={alt}
       className={className}
       draggable={false}
+      loading={loading || (priority ? "eager" : "lazy")}
+      decoding={priority ? "sync" : "async"}
       onContextMenu={(e) => e.preventDefault()}
       onError={() => setError(true)}
       style={{ width: "100%", height: "100%" }}

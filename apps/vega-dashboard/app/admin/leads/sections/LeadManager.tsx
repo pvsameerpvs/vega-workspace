@@ -212,6 +212,14 @@ export function LeadManager() {
             <label className="text-xs font-semibold text-slate-700">Source Page</label>
             <input type="text" value={editForm.sourcePage || ""} onChange={(e) => setEditForm((f: any) => ({ ...f, sourcePage: e.target.value }))} className="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm focus:border-vega-blue focus:outline-none" />
           </div>
+          <div className="space-y-1.5">
+            <label className="text-xs font-semibold text-slate-700">Landing Page URL</label>
+            <input type="text" value={editForm.landingPage || ""} onChange={(e) => setEditForm((f: any) => ({ ...f, landingPage: e.target.value }))} className="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm focus:border-vega-blue focus:outline-none" />
+          </div>
+          <div className="space-y-1.5">
+            <label className="text-xs font-semibold text-slate-700">Campaign / Source (UTM)</label>
+            <input type="text" value={editForm.utmCampaign || editForm.utmSource || ""} onChange={(e) => setEditForm((f: any) => ({ ...f, utmCampaign: e.target.value, utmSource: e.target.value }))} placeholder="e.g. google / ads / bunk-beds" className="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm focus:border-vega-blue focus:outline-none" />
+          </div>
         </div>
       </FormDialog>
 
