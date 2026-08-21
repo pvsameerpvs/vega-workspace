@@ -1,21 +1,34 @@
 import { notFound } from "next/navigation";
 import { isValidLocale } from "@/lib/i18n";
 import { LandingPage, buildLandingMetadata, getLandingProductsByCategory } from "@/components/landing";
-import { officeFurnitureContent } from "@/components/landing/content";
+import { getLandingContent } from "@/components/landing/content";
 
 const ALL_PRODUCTS_LIMIT = 1000;
+
+const META = {
+  en: {
+    title: "Office Furniture | Professional Commercial Office Furniture",
+    description:
+      "Explore professional office furniture solutions for modern workplaces, offices and commercial projects. Request a quotation.",
+  },
+  ar: {
+    title: "أثاث مكتبي | أثاث مكاتب احترافي تجاري",
+    description:
+      "استكشف حلول الأثاث المكتبي الاحترافية لأماكن العمل الحديثة والمكاتب والمشاريع التجارية. اطلب عرض سعر.",
+  },
+};
 
 export async function generateMetadata({ params }: { params: { locale: string } }) {
   if (!isValidLocale(params.locale)) return {};
   const products = await getLandingProductsByCategory("office-furniture", ALL_PRODUCTS_LIMIT);
+  const meta = META[params.locale as "en" | "ar"] || META.en;
   return buildLandingMetadata({
     locale: params.locale,
     path: "/office-furniture",
-    title: "Office Furniture | Professional Commercial Office Furniture",
-    description:
-      "Explore professional office furniture solutions for modern workplaces, offices and commercial projects. Request a quotation.",
+    title: meta.title,
+    description: meta.description,
     image: products.find((p) => p.image)?.image || undefined,
-    imageAlt: "Professional office furniture for commercial workspaces",
+    imageAlt: meta.title,
   });
 }
 
@@ -24,23 +37,26 @@ export default async function OfficeFurnitureLandingPage({ params }: { params: {
 
   const products = await getLandingProductsByCategory("office-furniture", ALL_PRODUCTS_LIMIT);
   const heroProduct = products.find((p) => p.image);
+  const content = getLandingContent("office-furniture", params.locale);
+  const isAR = params.locale === "ar";
+  const skuLabel = isAR ? "الموديل / رمز المنتج:" : "Model / SKU:";
 
-  const content = {
-    ...officeFurnitureContent,
+  const localized = {
+    ...content,
     hero: {
-      ...officeFurnitureContent.hero,
+      ...content.hero,
       specLines: [
-        heroProduct?.sku ? `Model / SKU: ${heroProduct.sku}` : "",
-        ...officeFurnitureContent.hero.specLines,
+        heroProduct?.sku ? `${skuLabel} ${heroProduct.sku}` : "",
+        ...content.hero.specLines,
       ].filter(Boolean),
     },
-    inspiration: officeFurnitureContent.inspiration
+    inspiration: content.inspiration
       ? {
-          ...officeFurnitureContent.inspiration,
-          image: officeFurnitureContent.inspiration.image || heroProduct?.image || "",
+          ...content.inspiration,
+          image: content.inspiration.image || heroProduct?.image || "",
         }
       : undefined,
   };
 
-  return <LandingPage content={content} products={products} locale={params.locale} />;
+  return <LandingPage content={localized} products={products} locale={params.locale} />;
 }

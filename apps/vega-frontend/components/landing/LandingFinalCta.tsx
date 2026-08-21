@@ -54,7 +54,7 @@ export function LandingFinalCta({
           <div className="lg:col-span-2">
             <div className="rounded-2xl border border-white/10 bg-white/5 p-6 md:p-8">
               <h3 className="mb-3 text-lg font-bold text-white">
-                {isAR ? "تفضل بالتواصل المباشر" : "Prefer to reach us directly?"}
+                {isAR ? "تفضل التواصل معنا مباشرة؟" : "Prefer to reach us directly?"}
               </h3>
               <div className="space-y-3">
                 <TrackedAnchor
@@ -77,8 +77,8 @@ export function LandingFinalCta({
               </div>
 
               <ul className="mt-6 space-y-2 border-t border-white/10 pt-6 text-sm text-slate-300">
-                <li>{isAR ? "• الرد السريع على الاستفسارات" : "• Fast response to enquiries"}</li>
-                <li>{isAR ? "• التوفر وعروض الأسعار للكميات" : "• Availability & pricing for quantities"}</li>
+                <li>{isAR ? "• استجابة سريعة للاستفسارات" : "• Fast response to enquiries"}</li>
+                <li>{isAR ? "• التوفر والتسعير للكميات" : "• Availability & pricing for quantities"}</li>
                 <li>{isAR ? "• متطلبات المشاريع الخاصة" : "• Special project requirements"}</li>
               </ul>
             </div>

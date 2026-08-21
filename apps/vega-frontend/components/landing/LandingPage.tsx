@@ -18,6 +18,8 @@ import { LandingStickyCta } from "./LandingStickyCta";
 
 export const TRUST_MICROCOPY =
   "Fast Response • Bulk Orders • Custom Requirements • Commercial Supply";
+export const TRUST_MICROCOPY_AR =
+  "استجابة سريعة • طلبات بالجملة • متطلبات مخصصة • توريد تجاري";
 
 interface LandingPageProps {
   content: LandingContent;
@@ -45,7 +47,7 @@ export function LandingPage({ content, products, locale, formProducts }: Landing
         isAR={isAR}
         quoteHref={quoteHref}
         productsHref={productsHref}
-        trustMicrocopy={TRUST_MICROCOPY}
+        trustMicrocopy={isAR ? TRUST_MICROCOPY_AR : TRUST_MICROCOPY}
       />
 
       {content.sections.map((section) => {

@@ -95,7 +95,7 @@ export function LandingHero({
 
             {/* Floating spec card */}
             {hero.specLines.length > 0 && (
-              <div className="absolute -bottom-6 left-4 right-4 rounded-2xl border border-white/70 bg-white/90 p-4 shadow-elevated backdrop-blur-md sm:left-8 sm:right-auto sm:w-80 sm:p-5">
+              <div className="absolute -bottom-6 start-4 end-4 rounded-2xl border border-white/70 bg-white/90 p-4 shadow-elevated backdrop-blur-md sm:start-8 sm:end-auto sm:w-80 sm:p-5">
                 <div className="mb-3 flex items-center gap-2">
                   <BadgeCheck className="h-4 w-4 text-vega-blue" />
                   <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-slate-400">
@@ -114,7 +114,7 @@ export function LandingHero({
             )}
 
             {/* Floating badge */}
-            <div className="absolute -top-4 right-6 hidden items-center gap-2 rounded-full border border-white/70 bg-white/90 px-4 py-2 shadow-lg backdrop-blur-md sm:flex">
+            <div className="absolute -top-4 end-6 hidden items-center gap-2 rounded-full border border-white/70 bg-white/90 px-4 py-2 shadow-lg backdrop-blur-md sm:flex">
               <span className="h-2 w-2 rounded-full bg-emerald-400" />
               <span className="text-[11px] font-bold uppercase tracking-wider text-vega-blue">
                 {isAR ? "تزويد تجاري" : "Commercial Supply"}
