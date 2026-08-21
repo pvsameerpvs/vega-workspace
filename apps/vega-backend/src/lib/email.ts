@@ -3,7 +3,10 @@ import { Resend } from "resend";
 const resend = process.env.RESEND_API_KEY ? new Resend(process.env.RESEND_API_KEY) : null;
 
 const FROM_EMAIL = process.env.EMAIL_FROM || "onboarding@resend.dev";
-const NOTIFY_EMAIL = process.env.LEAD_NOTIFY_EMAIL || "Sales@thevegauae.com";
+const NOTIFY_EMAILS = (process.env.LEAD_NOTIFY_EMAIL || "Sales@thevegauae.com")
+  .split(",")
+  .map((email) => email.trim())
+  .filter(Boolean);
 
 interface LeadEmailData {
   id: number;
@@ -79,12 +82,12 @@ export async function sendLeadNotification(lead: LeadEmailData): Promise<void> {
     const subject = `New Lead: ${lead.productName || lead.category || "Enquiry"} — ${lead.name}`;
     await resend.emails.send({
       from: FROM_EMAIL,
-      to: [NOTIFY_EMAIL],
-      reply_to: lead.email || NOTIFY_EMAIL,
+      to: NOTIFY_EMAILS,
+      reply_to: lead.email || NOTIFY_EMAILS[0],
       subject,
       html: buildLeadEmailHtml(lead),
     });
-    console.log(`[Email] Lead #${lead.id} notification sent to ${NOTIFY_EMAIL}`);
+    console.log(`[Email] Lead #${lead.id} notification sent to ${NOTIFY_EMAILS.join(", ")}`);
   } catch (error) {
     console.error("[Email] Failed to send lead notification:", error);
   }
