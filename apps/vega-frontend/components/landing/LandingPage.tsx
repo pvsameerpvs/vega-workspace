@@ -1,6 +1,7 @@
 import { FileText } from "lucide-react";
 import type { Product } from "@/lib/types";
 import type { LandingContent } from "./types";
+import type { LandingProductGroup } from "./data";
 import { LandingHero } from "./LandingHero";
 import { LandingSectionHeader } from "./LandingSectionHeader";
 import { LandingQuoteForm } from "./LandingQuoteForm";
@@ -26,9 +27,10 @@ interface LandingPageProps {
   products: Product[];
   locale: string;
   formProducts?: Product[];
+  groups?: LandingProductGroup[];
 }
 
-export function LandingPage({ content, products, locale, formProducts }: LandingPageProps) {
+export function LandingPage({ content, products, locale, formProducts, groups }: LandingPageProps) {
   const isAR = locale === "ar";
   const base = `/${locale}${content.path}`;
   const quoteHref = `${base}#quote`;
@@ -86,6 +88,7 @@ export function LandingPage({ content, products, locale, formProducts }: Landing
               <LandingProducts
                 key={section}
                 heading={content.products}
+                groups={groups}
                 products={products}
                 isAR={isAR}
                 getQuoteLabel={content.products.getQuote}

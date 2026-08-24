@@ -22,7 +22,7 @@ import type { LandingContent } from "../types";
 
 export const bunkBedsContent: LandingContent = {
   path: "/bunk-beds",
-  categoryName: "Bunk Beds",
+  categoryName: "Camp Furniture",
   hero: {
     eyebrow: "BUNK BED SOLUTIONS",
     title: "Durable Bunk Beds for Commercial & Accommodation Projects",
@@ -41,13 +41,13 @@ export const bunkBedsContent: LandingContent = {
     note: "We'll get back to you with product availability and quotation details.",
   },
   products: {
-    eyebrow: "BUNK BED RANGE",
-    title: "Explore Our Bunk Bed Range",
+    eyebrow: "CAMP FURNITURE RANGE",
+    title: "Explore Our Full Camp Furniture Range",
     subtitle:
-      "From heavy duty steel bunk beds to wooden hostel beds and triple configurations — all built for high-occupancy commercial use.",
+      "Bunk beds, single beds, mattresses, steel lockers, blankets, pillows, bedsheets, dining furniture and electronic equipment — everything for worker accommodation and camp fit-outs.",
     getQuote: "Get Quote",
     viewDetails: "View Details",
-    emptyText: "Bunk bed products are being updated. Please contact us for the current range.",
+    emptyText: "Camp furniture products are being updated. Please contact us for the current range.",
   },
   benefits: {
     eyebrow: "WHY BUNK BEDS",

@@ -1,6 +1,6 @@
 import { notFound } from "next/navigation";
 import { isValidLocale } from "@/lib/i18n";
-import { LandingPage, buildLandingMetadata, getLandingProductsBySubcategory } from "@/components/landing";
+import { LandingPage, buildLandingMetadata, getLandingProductsGroupedByCategory } from "@/components/landing";
 import { getLandingContent } from "@/components/landing/content";
 
 const META = {
@@ -18,7 +18,7 @@ const META = {
 
 export async function generateMetadata({ params }: { params: { locale: string } }) {
   if (!isValidLocale(params.locale)) return {};
-  const products = await getLandingProductsBySubcategory("bunk-beds", 1000);
+  const { products } = await getLandingProductsGroupedByCategory("camp-furniture", 1000);
   const meta = META[params.locale as "en" | "ar"] || META.en;
   return buildLandingMetadata({
     locale: params.locale,
@@ -33,7 +33,7 @@ export async function generateMetadata({ params }: { params: { locale: string } 
 export default async function BunkBedsLandingPage({ params }: { params: { locale: string } }) {
   if (!isValidLocale(params.locale)) notFound();
 
-  const products = await getLandingProductsBySubcategory("bunk-beds", 1000);
+  const { groups, products } = await getLandingProductsGroupedByCategory("camp-furniture", 1000);
   const heroProduct = products.find((p) => p.image);
   const content = getLandingContent("bunk-beds", params.locale);
   const isAR = params.locale === "ar";
@@ -52,5 +52,5 @@ export default async function BunkBedsLandingPage({ params }: { params: { locale
     },
   };
 
-  return <LandingPage content={localized} products={products} locale={params.locale} />;
+  return <LandingPage content={localized} products={products} groups={groups} locale={params.locale} />;
 }
