@@ -1,5 +1,6 @@
 import { FileText } from "lucide-react";
 import type { Product } from "@/lib/types";
+import { BusinessSolutions } from "@/app/[locale]/sections";
 import type { LandingContent } from "./types";
 import type { LandingProductGroup } from "./data";
 import { LandingHero } from "./LandingHero";
@@ -160,6 +161,9 @@ export function LandingPage({ content, products, locale, formProducts, groups }:
 
           case "faq":
             return <LandingFaq key={section} heading={content.faq} items={content.faq.items} isAR={isAR} />;
+
+          case "businessSolutions":
+            return <BusinessSolutions key={section} locale={locale} />;
 
           case "final":
             return (

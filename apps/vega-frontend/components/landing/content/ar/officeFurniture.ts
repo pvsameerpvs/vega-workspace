@@ -3,9 +3,7 @@ import {
   Monitor,
   Armchair as Chair,
   Building2,
-  Rocket,
   Presentation,
-  ConciergeBell,
   LayoutGrid,
   ShieldCheck,
   Boxes,
@@ -56,19 +54,6 @@ export const officeFurnitureContentAr: LandingContent = {
       { title: "المكاتب والطاولات", description: "مكاتب وطاولات حرف L ومحطات عمل.", icon: Table2 },
       { title: "طاولات الاجتماعات", description: "طاولات اجتماعات ومستديرة وطاولات قهوة.", icon: Presentation },
       { title: "الخزائن والتخزين", description: "خزائن زجاجية وفولاذية للتخزين.", icon: Warehouse },
-    ],
-  },
-  applications: {
-    eyebrow: "التطبيقات",
-    title: "أثاث لكل مساحة عمل",
-    subtitle: "يتم توريد الأثاث المكتبي للشركات والمشاريع التجارية بجميع الأحجام.",
-    items: [
-      { title: "مكاتب الشركات", description: "كراسي ومكاتب ومحطات عمل للعمليات اليومية.", icon: Building2 },
-      { title: "الشركات الناشئة", description: "أثاث عملي لبدء مساحات العمل الجديدة وتشغيلها.", icon: Rocket },
-      { title: "غرف الاجتماعات", description: "طاولات اجتماعات ومؤتمرات للنقاش والعروض التقديمية.", icon: Presentation },
-      { title: "مناطق الاستقبال", description: "مقاعد زوار وأثاث مناسب لمناطق الاستقبال.", icon: ConciergeBell },
-      { title: "مساحات العمل", description: "محطات عمل فردية ومتعددة الأشخاص للتخطيط المفتوح.", icon: Monitor },
-      { title: "المشاريع التجارية", description: "توريد كميات الأثاث لمشاريع تجهيز المكاتب.", icon: LayoutGrid },
     ],
   },
   benefits: {
@@ -150,5 +135,5 @@ export const officeFurnitureContentAr: LandingContent = {
     secondary: "تواصل معنا",
     note: "سنتواصل معك بخصوص توفر المنتج وتفاصيل عرض السعر.",
   },
-  sections: ["quote", "categories", "products", "applications", "benefits", "inspiration", "whyUs", "trust", "faq", "final"],
+  sections: ["quote", "categories", "products", "benefits", "businessSolutions", "inspiration", "whyUs", "trust", "faq", "final"],
 };

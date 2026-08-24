@@ -148,5 +148,5 @@ export const queueBarriersContentAr: LandingContent = {
     secondary: "تواصل معنا",
     note: "سنتواصل معك بخصوص توفر المنتج وتفاصيل عرض السعر.",
   },
-  sections: ["quote", "products", "applications", "benefits", "steps", "whyUs", "trust", "faq", "final"],
+  sections: ["quote", "products", "applications", "benefits", "businessSolutions", "steps", "whyUs", "trust", "faq", "final"],
 };

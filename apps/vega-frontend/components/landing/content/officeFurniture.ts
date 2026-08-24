@@ -3,9 +3,7 @@ import {
   Monitor,
   Armchair as Chair,
   Building2,
-  Rocket,
   Presentation,
-  ConciergeBell,
   LayoutGrid,
   ShieldCheck,
   Boxes,
@@ -59,20 +57,6 @@ export const officeFurnitureContent: LandingContent = {
       { title: "Desks & Tables", description: "Office tables, L-shape desks and workstations.", icon: Table2 },
       { title: "Meeting & Round Tables", description: "Meeting tables, round tables and coffee tables.", icon: Presentation },
       { title: "Cabinets & Storage", description: "Glass door and steel filing cabinets.", icon: Warehouse },
-    ],
-  },
-  applications: {
-    eyebrow: "APPLICATIONS",
-    title: "Furniture for Every Workspace",
-    subtitle:
-      "Office furniture supplied for businesses and commercial projects of every size.",
-    items: [
-      { title: "Corporate Offices", description: "Chairs, desks and workstations for day-to-day operations.", icon: Building2 },
-      { title: "Startups", description: "Practical furniture to get new workspaces up and running.", icon: Rocket },
-      { title: "Meeting Rooms", description: "Meeting and conference tables for discussion and presentations.", icon: Presentation },
-      { title: "Reception Areas", description: "Visitor seating and reception-friendly furniture.", icon: ConciergeBell },
-      { title: "Workspaces", description: "Single and multi-person workstations for open-plan layouts.", icon: Monitor },
-      { title: "Commercial Projects", description: "Furniture quantities supplied for office fit-out projects.", icon: LayoutGrid },
     ],
   },
   benefits: {
@@ -159,5 +143,5 @@ export const officeFurnitureContent: LandingContent = {
     secondary: "Contact Us",
     note: "We'll get back to you with product availability and quotation details.",
   },
-  sections: ["quote", "categories", "products", "applications", "benefits", "inspiration", "whyUs", "trust", "faq", "final"],
+  sections: ["quote", "categories", "products", "benefits", "businessSolutions", "inspiration", "whyUs", "trust", "faq", "final"],
 };

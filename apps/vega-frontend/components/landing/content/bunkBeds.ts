@@ -162,5 +162,5 @@ export const bunkBedsContent: LandingContent = {
     secondary: "Contact Us",
     note: "We'll get back to you with product availability and quotation details.",
   },
-  sections: ["quote", "products", "benefits", "applications", "whyUs", "trust", "faq", "final"],
+  sections: ["quote", "products", "benefits", "businessSolutions", "applications", "whyUs", "trust", "faq", "final"],
 };

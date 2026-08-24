@@ -156,5 +156,5 @@ export const bunkBedsContentAr: LandingContent = {
     secondary: "تواصل معنا",
     note: "سنتواصل معك بخصوص توفر المنتج وتفاصيل عرض السعر.",
   },
-  sections: ["quote", "products", "benefits", "applications", "whyUs", "trust", "faq", "final"],
+  sections: ["quote", "products", "benefits", "businessSolutions", "applications", "whyUs", "trust", "faq", "final"],
 };

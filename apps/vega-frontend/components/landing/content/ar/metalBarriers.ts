@@ -142,5 +142,5 @@ export const metalBarriersContentAr: LandingContent = {
     secondary: "تواصل معنا",
     note: "سنتواصل معك بخصوص توفر المنتج وتفاصيل عرض السعر.",
   },
-  sections: ["quote", "products", "applications", "benefits", "useCases", "whyUs", "trust", "faq", "final"],
+  sections: ["quote", "products", "applications", "benefits", "businessSolutions", "useCases", "whyUs", "trust", "faq", "final"],
 };

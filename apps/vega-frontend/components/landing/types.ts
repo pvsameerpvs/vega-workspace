@@ -22,6 +22,7 @@ export type LandingSectionId =
   | "steps"
   | "useCases"
   | "inspiration"
+  | "businessSolutions"
   | "trust"
   | "faq"
   | "final";

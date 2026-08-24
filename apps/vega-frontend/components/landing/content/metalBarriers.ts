@@ -149,5 +149,5 @@ export const metalBarriersContent: LandingContent = {
     secondary: "Contact Us",
     note: "We'll get back to you with product availability and quotation details.",
   },
-  sections: ["quote", "products", "applications", "benefits", "useCases", "whyUs", "trust", "faq", "final"],
+  sections: ["quote", "products", "applications", "benefits", "businessSolutions", "useCases", "whyUs", "trust", "faq", "final"],
 };
