@@ -38,18 +38,9 @@ export default async function OfficeFurnitureLandingPage({ params }: { params: {
   const { groups, products } = await getLandingProductsGroupedByCategory("office-furniture", ALL_PRODUCTS_LIMIT);
   const heroProduct = products.find((p) => p.image);
   const content = getLandingContent("office-furniture", params.locale);
-  const isAR = params.locale === "ar";
-  const skuLabel = isAR ? "الموديل / رمز المنتج:" : "Model / SKU:";
 
   const localized = {
     ...content,
-    hero: {
-      ...content.hero,
-      specLines: [
-        heroProduct?.sku ? `${skuLabel} ${heroProduct.sku}` : "",
-        ...content.hero.specLines,
-      ].filter(Boolean),
-    },
     inspiration: content.inspiration
       ? {
           ...content.inspiration,

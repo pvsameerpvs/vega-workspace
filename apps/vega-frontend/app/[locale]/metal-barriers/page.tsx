@@ -34,23 +34,7 @@ export default async function MetalBarriersLandingPage({ params }: { params: { l
   if (!isValidLocale(params.locale)) notFound();
 
   const { groups, products } = await getLandingProductsGroupedByCategory("metal-barriers", 1000);
-  const heroProduct = products.find((p) => p.image);
   const content = getLandingContent("metal-barriers", params.locale);
-  const isAR = params.locale === "ar";
-  const sizeLabel = isAR ? "المقاس:" : "Size:";
-  const skuLabel = isAR ? "الموديل / رمز المنتج:" : "Model / SKU:";
 
-  const localized = {
-    ...content,
-    hero: {
-      ...content.hero,
-      specLines: [
-        heroProduct?.dimensions ? `${sizeLabel} ${heroProduct.dimensions}` : "",
-        heroProduct?.sku ? `${skuLabel} ${heroProduct.sku}` : "",
-        ...content.hero.specLines,
-      ].filter(Boolean),
-    },
-  };
-
-  return <LandingPage content={localized} products={products} groups={groups} locale={params.locale} />;
+  return <LandingPage content={content} products={products} groups={groups} locale={params.locale} />;
 }

@@ -34,23 +34,7 @@ export default async function BunkBedsLandingPage({ params }: { params: { locale
   if (!isValidLocale(params.locale)) notFound();
 
   const { groups, products } = await getLandingProductsGroupedByCategory("camp-furniture", 1000);
-  const heroProduct = products.find((p) => p.image);
   const content = getLandingContent("bunk-beds", params.locale);
-  const isAR = params.locale === "ar";
-  const dimLabel = isAR ? "الأبعاد:" : "Dimensions:";
-  const skuLabel = isAR ? "الموديل / رمز المنتج:" : "Model / SKU:";
 
-  const localized = {
-    ...content,
-    hero: {
-      ...content.hero,
-      specLines: [
-        heroProduct?.dimensions ? `${dimLabel} ${heroProduct.dimensions}` : "",
-        heroProduct?.sku ? `${skuLabel} ${heroProduct.sku}` : "",
-        ...content.hero.specLines,
-      ].filter(Boolean),
-    },
-  };
-
-  return <LandingPage content={localized} products={products} groups={groups} locale={params.locale} />;
+  return <LandingPage content={content} products={products} groups={groups} locale={params.locale} />;
 }

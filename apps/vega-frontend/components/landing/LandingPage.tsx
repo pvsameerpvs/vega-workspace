@@ -35,7 +35,13 @@ export function LandingPage({ content, products, locale, formProducts, groups }:
   const base = `/${locale}${content.path}`;
   const quoteHref = `${base}#quote`;
   const productsHref = `${base}#products`;
-  const heroImage = products.find((p) => p.image)?.image || "";
+  const firstPerGroup = (groups || []).flatMap((g) => {
+    const img = g.products.find((p) => p.image)?.image;
+    return img ? [img] : [];
+  });
+  const heroImages = Array.from(
+    new Set([...firstPerGroup, ...products.map((p) => p.image).filter(Boolean)])
+  ).slice(0, 8);
   const options = (formProducts && formProducts.length > 0 ? formProducts : products).map((p) => ({
     name: p.name,
     sku: p.sku,
@@ -45,7 +51,7 @@ export function LandingPage({ content, products, locale, formProducts, groups }:
     <main className="pb-20 md:pb-0">
       <LandingHero
         hero={content.hero}
-        image={heroImage}
+        images={heroImages}
         isAR={isAR}
         quoteHref={quoteHref}
         productsHref={productsHref}

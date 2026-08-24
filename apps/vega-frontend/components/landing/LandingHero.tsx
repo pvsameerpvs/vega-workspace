@@ -1,18 +1,18 @@
-import { ArrowRight, ShieldCheck, Package, Building2, BadgeCheck } from "lucide-react";
-import { ProtectedImage } from "@/components/ProtectedImage";
+import { ArrowRight, ShieldCheck, Package, Building2 } from "lucide-react";
 import { TrackedAnchor } from "./TrackedAnchor";
+import { LandingHeroSlider } from "./LandingHeroSlider";
 import { LandingHero as LandingHeroContent } from "./types";
 
 export function LandingHero({
   hero,
-  image,
+  images,
   isAR,
   quoteHref,
   productsHref,
   trustMicrocopy,
 }: {
   hero: LandingHeroContent;
-  image: string;
+  images: string[];
   isAR: boolean;
   quoteHref: string;
   productsHref: string;
@@ -83,35 +83,10 @@ export function LandingHero({
             <div className="absolute -inset-2.5 rounded-[2.5rem] bg-gradient-to-br from-vega-yellow/40 via-transparent to-vega-blue/20 md:-inset-4" />
 
             <div className="relative overflow-hidden rounded-[2rem] border border-white/60 bg-white shadow-elevated">
-              <ProtectedImage
-                src={image}
-                alt={hero.imageAlt}
-                className="aspect-[4/3] w-full object-cover"
-                priority
-              />
-              <div className="absolute inset-0 rounded-[2rem] ring-1 ring-inset ring-slate-900/5" />
+              <LandingHeroSlider images={images} alt={hero.imageAlt} isAR={isAR} />
+              <div className="pointer-events-none absolute inset-0 rounded-[2rem] ring-1 ring-inset ring-slate-900/5" />
               <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-vega-blue/10 via-transparent to-transparent" />
             </div>
-
-            {/* Floating spec card */}
-            {hero.specLines.length > 0 && (
-              <div className="absolute -bottom-6 start-4 end-4 rounded-2xl border border-white/70 bg-white/90 p-4 shadow-elevated backdrop-blur-md sm:start-8 sm:end-auto sm:w-80 sm:p-5">
-                <div className="mb-3 flex items-center gap-2">
-                  <BadgeCheck className="h-4 w-4 text-vega-blue" />
-                  <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-slate-400">
-                    {isAR ? "مواصفات سريعة" : "Quick Specifications"}
-                  </p>
-                </div>
-                <ul className="space-y-2">
-                  {hero.specLines.map((line) => (
-                    <li key={line} className="flex items-start gap-2.5 text-xs font-medium text-slate-600">
-                      <span className="mt-1.5 h-1 w-1 shrink-0 rounded-full bg-vega-yellow" />
-                      {line}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            )}
 
             {/* Floating badge */}
             <div className="absolute -top-4 end-6 hidden items-center gap-2 rounded-full border border-white/70 bg-white/90 px-4 py-2 shadow-lg backdrop-blur-md sm:flex">
