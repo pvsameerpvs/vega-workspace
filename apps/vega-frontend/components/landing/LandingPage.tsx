@@ -17,6 +17,7 @@ import { LandingTrust } from "./LandingTrust";
 import { LandingFaq } from "./LandingFaq";
 import { LandingFinalCta } from "./LandingFinalCta";
 import { LandingStickyCta } from "./LandingStickyCta";
+import { getLandingHeroImages, type LandingPageId } from "./content/heroImages";
 
 export const TRUST_MICROCOPY =
   "Fast Response • Bulk Orders • Custom Requirements • Commercial Supply";
@@ -40,9 +41,13 @@ export function LandingPage({ content, products, locale, formProducts, groups }:
     const img = g.products.find((p) => p.image)?.image;
     return img ? [img] : [];
   });
-  const heroImages = Array.from(
-    new Set([...firstPerGroup, ...products.map((p) => p.image).filter(Boolean)])
-  ).slice(0, 8);
+  const heroImages = (() => {
+    const folderImages = getLandingHeroImages(content.path.slice(1) as LandingPageId);
+    if (folderImages.length > 0) return folderImages;
+    return Array.from(
+      new Set([...firstPerGroup, ...products.map((p) => p.image).filter(Boolean)])
+    ).slice(0, 8);
+  })();
   const options = (formProducts && formProducts.length > 0 ? formProducts : products).map((p) => ({
     name: p.name,
     sku: p.sku,
