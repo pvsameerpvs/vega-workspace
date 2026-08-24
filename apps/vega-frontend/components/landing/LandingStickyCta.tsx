@@ -16,7 +16,7 @@ export function LandingStickyCta({
     <div className="lp-sticky-bar fixed inset-x-0 bottom-0 z-40 border-t border-slate-200 bg-white/95 p-3 backdrop-blur-sm md:hidden">
       <div className="flex items-center gap-3">
         <a
-          href="tel:+97143548999"
+          href="tel:+971567351095"
           onClick={() => track("lp_phone_click", { label: "sticky_call" })}
           className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full border border-slate-200 text-vega-blue"
           aria-label={callLabel}

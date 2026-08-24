@@ -58,13 +58,13 @@ export function LandingFinalCta({
               </h3>
               <div className="space-y-3">
                 <TrackedAnchor
-                  href="tel:+97143548999"
+                  href="tel:+971567351095"
                   event="lp_phone_click"
-                  label="+971 4 349 8999"
+                  label="+971 56 735 1095"
                   className="flex items-center justify-center rounded-full bg-vega-yellow px-6 py-3 text-sm font-bold text-vega-blue transition-all hover:brightness-95"
                 >
                   <Phone className="mr-2 h-4 w-4" />
-                  {isAR ? "اتصل" : "Call"} +971 4 349 8999
+                  {isAR ? "اتصل" : "Call"} +971 56 735 1095
                 </TrackedAnchor>
                 <TrackedAnchor
                   href={contactHref}

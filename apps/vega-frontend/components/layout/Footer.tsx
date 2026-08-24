@@ -94,7 +94,7 @@ export function Footer() {
               </li>
               <li className="flex items-center gap-2 text-lg">
                 <Globe className="h-4 w-4 text-[#FFD400] shrink-0" />
-                <span className="tabular-nums whitespace-nowrap">+971 4 349 8999</span>
+                <span className="tabular-nums whitespace-nowrap">+971 56 735 1095</span>
               </li>
               <li className="flex items-center gap-2 text-lg">
                 <MapPin className="h-4 w-4 text-[#FFD400] shrink-0" />

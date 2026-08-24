@@ -9,11 +9,11 @@ import { ShareSection } from "./sections/ShareSection";
 export const metadata: Metadata = {
   title: "Contact Us | Vega UAE — Furniture, Barriers & Camp Supplies",
   description:
-    "Get in touch with Vega UAE for bulk furniture, queue barriers, camp supplies, and industrial product enquiries. Call +971 4 349 8999 or email Sales@thevegauae.com. Quick quotes and fast delivery across UAE.",
+    "Get in touch with Vega UAE for bulk furniture, queue barriers, camp supplies, and industrial product enquiries. Call +971 56 735 1095 or email Sales@thevegauae.com. Quick quotes and fast delivery across UAE.",
   openGraph: {
     title: "Contact Vega UAE | Get a Quote Today",
     description:
-      "Reach Vega UAE for bulk furniture, barriers, and camp supply solutions. Call +971 4 349 8999 or WhatsApp +971 56 735 1095. Same-day response.",
+      "Reach Vega UAE for bulk furniture, barriers, and camp supply solutions. Call +971 56 735 1095 or WhatsApp +971 56 735 1095. Same-day response.",
   },
 };
 
@@ -36,7 +36,7 @@ export default function ContactPage({ params: { locale } }: { params: { locale: 
       iconBg: "bg-[#1F3A93]/10",
       iconColor: "text-[#1F3A93]",
       title: isAR ? "الهاتف" : "Phone",
-      lines: ["+971 4 349 8999", "+971 56 735 1095", "+971 56 931 0575"],
+      lines: ["+971 56 735 1095", "+971 56 931 0575"],
     },
     {
       icon: Mail,
