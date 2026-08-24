@@ -186,6 +186,16 @@ html {
   100% { transform: scaleX(0); transform-origin: right; }
 }
 
+/* Hero slider progress */
+@keyframes hero-progress {
+  from {
+    width: 0%;
+  }
+  to {
+    width: 100%;
+  }
+}
+
 /* Marquee animation */
 @keyframes marquee {
   from {

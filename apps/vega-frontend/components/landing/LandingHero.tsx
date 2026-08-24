@@ -1,7 +1,7 @@
-import { ArrowRight, ShieldCheck, Package, Building2 } from "lucide-react";
-import { TrackedAnchor } from "./TrackedAnchor";
+import { ShieldCheck, Package, Building2 } from "lucide-react";
 import { LandingHeroSlider } from "./LandingHeroSlider";
-import { LandingHero as LandingHeroContent } from "./types";
+import { LandingHeroContent } from "./LandingHeroContent";
+import { LandingHero as LandingHeroContentType } from "./types";
 
 export function LandingHero({
   hero,
@@ -11,95 +11,39 @@ export function LandingHero({
   productsHref,
   trustMicrocopy,
 }: {
-  hero: LandingHeroContent;
+  hero: LandingHeroContentType;
   images: string[];
   isAR: boolean;
   quoteHref: string;
   productsHref: string;
   trustMicrocopy: string;
 }) {
-  const trustItems = trustMicrocopy.split("•").map((t) => t.trim()).filter(Boolean);
-
   return (
-    <section className="relative overflow-hidden bg-slate-50">
-      {/* Subtle grid pattern */}
-      <div className="pointer-events-none absolute inset-0 [background-image:linear-gradient(to_right,rgba(31,58,147,0.035)_1px,transparent_1px),linear-gradient(to_bottom,rgba(31,58,147,0.035)_1px,transparent_1px)] [background-size:52px_52px] [mask-image:radial-gradient(ellipse_70%_60%_at_50%_0%,black,transparent)]" />
-      {/* Soft glows */}
-      <div className="pointer-events-none absolute -top-32 -right-32 h-[28rem] w-[28rem] rounded-full bg-vega-yellow/15 blur-3xl" />
-      <div className="pointer-events-none absolute -bottom-40 -left-32 h-[26rem] w-[26rem] rounded-full bg-vega-blue/10 blur-3xl" />
+    <>
+      <section className="relative flex min-h-[540px] w-full items-center overflow-hidden bg-vega-blue sm:min-h-[640px] lg:h-[calc(100vh-7rem)]">
+        <LandingHeroSlider images={images} alt={hero.imageAlt} isAR={isAR} />
 
-      <div className="relative mx-auto max-w-7xl px-4 pb-16 pt-12 md:pt-20 lg:pb-24">
-        <div className="grid items-center gap-14 lg:grid-cols-2 lg:gap-16">
-          {/* Copy */}
-          <div className="animate-fade-in-up">
-            <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-vega-blue/10 bg-white px-4 py-1.5 shadow-sm">
-              <span className="h-1.5 w-1.5 rounded-full bg-vega-yellow" />
-              <span className="text-[11px] font-bold uppercase tracking-[0.22em] text-vega-blue">
-                {hero.eyebrow}
-              </span>
-            </div>
+        <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/70 via-black/25 to-transparent" />
+        <div
+          className={`pointer-events-none absolute inset-0 ${
+            isAR ? "bg-gradient-to-l" : "bg-gradient-to-r"
+          } from-black/60 via-black/10 to-transparent`}
+        />
+        <div className="pointer-events-none absolute inset-0 bg-black/10" />
 
-            <h1 className="text-[2rem] font-extrabold leading-[1.08] tracking-tight text-vega-blue sm:text-5xl lg:text-[3.25rem]">
-              {hero.title}
-            </h1>
-
-            <p className="mt-6 max-w-xl text-base leading-relaxed text-slate-500 md:text-lg">
-              {hero.subtitle}
-            </p>
-
-            <div className="mt-9 flex flex-col gap-3.5 sm:flex-row sm:items-center">
-              <TrackedAnchor
-                href={quoteHref}
-                event="lp_hero_quote"
-                label={hero.primaryCta}
-                className="group inline-flex items-center justify-center gap-2 rounded-full bg-vega-yellow px-8 py-4 text-sm font-bold text-vega-blue shadow-lg shadow-vega-yellow/25 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-xl hover:shadow-vega-yellow/30 hover:brightness-95"
-              >
-                {hero.primaryCta}
-                <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
-              </TrackedAnchor>
-              <TrackedAnchor
-                href={productsHref}
-                event="lp_hero_products"
-                label={hero.secondaryCta}
-                className="inline-flex items-center justify-center gap-2 rounded-full border border-slate-200 bg-white px-8 py-4 text-sm font-semibold text-vega-blue transition-all duration-300 hover:-translate-y-0.5 hover:border-vega-blue hover:bg-vega-blue hover:text-white hover:shadow-lg"
-              >
-                {hero.secondaryCta}
-              </TrackedAnchor>
-            </div>
-
-            <div className="mt-9 flex flex-wrap items-center gap-x-3 gap-y-2">
-              {trustItems.map((item, i) => (
-                <span key={item} className="flex items-center gap-3 text-[11px] font-semibold uppercase tracking-[0.14em] text-slate-400">
-                  {i > 0 && <span className="h-1 w-1 rounded-full bg-vega-yellow" />}
-                  {item}
-                </span>
-              ))}
-            </div>
-          </div>
-
-          {/* Visual */}
-          <div className="relative animate-fade-in-up" style={{ animationDelay: "0.12s" }}>
-            {/* Offset gradient frame */}
-            <div className="absolute -inset-2.5 rounded-[2.5rem] bg-gradient-to-br from-vega-yellow/40 via-transparent to-vega-blue/20 md:-inset-4" />
-
-            <div className="relative overflow-hidden rounded-[2rem] border border-white/60 bg-white shadow-elevated">
-              <LandingHeroSlider images={images} alt={hero.imageAlt} isAR={isAR} />
-              <div className="pointer-events-none absolute inset-0 rounded-[2rem] ring-1 ring-inset ring-slate-900/5" />
-              <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-vega-blue/10 via-transparent to-transparent" />
-            </div>
-
-            {/* Floating badge */}
-            <div className="absolute -top-4 end-6 hidden items-center gap-2 rounded-full border border-white/70 bg-white/90 px-4 py-2 shadow-lg backdrop-blur-md sm:flex">
-              <span className="h-2 w-2 rounded-full bg-emerald-400" />
-              <span className="text-[11px] font-bold uppercase tracking-wider text-vega-blue">
-                {isAR ? "تزويد تجاري" : "Commercial Supply"}
-              </span>
-            </div>
-          </div>
+        <div className="relative z-10 mx-auto w-full max-w-7xl px-4 py-16 md:px-8 lg:py-24">
+          <LandingHeroContent
+            hero={hero}
+            isAR={isAR}
+            quoteHref={quoteHref}
+            productsHref={productsHref}
+            trustMicrocopy={trustMicrocopy}
+          />
         </div>
+      </section>
 
-        {/* Trust strip */}
-        <div className="mt-24 grid gap-px overflow-hidden rounded-3xl border border-slate-100 bg-slate-100 shadow-sm sm:grid-cols-3">
+      <div className="mx-auto max-w-7xl px-4 pb-16 pt-14 md:px-8">
+        <div className="grid gap-px overflow-hidden rounded-3xl border border-slate-100 bg-slate-100 shadow-sm sm:grid-cols-3">
           {[
             {
               icon: ShieldCheck,
@@ -129,6 +73,6 @@ export function LandingHero({
           ))}
         </div>
       </div>
-    </section>
+    </>
   );
 }
